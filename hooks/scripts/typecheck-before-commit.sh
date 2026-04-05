@@ -8,7 +8,7 @@ if ! echo "$COMMAND" | sed 's/&&/\n/g; s/||/\n/g; s/;/\n/g' | grep -qE '^\s*git\
 fi
 
 # Run typecheck before allowing the commit
-TSC_OUTPUT=$(pnpm tsc --noEmit 2>&1)
+TSC_OUTPUT=$(pnpm typecheck 2>&1)
 TSC_EXIT=$?
 
 if [ $TSC_EXIT -ne 0 ]; then
