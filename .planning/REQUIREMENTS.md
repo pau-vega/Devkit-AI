@@ -54,31 +54,29 @@
 
 ## Traceability
 
-Updated during roadmap creation.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SKILL-01 | — | Pending |
-| SKILL-02 | — | Pending |
-| SKILL-03 | — | Pending |
-| CMD-01 | — | Pending |
-| CMD-02 | — | Pending |
-| CMD-03 | — | Pending |
-| AGNT-01 | — | Pending |
-| AGNT-02 | — | Pending |
-| HOOK-01 | — | Pending |
-| HOOK-02 | — | Pending |
-| HOOK-03 | — | Pending |
-| HOOK-04 | — | Pending |
-| MKTPL-01 | — | Pending |
-| MKTPL-02 | — | Pending |
-| MKTPL-03 | — | Pending |
+| SKILL-01 | Phase 1 | Pending |
+| SKILL-02 | Phase 1 | Pending |
+| SKILL-03 | Phase 1 | Pending |
+| CMD-01 | Phase 2 | Pending |
+| CMD-02 | Phase 2 | Pending |
+| CMD-03 | Phase 2 | Pending |
+| AGNT-01 | Phase 2 | Pending |
+| AGNT-02 | Phase 2 | Pending |
+| HOOK-01 | Phase 3 | Pending |
+| HOOK-02 | Phase 3 | Pending |
+| HOOK-03 | Phase 3 | Pending |
+| HOOK-04 | Phase 3 | Pending |
+| MKTPL-01 | Phase 4 | Pending |
+| MKTPL-02 | Phase 4 | Pending |
+| MKTPL-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 15 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 15 ⚠️
+- Mapped to phases: 15
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-05*
-*Last updated: 2026-05-05 after initial definition*
+*Last updated: 2026-05-05 after roadmap creation*
