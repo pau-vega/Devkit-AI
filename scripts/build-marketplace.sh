@@ -87,6 +87,27 @@ parse_frontmatter() {
     '{name: $name, description: $desc, version: (if $ver == "null" then null else $ver end)}'
 }
 
+# Read markdown body (content after closing frontmatter ---).
+# If no frontmatter found, returns full file content.
+read_body() {
+  local file="$1"
+  local in_fm=false found_end=false
+
+  while IFS= read -r line; do
+    if ! $found_end; then
+      if [[ "$line" == "---" ]]; then
+        if ! $in_fm; then
+          in_fm=true
+        else
+          found_end=true
+        fi
+      fi
+    else
+      echo "$line"
+    fi
+  done < "$file"
+}
+
 # ── Component discovery ──────────────────────────────────────────────
 
 # Discover skills in {plugin_root}/skills/*/SKILL.md
@@ -107,15 +128,16 @@ discover_skills() {
     if ! fm=$(parse_frontmatter "$skill_file"); then
       continue
     fi
-    local s_name s_desc s_ver s_cmd
+    local s_name s_desc s_ver s_cmd s_body
     s_name=$(echo "$fm" | jq -r '.name')
     s_desc=$(echo "$fm" | jq -r '.description')
     s_ver=$(echo "$fm" | jq -r 'if .version then .version else "0.0.0" end')
     s_cmd="/${plugin_name}:${s_name}"
+    s_body=$(read_body "$skill_file")
 
     skills=$(echo "$skills" | jq \
-      --arg n "$s_name" --arg d "$s_desc" --arg v "$s_ver" --arg c "$s_cmd" \
-      '. + [{name: $n, version: $v, description: $d, command: $c}]')
+      --arg n "$s_name" --arg d "$s_desc" --arg v "$s_ver" --arg c "$s_cmd" --arg body "$s_body" \
+      '. + [{name: $n, version: $v, description: $d, command: $c, body: $body}]')
   done
 
   echo "$skills"
@@ -138,13 +160,14 @@ discover_agents() {
     if ! fm=$(parse_frontmatter "$agent_file"); then
       continue
     fi
-    local a_name a_desc
+    local a_name a_desc a_body
     a_name=$(echo "$fm" | jq -r '.name')
     a_desc=$(echo "$fm" | jq -r '.description')
+    a_body=$(read_body "$agent_file")
 
     agents=$(echo "$agents" | jq \
-      --arg n "$a_name" --arg d "$a_desc" \
-      '. + [{name: $n, description: $d}]')
+      --arg n "$a_name" --arg d "$a_desc" --arg body "$a_body" \
+      '. + [{name: $n, description: $d, body: $body}]')
   done
 
   echo "$agents"
@@ -168,14 +191,15 @@ discover_commands() {
     if ! fm=$(parse_frontmatter "$cmd_file"); then
       continue
     fi
-    local c_name c_desc c_cmd
+    local c_name c_desc c_cmd c_body
     c_name=$(echo "$fm" | jq -r '.name')
     c_desc=$(echo "$fm" | jq -r '.description')
     c_cmd="/${plugin_name}:${c_name}"
+    c_body=$(read_body "$cmd_file")
 
     commands=$(echo "$commands" | jq \
-      --arg n "$c_cmd" --arg d "$c_desc" \
-      '. + [{name: $n, description: $d}]')
+      --arg n "$c_cmd" --arg d "$c_desc" --arg body "$c_body" \
+      '. + [{name: $n, description: $d, body: $body}]')
   done
 
   echo "$commands"
@@ -285,7 +309,7 @@ main() {
   for (( idx=0; idx<plugin_count; idx++ )); do
     # Read fields from marketplace.json
     local p_name p_displayName p_version p_source p_category p_description
-    local p_longDescription p_icon p_iconClass p_accentColor
+    local p_longDescription p_icon p_accentColor
     p_name=$(jq -r ".plugins[$idx].name" "$MARKETPLACE_JSON")
     p_displayName=$(jq -r ".plugins[$idx].displayName // empty" "$MARKETPLACE_JSON")
     p_version=$(jq -r ".plugins[$idx].version" "$MARKETPLACE_JSON")
@@ -294,7 +318,6 @@ main() {
     p_description=$(jq -r ".plugins[$idx].description" "$MARKETPLACE_JSON")
     p_longDescription=$(jq -r ".plugins[$idx].longDescription // empty" "$MARKETPLACE_JSON")
     p_icon=$(jq -r ".plugins[$idx].icon // empty" "$MARKETPLACE_JSON")
-    p_iconClass=$(jq -r ".plugins[$idx].iconClass // empty" "$MARKETPLACE_JSON")
     p_accentColor=$(jq -r ".plugins[$idx].accentColor // empty" "$MARKETPLACE_JSON")
 
     # Validate required field
@@ -335,8 +358,7 @@ main() {
       --arg description "$display_desc" \
       --arg category "$p_category" \
       --arg icon "${p_icon:-}" \
-      --arg iconClass "${p_iconClass:-}" \
-      --arg accentColor "${p_accentColor:-#7c6aef}" \
+      --arg accent "${p_accentColor:-#7c6aef}" \
       --arg source "$p_source" \
       --argjson skills "$skills" \
       --argjson agents "$agents" \
@@ -349,8 +371,7 @@ main() {
         description: $description,
         category: $category,
         icon: $icon,
-        iconClass: $iconClass,
-        accentColor: $accentColor,
+        accent: $accent,
         source: $source,
         skills: $skills,
         agents: $agents,

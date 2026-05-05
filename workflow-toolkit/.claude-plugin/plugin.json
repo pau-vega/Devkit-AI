@@ -4,5 +4,7 @@
   "description": "A collection of developer workflow skills for planning, design review, and product requirements.",
   "author": {
     "name": "Pau Velasco Garrofe"
-  }
+  },
+  "license": "MIT",
+  "keywords": ["workflow", "planning", "tdd", "prd", "code-review"]
 }
