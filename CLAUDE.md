@@ -4,16 +4,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Claude Code plugin marketplace** containing the `typescript-rules` plugin. It is not a traditional app or library — there is no build step, no package.json, and no npm dependencies. The entire project consists of markdown files, JSON configs, and shell scripts that integrate with the Claude Code plugin system.
+This is a **Claude Code plugin marketplace** containing three plugins: `typescript-rules`, `jsdoc-standards`, and `workflow-toolkit`. It is not a traditional app or library — there is no build step beyond a small bash script, no package.json, and no npm dependencies. The repository consists of markdown files, JSON configs, shell scripts, and a static HTML landing page that integrate with the Claude Code plugin system.
 
 ## Repository Structure
 
-- `.claude-plugin/` — Plugin and marketplace manifests (`plugin.json`, `marketplace.json`)
-- `agents/ts-reviewer.md` — Sonnet-powered TypeScript code review agent
-- `commands/ts-review.md` — `/ts-review` slash command that dispatches the reviewer agent
-- `skills/typescript-conventions/SKILL.md` — Comprehensive TypeScript style guide (the source of truth for all enforced rules)
-- `hooks/hooks.json` — Hook configuration (PreToolUse hooks on Bash, Write, Edit)
-- `hooks/scripts/` — Shell scripts for convention enforcement (enforce-pnpm, no-any, no-enum, no-export-default, no-package-json-edit)
+- `.claude-plugin/marketplace.json` — Marketplace manifest declaring all three plugins
+- `typescript-rules/` — TypeScript conventions plugin (agent, command, skill, hooks)
+- `jsdoc-standards/` — JSDoc documentation plugin (agent, command, skill, hooks)
+- `workflow-toolkit/` — Developer workflow skills (command + 5 skills, no agents/hooks)
+- `marketplace.html` — Static landing page rendered to GitHub Pages, embeds plugin metadata via `const PLUGINS = [...]`
+- `scripts/build-marketplace.sh` — Discovers components in each plugin, injects fresh JSON into `marketplace.html`
+- `.github/workflows/deploy-pages.yml` — Runs the build script and deploys `marketplace.html` to Pages on every push
+
+Each plugin follows the standard layout:
+
+```
+<plugin>/
+  .claude-plugin/plugin.json
+  agents/*.md           (optional)
+  commands/*.md         (optional)
+  hooks/hooks1.json      (optional, with hooks/scripts/*.sh)
+  skills/<name>/SKILL.md (optional, with skills/<name>/references/*.md)
+```
 
 ## How to Test Locally
 
@@ -21,23 +33,33 @@ This is a **Claude Code plugin marketplace** containing the `typescript-rules` p
 claude --plugin-dir ./my-marketplace
 ```
 
-There are no build, lint, or test commands — validation is done by loading the plugin in Claude Code and exercising the hooks, command, and agent.
+To regenerate the landing page after changing plugin metadata or components:
+
+```bash
+bash scripts/build-marketplace.sh
+```
+
+There are no lint or test commands — validation is done by loading the plugin in Claude Code and exercising the hooks, command, and agent.
 
 ## Architecture
 
-The plugin enforces TypeScript conventions through three layers:
+Each plugin enforces conventions through three layers:
 
-1. **Hooks (real-time)** — `hooks/hooks.json` registers PreToolUse hooks that fire on every Bash, Write, and Edit tool call. Shell script hooks do pattern matching (e.g., grep for `any`, `enum`). A prompt-based hook on Write/Edit validates proposed code against all six core rules.
-2. **Command + Agent (on-demand)** — `/ts-review` dispatches the `ts-reviewer` agent, which loads the conventions skill, discovers target files, and produces a structured report with Error/Warning/Suggestion severity levels.
-3. **Skill (reference)** — `typescript-conventions` is a passive skill that Claude can consult when writing or reviewing TypeScript in any project that has this plugin installed.
+1. **Hooks (real-time)** — `<plugin>/hooks/hooks.json` registers PreToolUse hooks that fire on Bash, Write, and Edit tool calls. Shell scripts do pattern matching (e.g., grep for `any`, `enum`). Prompt-based hooks validate proposed code via Claude.
+2. **Command + Agent (on-demand)** — `<plugin>/commands/*.md` dispatches an agent that loads the conventions skill, discovers target files, and produces a structured report with Error/Warning/Suggestion severity levels.
+3. **Skill (reference)** — Passive skills that Claude consults when writing or reviewing code in any project that has the plugin installed.
+
+`workflow-toolkit` is skill-only — no agents or hooks — and uses its `/create-workflow` command to introduce the skill set.
 
 ## Key Conventions When Editing This Plugin
 
-- Hook scripts must read tool input from `$TOOL_INPUT` (JSON) and use `jq` to extract fields
+- Hook scripts read tool input from **stdin** as JSON (`INPUT=$(cat)`) and use `jq` to extract fields
 - Hook scripts output JSON: `{"decision": "block", "reason": "..."}` to block, or exit 0 silently to allow
-- The prompt-based hook in `hooks.json` is inline — it checks `.ts`/`.tsx` files against the six core rules and responds with "approve" or "deny"
-- `${CLAUDE_PLUGIN_ROOT}` is the variable used in hooks.json and agent files to reference the plugin's root directory
-- The agent uses `model: sonnet` and has access to `Read`, `Glob`, `Grep`, and `Bash` tools only
+- Prompt-based hooks (inline `"type": "prompt"` in `hooks.json`) validate file content against rules and respond with `approve` or `deny`
+- `${CLAUDE_PLUGIN_ROOT}` is the variable used in `hooks.json` and agent files to reference the plugin's root directory
+- Agents use `model: sonnet` and have access to `Read`, `Glob`, `Grep`, and `Bash` tools only
+- Slash commands dispatching subagents use `allowed-tools: [Agent]` (the canonical Claude Code subagent tool name)
+- After editing `marketplace.json` or any plugin component, run `scripts/build-marketplace.sh` to refresh `marketplace.html`
 
 ## Design Context
 

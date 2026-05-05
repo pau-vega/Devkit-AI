@@ -3,113 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Plugin Marketplace</title>
-<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('marketplace-theme')||'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<title>Plugin Marketplace by Pau Velasco</title>
+<meta name="description" content="Reusable Claude Code skills, agents, and hooks for TypeScript, documentation, and developer workflow.">
+<script>
+  try {
+    document.documentElement.setAttribute('data-theme', localStorage.getItem('marketplace-theme') || 'dark');
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+</script>
 <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
 <link href="https://fonts.bunny.net/css?family=space-grotesk:500,600,700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  /* Fallback font metrics to minimize CLS during font swap */
-  @font-face {
-    font-family: 'Space Grotesk Fallback';
-    src: local('Arial');
-    size-adjust: 105%;
-    ascent-override: 90%;
-    descent-override: 22%;
-    line-gap-override: 0%;
-  }
-
   :root {
-    --font-display: 'Space Grotesk', 'Space Grotesk Fallback', system-ui, sans-serif;
-    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    --font-mono: ui-monospace, 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
-
     --bg: #0f0e0c;
-    --bg-card: #171614;
-    --bg-card-hover: #1d1c19;
-    --bg-surface: #1f1e1b;
+    --bg-elev-0: #131210;
+    --bg-elev-1: #171614;
+    --bg-elev-2: #1f1e1b;
+    --bg-elev-3: #252319;
     --bg-input: #131210;
+
     --border: #2a2824;
-    --border-hover: #3a3832;
+    --border-strong: #3a3832;
+    --border-hover: #4a4842;
+
     --text: #edecea;
     --text-dim: #9b9990;
     --text-muted: #7a7870;
-    --accent: #7c6aef;
-    --accent-dim: #6355c0;
-    --accent-subtle: rgba(124, 106, 239, 0.1);
-    --tag-skill-bg: rgba(52, 180, 130, 0.1);
-    --tag-skill-text: #3db88a;
-    --tag-agent-bg: rgba(90, 150, 220, 0.1);
-    --tag-agent-text: #6aa4dc;
-    --tag-hook-bg: rgba(210, 160, 50, 0.1);
-    --tag-hook-text: #c8a040;
-    --tag-command-bg: rgba(200, 110, 110, 0.1);
-    --tag-command-text: #c47a7a;
-    --radius: 8px;
-    --radius-sm: 5px;
-    --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
-    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-    --duration-fast: 0.15s;
-    --text-on-accent: #f5f5f7;
+
+    --brand: #7c6aef;
+    --brand-2: #a090f5;
+    --brand-3: #bfb4fa;
+    --brand-glow: rgba(124, 106, 239, 0.12);
+
+    --green: #3db88a;
+    --green-glow: rgba(52, 180, 130, 0.1);
+    --amber: #c8a040;
+    --amber-glow: rgba(210, 160, 50, 0.1);
+    --rose: #c47a7a;
+    --rose-glow: rgba(200, 110, 110, 0.1);
+    --blue: #6aa4dc;
+    --blue-glow: rgba(90, 150, 220, 0.1);
+    --cyan: #40c4d8;
+    --cyan-glow: rgba(64, 196, 216, 0.1);
+
+    --radius-xl: 20px;
+    --radius-lg: 16px;
+    --radius: 10px;
+    --radius-sm: 6px;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+
+    --header-h: 64px;
+    --max-w: 1320px;
+
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, monospace;
   }
 
   [data-theme="light"] {
     --bg: #f5f4f1;
-    --bg-card: #fefefe;
-    --bg-card-hover: #faf9f6;
-    --bg-surface: #edece8;
+    --bg-elev-0: #fefefe;
+    --bg-elev-1: #fefefe;
+    --bg-elev-2: #edece8;
+    --bg-elev-3: #e5e4df;
     --bg-input: #fefefe;
+
     --border: #dcdad4;
-    --border-hover: #c4c2bc;
+    --border-strong: #c4c2bc;
+    --border-hover: #b0aea8;
+
     --text: #1c1b18;
     --text-dim: #4a4840;
     --text-muted: #6b6960;
-    --accent: #6355c0;
-    --accent-dim: #5648a8;
-    --accent-subtle: rgba(99, 85, 192, 0.08);
-    --tag-skill-bg: rgba(20, 140, 90, 0.08);
-    --tag-skill-text: #148c5a;
-    --tag-agent-bg: rgba(40, 100, 180, 0.08);
-    --tag-agent-text: #2864b4;
-    --tag-hook-bg: rgba(160, 120, 20, 0.08);
-    --tag-hook-text: #9a7418;
-    --tag-command-bg: rgba(170, 70, 70, 0.08);
-    --tag-command-text: #a84848;
-    --text-on-accent: #ffffff;
+
+    --brand: #6355c0;
+    --brand-2: #7c6aef;
+    --brand-3: #a090f5;
+    --brand-glow: rgba(99, 85, 192, 0.08);
+
+    --green: #148c5a;
+    --green-glow: rgba(20, 140, 90, 0.08);
+    --amber: #9a7418;
+    --amber-glow: rgba(160, 120, 20, 0.08);
+    --rose: #a84848;
+    --rose-glow: rgba(170, 70, 70, 0.08);
+    --blue: #2864b4;
+    --blue-glow: rgba(40, 100, 180, 0.08);
+    --cyan: #0891b2;
+    --cyan-glow: rgba(8, 145, 178, 0.08);
+
+    --shadow-sm: 0 1px 2px rgba(20, 20, 18, 0.06);
+    --shadow-md: 0 8px 24px rgba(20, 20, 18, 0.08);
+    --shadow-lg: 0 24px 60px rgba(20, 20, 18, 0.12);
   }
 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
   body {
-    font-family: var(--font-body);
+    font-family: var(--font-sans);
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
-  /* Focus styles */
+  /* Focus */
   :focus-visible {
-    outline: 2px solid transparent; /* visible in forced-colors mode */
+    outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: var(--focus-ring);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--brand);
   }
 
-  /* Forced colors (Windows High Contrast) */
   @media (forced-colors: active) {
-    :focus-visible {
-      outline: 2px solid Highlight;
-      box-shadow: none;
-    }
-    .filter-btn[aria-pressed="true"] {
-      border-color: Highlight;
-    }
-    .install-copy-btn {
-      border: 1px solid ButtonText;
-    }
+    :focus-visible { outline: 2px solid Highlight; box-shadow: none; }
   }
 
-  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -118,939 +133,1006 @@
     }
   }
 
-  @keyframes fade-up {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
   /* Header */
-  header {
-    padding: 32px clamp(20px, 4vw, 40px) 0;
+  .header {
     position: sticky;
     top: 0;
-    background: var(--bg);
-    background: color-mix(in srgb, var(--bg) 90%, transparent);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
     z-index: 100;
+    height: var(--header-h);
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid var(--border);
   }
-
-  .header-top {
+  .header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding-bottom: 24px;
+    gap: 16px;
   }
-
-  .header-left {
+  .brand {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 12px;
-    min-width: 0;
+    text-decoration: none;
+    color: inherit;
   }
-
-  header h1 {
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-2) 100%);
+    color: #fff;
     font-family: var(--font-display);
-    font-size: clamp(26px, 3.5vw, 34px);
     font-weight: 700;
-    letter-spacing: -0.6px;
-    line-height: 1.1;
-  }
-
-  header h1 span {
-    color: var(--text-muted);
-    font-weight: 500;
     font-size: 15px;
-    margin-inline-start: 2px;
+    letter-spacing: -0.5px;
+    box-shadow: 0 6px 16px var(--brand-glow), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
-
-  .version-badge {
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  .brand-by {
     font-size: 11px;
     color: var(--text-muted);
-    font-family: var(--font-mono);
-    flex-shrink: 0;
   }
-
-  .header-right {
+  .brand-version {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--brand-2);
+    background: var(--brand-glow);
+    padding: 3px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.4px;
+    margin-left: 4px;
+    font-family: var(--font-mono);
+    border: 1px solid color-mix(in oklab, var(--brand) 25%, transparent);
+  }
+  .header-spacer { flex: 1; }
+  .header-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
-  /* Search */
   .search-wrap {
     position: relative;
-    width: 280px;
-    flex-shrink: 0;
+    width: 360px;
   }
-
-  .search-wrap svg {
+  .search-wrap svg.search-icon {
     position: absolute;
-    inset-inline-start: 12px;
+    left: 12px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-muted);
     pointer-events: none;
   }
-
   .search-input {
     width: 100%;
-    padding: 10px 40px 10px 36px;
-    min-height: 44px;
+    height: 38px;
+    padding: 0 56px 0 38px;
     background: var(--bg-input);
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     color: var(--text);
-    font-size: 14px;
-    outline: none;
-    transition: border-color var(--duration-fast) var(--ease-out-quart);
-  }
-
-  .search-input::placeholder { color: var(--text-muted); }
-  .search-input:focus { border-color: var(--accent); box-shadow: var(--focus-ring); }
-
-  /* Stats line */
-  .stats-line {
     font-size: 13px;
-    color: var(--text-muted);
-    padding: 16px clamp(20px, 4vw, 40px) 0;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    animation: fade-up 0.3s var(--ease-out-quart) both;
-  }
-
-  .stats-line .stat-value {
-    color: var(--text);
-    font-weight: 700;
-    font-family: var(--font-display);
-    font-size: 14px;
-  }
-
-  .stats-line .stat-sep {
-    color: var(--border-hover);
-    margin: 0 4px;
-    user-select: none;
-  }
-
-  /* Interactive controls — shared base */
-  :is(.filter-btn, .install-copy-btn, .empty-state-reset, .theme-toggle) {
-    cursor: pointer;
-  }
-
-  :is(.filter-btn, .install-copy-btn, .empty-state-reset) {
     font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
   }
-
-  :is(.filter-btn, .install-copy-btn, .empty-state-reset, .theme-toggle):focus-visible {
-    box-shadow: var(--focus-ring);
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-input:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px var(--brand-glow);
   }
-
-  /* Filters */
-  .filters {
-    display: flex;
-    gap: 6px;
-    padding: 20px clamp(20px, 4vw, 40px) 0;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .filters [role="group"] {
-    display: contents;
-  }
-
-  .filter-label {
-    font-size: 11px;
+  .kbd-hint {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-inline-end: 6px;
-    font-weight: 600;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 5px;
+    pointer-events: none;
   }
 
-  .filter-btn {
-    padding: 8px 14px;
-    min-height: 44px;
-    border-radius: 6px;
-    border: 1px solid transparent;
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 12px;
-    transition: color var(--duration-fast) var(--ease-out-quart), background var(--duration-fast) var(--ease-out-quart), border-color var(--duration-fast) var(--ease-out-quart);
-  }
-
-  .filter-btn:hover {
-    color: var(--text-dim);
-    background: var(--bg-surface);
-  }
-
-  .filter-btn[aria-pressed="true"] {
-    border-color: var(--accent);
-    background: var(--accent-subtle);
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  /* Main grid */
-  main {
-    padding: 28px clamp(20px, 4vw, 40px) 64px;
+  .icon-btn {
+    width: 38px;
+    height: 38px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(460px, 100%), 1fr));
-    gap: 12px;
-    container-type: inline-size;
-    container-name: main-grid;
-  }
-
-  @container main-grid (max-width: 500px) {
-    .plugin-card .card-toggle { padding: 16px; }
-    .plugin-card .detail-inner { padding: 0 16px 16px; }
-    .plugin-card .card-install-bar { padding: 0 16px 12px; }
-  }
-
-  /* Plugin card — minimal, accent left border reveals on interaction */
-  .plugin-card {
-    --card-accent: var(--accent);
-    background: var(--bg-card);
-    border: 1px solid transparent;
-    border-radius: var(--radius);
-    border-inline-start: 3px solid transparent;
-    contain: layout style;
-    transition: border-color var(--duration-fast) var(--ease-out-quart), border-inline-start-color 0.25s var(--ease-out-expo), background var(--duration-fast) var(--ease-out-quart);
-    animation: fade-up 0.3s var(--ease-out-quart) both;
-  }
-
-  .plugin-card:nth-child(2) { animation-delay: 60ms; }
-  .plugin-card:nth-child(3) { animation-delay: 120ms; }
-  .plugin-card:nth-child(4) { animation-delay: 180ms; }
-  .plugin-card:nth-child(5) { animation-delay: 240ms; }
-
-  .plugin-card:hover {
-    border-color: var(--border);
-    border-inline-start-color: var(--card-accent);
-    background: var(--bg-card-hover);
-  }
-
-  .plugin-card.expanded {
-    border-color: var(--border);
-    border-inline-start-color: var(--card-accent);
-  }
-
-  .card-toggle {
-    width: 100%;
-    padding: 20px 24px;
+    place-items: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-dim);
     cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .icon-btn:hover {
+    color: var(--text);
+    border-color: var(--border-hover);
+    background: var(--bg-elev-2);
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    padding: 88px 28px 56px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 600px;
+    background:
+      radial-gradient(ellipse at 25% 20%, rgba(124, 106, 239, 0.18), transparent 55%),
+      radial-gradient(ellipse at 75% 30%, rgba(64, 196, 216, 0.08), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  [data-theme="light"] .hero::before {
+    background:
+      radial-gradient(ellipse at 25% 20%, rgba(124, 106, 239, 0.08), transparent 55%),
+      radial-gradient(ellipse at 75% 30%, rgba(64, 196, 216, 0.04), transparent 50%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--max-w);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    background: none;
-    border: none;
-    color: inherit;
-    font: inherit;
-    text-align: start;
-  }
-
-  .card-toggle:focus-visible {
-    box-shadow: inset var(--focus-ring);
-    border-radius: var(--radius);
-  }
-
-  .card-top {
-    display: flex;
     align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
+    gap: 18px;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--brand-2);
+    background: var(--brand-glow);
+    border: 1px solid color-mix(in oklab, var(--brand) 25%, transparent);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand-2);
+    box-shadow: 0 0 10px var(--brand-2);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--brand-2) 60%, var(--brand) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    max-width: 880px;
+  }
+  .hero-subtitle {
+    font-size: clamp(15px, 1.6vw, 17px);
+    color: var(--text-dim);
+    max-width: 680px;
+    line-height: 1.55;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    margin-top: 8px;
+    align-items: baseline;
+  }
+  .hero-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .hero-stat strong {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero-stat span {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .hero-stat + .hero-stat {
+    position: relative;
+    padding-left: 28px;
+  }
+  .hero-stat + .hero-stat::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--border-strong);
   }
 
-  .card-title-row {
+  /* Toolbar */
+  .toolbar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 90;
+    background: color-mix(in oklab, var(--bg) 90%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .toolbar-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 14px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+  }
+  .filter-group {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
+  }
+  .group-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+  }
+  .segmented {
+    display: inline-flex;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 3px;
+    gap: 2px;
+  }
+  .seg-btn {
+    padding: 6px 13px;
+    border: 0;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+  }
+  .seg-btn:hover {
+    color: var(--text);
+    background: var(--bg-elev-2);
+  }
+  .seg-btn.active {
+    background: var(--bg-elev-3);
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+  }
+  .result-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .result-count strong { color: var(--text); font-weight: 600; }
+
+  /* Main grid */
+  .main {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 32px 28px 64px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 18px;
+  }
+
+  /* Plugin card */
+  .plugin-card {
+    position: relative;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .plugin-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent, var(--brand));
+    opacity: 0.55;
+    transition: opacity 0.2s, height 0.2s;
+  }
+  .plugin-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .plugin-card:hover::before { opacity: 1; }
+  .plugin-card.expanded {
+    border-color: color-mix(in oklab, var(--accent, var(--brand)) 55%, var(--border));
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent, var(--brand)) 40%, transparent), var(--shadow-md);
+  }
+  .plugin-card.expanded::before { opacity: 1; height: 3px; }
+
+  .card-header {
+    padding: 22px 22px 18px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+  }
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .plugin-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-mono);
+    font-size: 17px;
+    font-weight: 600;
+    flex-shrink: 0;
+    background:
+      linear-gradient(135deg,
+        color-mix(in oklab, var(--accent) 22%, transparent) 0%,
+        color-mix(in oklab, var(--accent) 8%, transparent) 100%);
+    color: var(--accent);
+    border: 1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+    box-shadow: 0 4px 14px color-mix(in oklab, var(--accent) 12%, transparent);
+  }
+  .card-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     min-width: 0;
   }
-
-  .plugin-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 7px;
+  .card-name-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-    font-family: var(--font-mono);
-    background: var(--bg-surface);
-    color: var(--text-dim);
-    overflow: hidden;
-    line-height: 1;
+    gap: 8px;
+    flex-wrap: wrap;
   }
-
-  /* Per-category icon identity */
-  .plugin-icon.icon-typescript {
-    background: rgba(124, 106, 239, 0.14);
-    color: var(--accent);
-  }
-  .plugin-icon.icon-documentation {
-    background: var(--tag-hook-bg);
-    color: var(--tag-hook-text);
-  }
-  .plugin-icon.icon-workflow {
-    background: rgba(52, 180, 130, 0.14);
-    color: #34b482;
-  }
-  [data-theme="light"] .plugin-icon.icon-typescript {
-    background: rgba(99, 85, 192, 0.12);
-  }
-  [data-theme="light"] .plugin-icon.icon-workflow {
-    background: rgba(20, 140, 90, 0.12);
-  }
-
   .card-name {
     font-family: var(--font-display);
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     letter-spacing: -0.3px;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    color: var(--text);
   }
-
   .card-version {
     font-size: 11px;
     color: var(--text-muted);
     font-family: var(--font-mono);
+    font-weight: 500;
   }
-
+  .card-category {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent, var(--brand));
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-category::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent, var(--brand));
+  }
   .expand-icon {
+    margin-left: auto;
     color: var(--text-muted);
-    transition: transform 0.25s var(--ease-out-expo);
+    transition: transform 0.25s, color 0.15s;
     flex-shrink: 0;
-    margin-top: 4px;
-    opacity: 0.5;
   }
-
-  .plugin-card:hover .expand-icon {
-    opacity: 1;
-  }
-
+  .plugin-card:hover .expand-icon { color: var(--text-dim); }
   .plugin-card.expanded .expand-icon {
     transform: rotate(180deg);
-    opacity: 1;
+    color: var(--accent, var(--brand));
   }
 
   .card-desc {
     font-size: 13px;
     color: var(--text-dim);
     line-height: 1.55;
-    overflow-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-
   .card-tags {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    margin-top: 2px;
+    margin-top: auto;
+    padding-top: 6px;
   }
-
   .tag {
     font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
     font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid transparent;
   }
+  .tag.skill   { background: var(--green-glow); color: var(--green); border-color: color-mix(in oklab, var(--green) 25%, transparent); }
+  .tag.agent   { background: var(--blue-glow);  color: var(--blue);  border-color: color-mix(in oklab, var(--blue) 25%, transparent); }
+  .tag.hook    { background: var(--amber-glow); color: var(--amber); border-color: color-mix(in oklab, var(--amber) 25%, transparent); }
+  .tag.command { background: var(--rose-glow);  color: var(--rose);  border-color: color-mix(in oklab, var(--rose) 25%, transparent); }
 
-  .tag.skill { background: var(--tag-skill-bg); color: var(--tag-skill-text); }
-  .tag.agent { background: var(--tag-agent-bg); color: var(--tag-agent-text); }
-  .tag.hook { background: var(--tag-hook-bg); color: var(--tag-hook-text); }
-  .tag.command { background: var(--tag-command-bg); color: var(--tag-command-text); }
-
-  /* Expanded content — grid-row animation */
+  /* Card detail */
   .card-detail {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.35s var(--ease-out-expo);
-  }
-
-  .plugin-card.expanded .card-detail {
-    grid-template-rows: 1fr;
-  }
-
-  .card-detail-inner-wrap {
+    max-height: 0;
     overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  .plugin-card.expanded .card-detail { max-height: 4000px; }
 
   .detail-inner {
-    padding: 0 24px 24px;
+    padding: 18px 22px 22px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
+    border-top: 1px dashed var(--border);
   }
-
-  .detail-divider {
-    height: 1px;
-    background: var(--border);
-    margin-bottom: 4px;
-  }
-
   .detail-section {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
-
   .detail-section-title {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 1.2px;
     color: var(--text-muted);
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
-  .detail-section-title::before {
+  .detail-section-title::after {
     content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    flex-shrink: 0;
+    flex: 1;
+    height: 1px;
+    background: var(--border);
   }
-  .detail-section-title.section-skills { color: var(--tag-skill-text); }
-  .detail-section-title.section-skills::before { background: var(--tag-skill-text); }
-  .detail-section-title.section-agents { color: var(--tag-agent-text); }
-  .detail-section-title.section-agents::before { background: var(--tag-agent-text); }
-  .detail-section-title.section-hooks { color: var(--tag-hook-text); }
-  .detail-section-title.section-hooks::before { background: var(--tag-hook-text); }
-  .detail-section-title.section-commands { color: var(--tag-command-text); }
-  .detail-section-title.section-commands::before { background: var(--tag-command-text); }
-
-  :is(.detail-item, .hook-item) {
+  .detail-item {
     display: flex;
     flex-direction: column;
-    padding: 10px 14px;
-    background: var(--bg-surface);
-    border-radius: var(--radius-sm);
-  }
-
-  .detail-item {
-    --section-color: var(--text-muted);
-    gap: 2px;
+    gap: 4px;
+    padding: 10px 12px;
+    background: var(--bg-elev-2);
     border: 1px solid transparent;
-    border-inline-start: 2px solid transparent;
-    transition: border-color var(--duration-fast) var(--ease-out-quart), border-inline-start-color 0.2s var(--ease-out-quart);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s, background 0.15s;
   }
-
   .detail-item:hover {
     border-color: var(--border);
-    border-inline-start-color: var(--section-color);
+    background: var(--bg-elev-3);
   }
-
-  /* Inherit section color for detail item accents */
-  .section-skills ~ .detail-item { --section-color: var(--tag-skill-text); }
-  .section-agents ~ .detail-item { --section-color: var(--tag-agent-text); }
-  .section-commands ~ .detail-item { --section-color: var(--tag-command-text); }
-
   .detail-item-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    min-width: 0;
+    flex-wrap: wrap;
   }
-
   .detail-item-name {
     font-size: 13px;
     font-weight: 600;
     font-family: var(--font-mono);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color: var(--text);
   }
-
   .detail-item-version {
     font-size: 10px;
     color: var(--text-muted);
+    font-family: var(--font-mono);
   }
-
   .detail-item-desc {
     font-size: 12px;
     color: var(--text-dim);
     line-height: 1.5;
-    overflow-wrap: break-word;
   }
-
   .detail-item-command {
     font-size: 11px;
-    color: var(--accent);
+    color: var(--brand-2);
     font-family: var(--font-mono);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    background: none;
-    border: none;
-    padding: 6px 8px;
-    margin: 2px -8px 0;
-    border-radius: var(--radius-sm);
-    min-height: 36px;
+    gap: 6px;
+    margin-top: 2px;
   }
-
-  .detail-item-command:hover {
-    text-decoration: underline;
-  }
-
-  .detail-item-command:focus-visible {
-    box-shadow: var(--focus-ring);
-  }
-
+  .detail-item-command:hover { text-decoration: underline; }
   .copy-feedback {
     font-size: 10px;
-    color: var(--tag-skill-text);
+    color: var(--green);
     opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 0.2s var(--ease-out-quart), transform 0.2s var(--ease-out-quart);
+    transition: opacity 0.2s;
   }
-
-  .copy-feedback.show {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  .copy-feedback.show { opacity: 1; }
 
   .hook-item {
+    display: flex;
+    flex-direction: column;
     gap: 4px;
-    border-inline-start: 2px solid transparent;
-    transition: border-inline-start-color 0.2s var(--ease-out-quart);
+    padding: 10px 12px;
+    background: var(--bg-elev-2);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--amber);
   }
-  .hook-item:hover {
-    border-inline-start-color: var(--tag-hook-text);
-  }
-
   .hook-event {
     font-size: 11px;
     font-weight: 600;
-    color: var(--tag-hook-text);
+    color: var(--amber);
     font-family: var(--font-mono);
   }
-
   .hook-desc {
     font-size: 12px;
-    color: var(--text-muted);
-    padding-inline-start: 2px;
+    color: var(--text-dim);
   }
 
-  /* Install section */
+  .view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--brand-2);
+    background: var(--brand-glow);
+    border: 1px solid color-mix(in oklab, var(--brand) 25%, transparent);
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .view-btn:hover {
+    background: color-mix(in oklab, var(--brand) 22%, transparent);
+    color: var(--text);
+    border-color: var(--brand);
+  }
+
   .install-section {
-    padding: 16px 18px;
-    background: var(--accent-subtle);
-    border: 1px solid rgba(124, 106, 239, 0.12);
+    padding: 14px 16px;
+    background: var(--bg-elev-0);
     border-radius: var(--radius);
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
   }
-  [data-theme="light"] .install-section {
-    background: rgba(99, 85, 192, 0.06);
-    border-color: rgba(99, 85, 192, 0.1);
-  }
-
-  @container main-grid (max-width: 380px) {
-    .install-section {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .install-cmd { white-space: normal; word-break: break-all; }
-  }
-
   .install-cmd {
     font-size: 12px;
     font-family: var(--font-mono);
-    color: var(--text);
+    color: var(--text-dim);
     white-space: nowrap;
     overflow-x: auto;
-    min-width: 0;
+    flex: 1;
   }
-
+  .install-cmd::before {
+    content: '$ ';
+    color: var(--text-muted);
+  }
   .install-copy-btn {
-    padding: 10px 16px;
-    min-height: 44px;
-    background: var(--accent);
-    color: var(--text-on-accent);
-    border: none;
+    padding: 7px 14px;
+    background: var(--brand);
+    color: #fff;
+    border: 1px solid var(--brand);
     border-radius: var(--radius-sm);
     font-size: 11px;
     font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
     white-space: nowrap;
-    transition: background var(--duration-fast) var(--ease-out-quart), transform 0.1s var(--ease-out-quart);
+    transition: background 0.15s, border-color 0.15s;
     flex-shrink: 0;
   }
-
   .install-copy-btn:hover {
-    background: var(--accent-dim);
-  }
-
-  .install-copy-btn:active {
-    transform: scale(0.96);
+    background: var(--brand-2);
+    border-color: var(--brand-2);
   }
 
   /* Empty state */
   .empty-state {
     grid-column: 1 / -1;
-    text-align: left;
-    padding: 64px 0;
+    text-align: center;
+    padding: 80px 24px;
     color: var(--text-muted);
   }
-
+  .empty-state svg {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    opacity: 0.4;
+  }
   .empty-state h3 {
     font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--text);
-    letter-spacing: -0.3px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-dim);
   }
-
-  .empty-state p {
-    font-size: 13px;
-    margin-bottom: 16px;
-  }
-
+  .empty-state p { font-size: 13px; margin-bottom: 18px; }
   .empty-state-reset {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
-    transition: border-color var(--duration-fast) var(--ease-out-quart), color var(--duration-fast) var(--ease-out-quart), transform 0.1s var(--ease-out-quart);
-  }
-
-  .empty-state-reset:hover {
-    border-color: var(--border-hover);
-    color: var(--text);
-  }
-
-  .empty-state-reset:active {
-    transform: scale(0.96);
-  }
-
-  /* Live region for screen reader announcements */
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
+    padding: 8px 16px;
+    background: var(--brand);
+    color: #fff;
     border: 0;
-  }
-
-  /* Responsive — viewport queries for layout shifts only */
-  @media (max-width: 900px) {
-    .header-top { flex-wrap: wrap; }
-    .search-wrap { width: 100%; order: 3; }
-  }
-
-  @media (max-width: 600px) {
-    header { padding-top: 24px; }
-    header h1 span { font-size: 13px; }
-  }
-
-  /* Scrollbar — Webkit + Firefox */
-  html {
-    scrollbar-color: var(--border) transparent;
-    scrollbar-width: thin;
-  }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-
-  /* Theme toggle */
-  .theme-toggle {
-    width: 44px;
-    height: 44px;
     border-radius: 8px;
-    border: 1px solid var(--border);
-    background: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .empty-state-reset:hover { background: var(--brand-2); }
+
+  /* Footer */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 28px 36px;
+    text-align: center;
     color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color var(--duration-fast) var(--ease-out-quart), color var(--duration-fast) var(--ease-out-quart), transform 0.1s var(--ease-out-quart);
-    flex-shrink: 0;
+    font-size: 12px;
   }
-
-  .theme-toggle:hover {
-    border-color: var(--border-hover);
-    color: var(--text);
-  }
-
-  .theme-toggle:active {
-    transform: scale(0.92);
-  }
-
-  /* Theme icon visibility via CSS */
-  [data-theme="dark"] #icon-sun,
-  [data-theme="light"] #icon-moon { display: none; }
-  [data-theme="dark"] #icon-moon,
-  [data-theme="light"] #icon-sun { display: block; }
-
-  /* Theme toggle spin animation */
-  @keyframes spin-icon {
-    to { transform: rotate(360deg); }
-  }
-  .theme-toggle.spinning .theme-icon {
-    animation: spin-icon 0.45s var(--ease-out-quart) both;
-  }
-
-  /* Install button success state */
-  .install-copy-btn.success {
-    background: transparent;
-    color: var(--tag-skill-text);
-    box-shadow: inset 0 0 0 1px var(--tag-skill-text);
-  }
-
-  /* Search ⌘K hint */
-  .search-kbd {
-    position: absolute;
-    inset-inline-end: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 10px;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    pointer-events: none;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 1px 5px;
-    line-height: 1.6;
-    transition: opacity 0.2s var(--ease-out-quart);
-    user-select: none;
-  }
-  .search-input:focus ~ .search-kbd,
-  .search-input:not(:placeholder-shown) ~ .search-kbd { opacity: 0; }
-  @media (pointer: coarse) { .search-kbd { display: none; } }
-  /* Header subtitle */
-  .header-subtitle {
-    font-size: 13px;
+  .site-footer a {
     color: var(--text-dim);
-    line-height: 1.5;
-    max-width: 540px;
-    padding-bottom: 12px;
+    text-decoration: none;
+    margin: 0 6px;
   }
+  .site-footer a:hover { color: var(--brand-2); }
 
-  /* How it works — first-visit onboarding */
-  .how-it-works {
-    padding: 20px clamp(20px, 4vw, 40px) 0;
-    animation: fade-up 0.3s var(--ease-out-quart) both;
-    container-type: inline-size;
-    container-name: how-it-works;
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 200;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 48px 16px;
+    overflow-y: auto;
+    animation: fade-in 0.18s ease;
   }
-
-  .how-it-works-header {
+  .modal-backdrop.show { display: flex; }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scale-in { from { transform: scale(0.97); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal {
+    background: var(--bg-elev-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 940px;
+    max-height: calc(100vh - 96px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+    animation: scale-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    padding: 20px 26px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg-elev-1);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    z-index: 1;
   }
-
-  .how-it-works-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
+  .modal-title {
+    font-family: var(--font-display);
+    font-size: 17px;
     font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.3px;
   }
-
-  .how-it-works-dismiss {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 12px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color var(--duration-fast) var(--ease-out-quart);
-  }
-
-  .how-it-works-dismiss:hover {
-    color: var(--text-dim);
-  }
-
-  .how-it-works-dismiss:active {
-    transform: scale(0.92);
-  }
-
-  .how-it-works-dismiss:focus-visible {
-    box-shadow: var(--focus-ring);
-  }
-
-  .how-it-works-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
-  @container how-it-works (max-width: 600px) {
-    .how-it-works-grid { grid-template-columns: 1fr; }
-  }
-
-  .how-it-works-card {
-    --hiw-accent: var(--text-muted);
-    padding: 14px 16px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    border-top: 2px solid var(--hiw-accent);
-  }
-  .how-it-works-card:nth-child(1) { --hiw-accent: var(--tag-hook-text); }
-  .how-it-works-card:nth-child(2) { --hiw-accent: var(--tag-agent-text); }
-  .how-it-works-card:nth-child(3) { --hiw-accent: var(--tag-skill-text); }
-
-  .how-it-works-card-label {
-    font-size: 11px;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    margin-bottom: 4px;
-  }
-
-  .how-it-works-card-label.hook { color: var(--tag-hook-text); }
-  .how-it-works-card-label.agent { color: var(--tag-agent-text); }
-  .how-it-works-card-label.skill { color: var(--tag-skill-text); }
-
-  .how-it-works-card-desc {
+  .modal-subtitle {
     font-size: 12px;
     color: var(--text-dim);
-    line-height: 1.5;
+    margin-top: 4px;
   }
-
-  .how-it-works[hidden] {
-    display: none;
-  }
-
-  /* Quick install bar on collapsed cards */
-  .card-install-bar {
-    padding: 0 24px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .card-install-bar code {
-    font-size: 11px;
-    font-family: var(--font-mono);
-    color: var(--text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-  }
-
-  .card-install-quick {
-    font-size: 11px;
-    font-family: var(--font-mono);
-    color: var(--accent);
-    background: none;
-    border: none;
+  .modal-close {
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
     cursor: pointer;
-    padding: 8px 10px;
-    border-radius: var(--radius-sm);
-    min-height: 36px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    transition: background var(--duration-fast) var(--ease-out-quart);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    line-height: 1;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .modal-close:hover { color: var(--text); border-color: var(--border-hover); }
+  .modal-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 26px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-elev-1);
+  }
+  .modal-tab {
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dim);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    margin-bottom: -1px;
+    font-family: inherit;
+  }
+  .modal-tab.active {
+    color: var(--brand-2);
+    border-bottom-color: var(--brand);
+  }
+  .modal-tab:hover { color: var(--text); }
+  .modal-body {
+    padding: 24px 30px 32px;
+    overflow-y: auto;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .modal-body h1, .modal-body h2, .modal-body h3, .modal-body h4 {
+    font-family: var(--font-display);
+    margin: 1.5em 0 0.6em;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    letter-spacing: -0.2px;
+  }
+  .modal-body h1 { font-size: 24px; }
+  .modal-body h2 { font-size: 19px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .modal-body h3 { font-size: 16px; }
+  .modal-body h4 { font-size: 14px; }
+  .modal-body p { margin: 0.7em 0; }
+  .modal-body ul, .modal-body ol { margin: 0.7em 0 0.7em 1.5em; }
+  .modal-body li { margin: 0.25em 0; }
+  .modal-body code {
+    background: var(--bg-elev-2);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--brand-2);
+  }
+  .modal-body pre {
+    background: var(--bg-elev-0);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 0.9em 0;
+  }
+  .modal-body pre code {
+    background: transparent;
+    padding: 0;
+    color: var(--text);
+    font-size: 12.5px;
+  }
+  .modal-body blockquote {
+    border-left: 3px solid var(--brand);
+    padding: 6px 16px;
+    margin: 0.9em 0;
+    color: var(--text-dim);
+    background: var(--brand-glow);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .modal-body table {
+    border-collapse: collapse;
+    margin: 0.9em 0;
+    width: 100%;
+    font-size: 13px;
+  }
+  .modal-body th, .modal-body td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .modal-body th { background: var(--bg-elev-2); font-weight: 600; }
+  .modal-body a { color: var(--brand-2); text-decoration: none; }
+  .modal-body a:hover { text-decoration: underline; }
+  .modal-body hr { border: 0; border-top: 1px solid var(--border); margin: 1.5em 0; }
+
+  /* Scrollbar */
+  html { scrollbar-color: var(--border) transparent; scrollbar-width: thin; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+    background-clip: padding-box;
   }
 
-  .card-install-quick:hover {
-    background: var(--accent-subtle);
-  }
+  /* Theme icon */
+  [data-theme="dark"]  #icon-sun  { display: none; }
+  [data-theme="light"] #icon-moon { display: none; }
 
-  .card-install-quick:active {
-    transform: scale(0.96);
+  /* Responsive */
+  @media (max-width: 900px) {
+    .header-inner { padding: 0 16px; gap: 10px; }
+    .brand-text { display: none; }
+    .brand-version { display: none; }
+    .search-wrap { width: 100%; flex: 1; }
+    .kbd-hint { display: none; }
+    .hero { padding: 56px 16px 40px; }
+    .toolbar-inner { padding: 12px 16px; gap: 14px; }
+    .filter-group { flex-direction: column; align-items: flex-start; gap: 6px; width: 100%; }
+    .segmented { width: 100%; overflow-x: auto; }
+    .result-count { width: 100%; margin-left: 0; }
+    .main { padding: 24px 16px 48px; gap: 14px; grid-template-columns: 1fr; }
+    .card-header { padding: 18px; }
+    .detail-inner { padding: 16px 18px 18px; }
+    .install-section { flex-direction: column; align-items: stretch; }
+    .install-copy-btn { width: 100%; }
   }
-
-  .card-install-quick:focus-visible {
-    box-shadow: var(--focus-ring);
-  }
-
-  .plugin-card.expanded .card-install-bar {
-    display: none;
+  @media (max-width: 600px) {
+    .hero-stats { gap: 14px; }
+    .hero-stat + .hero-stat { padding-left: 14px; }
+    .hero-stat + .hero-stat::before { display: none; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-top">
-    <div class="header-left">
-      <h1>Plugin Marketplace <span>by Pau Velasco</span></h1>
-      <span class="version-badge">v1.0.0</span>
-    </div>
-    <div class="header-right">
-      <div class="search-wrap">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input class="search-input" type="search" placeholder="Search plugins, skills, agents..." id="search" autocomplete="off" aria-label="Search plugins, skills, agents">
-        <kbd class="search-kbd" aria-hidden="true">⌘K</kbd>
+<header class="header" id="top">
+  <div class="header-inner">
+    <a class="brand" href="#top" aria-label="Plugin Marketplace by Pau Velasco">
+      <div class="brand-mark" aria-hidden="true">P</div>
+      <div class="brand-text">
+        <span class="brand-name">Plugin Marketplace</span>
+        <span class="brand-by">by Pau Velasco</span>
       </div>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
-        <span class="theme-icon" aria-hidden="true">
-          <svg id="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg id="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </span>
+      <span class="brand-version">v1.0.0</span>
+    </a>
+    <div class="header-spacer"></div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="text" placeholder="Search plugins, skills, agents…" id="search" autocomplete="off" aria-label="Search">
+        <kbd class="kbd-hint" aria-hidden="true">⌘K</kbd>
+      </div>
+      <a class="icon-btn" href="https://github.com/pau-vega/my-marketplace" target="_blank" rel="noopener" aria-label="View on GitHub" title="GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.66.5 12.02c0 5.09 3.29 9.4 7.86 10.93.58.11.79-.25.79-.55v-1.92c-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18a10.93 10.93 0 0 1 5.76 0c2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.08 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.67.8.55C20.21 21.41 23.5 17.1 23.5 12 23.5 5.66 18.35.5 12 .5z"/></svg>
+      </a>
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+        <svg id="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
     </div>
   </div>
-  <p class="header-subtitle">Claude Code plugins that enforce code standards through hooks, agents, and on-demand reviews.</p>
 </header>
 
-<div class="stats-line" id="stats-bar" aria-label="Marketplace statistics"></div>
-
-<nav class="filters" id="filters" aria-label="Filter plugins by component type">
-  <span class="filter-label" id="filter-group-label">Show</span>
-  <div role="group" aria-labelledby="filter-group-label">
-    <button class="filter-btn" aria-pressed="true" data-filter="component" data-value="all">All</button>
-    <button class="filter-btn" aria-pressed="false" data-filter="component" data-value="skills">Skills</button>
-    <button class="filter-btn" aria-pressed="false" data-filter="component" data-value="agents">Agents</button>
-    <button class="filter-btn" aria-pressed="false" data-filter="component" data-value="hooks">Hooks</button>
-    <button class="filter-btn" aria-pressed="false" data-filter="component" data-value="commands">Commands</button>
-  </div>
-</nav>
-
-<section class="how-it-works" id="how-it-works" aria-label="How plugins work">
-  <div class="how-it-works-header">
-    <span class="how-it-works-title">How it works</span>
-    <button class="how-it-works-dismiss" id="dismiss-how-it-works" aria-label="Dismiss" title="Dismiss">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="how-it-works-grid">
-    <div class="how-it-works-card">
-      <div class="how-it-works-card-label hook">Hooks</div>
-      <div class="how-it-works-card-desc">Real-time guards that block violations as you code — no any, no enum, no export default.</div>
-    </div>
-    <div class="how-it-works-card">
-      <div class="how-it-works-card-label agent">Agent</div>
-      <div class="how-it-works-card-desc">On-demand /ts-review dispatches a Sonnet reviewer for a structured report with severity levels.</div>
-    </div>
-    <div class="how-it-works-card">
-      <div class="how-it-works-card-label skill">Skill</div>
-      <div class="how-it-works-card-desc">Reference conventions Claude consults automatically when writing or reviewing TypeScript.</div>
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-eyebrow">Pau Velasco</span>
+    <h1 class="hero-title">Plugins for Claude&nbsp;Code, crafted for developers.</h1>
+    <p class="hero-subtitle">Reusable skills, agents, and hooks that enforce conventions as you code. Drop them into any repo with one command and let Claude do the heavy lifting.</p>
+    <div class="hero-stats" id="hero-stats">
+      <span class="hero-stat"><strong id="hero-plugins">0</strong><span>plugins</span></span>
+      <span class="hero-stat"><strong id="hero-skills">0</strong><span>skills</span></span>
+      <span class="hero-stat"><strong id="hero-agents">0</strong><span>agents</span></span>
+      <span class="hero-stat"><strong id="hero-commands">0</strong><span>commands</span></span>
+      <span class="hero-stat"><strong id="hero-hooks">0</strong><span>hook rules</span></span>
     </div>
   </div>
 </section>
 
-<main id="main"></main>
+<nav class="toolbar" aria-label="Filters">
+  <div class="toolbar-inner">
+    <div class="filter-group">
+      <span class="group-label">Category</span>
+      <div class="segmented" role="tablist" aria-label="Category filter">
+        <button class="seg-btn active" data-filter="category" data-value="all">All</button>
+        <button class="seg-btn" data-filter="category" data-value="typescript">TypeScript</button>
+        <button class="seg-btn" data-filter="category" data-value="documentation">Docs</button>
+        <button class="seg-btn" data-filter="category" data-value="workflow">Workflow</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="group-label">Components</span>
+      <div class="segmented" role="tablist" aria-label="Component filter">
+        <button class="seg-btn active" data-filter="component" data-value="all">All</button>
+        <button class="seg-btn" data-filter="component" data-value="skills">Skills</button>
+        <button class="seg-btn" data-filter="component" data-value="agents">Agents</button>
+        <button class="seg-btn" data-filter="component" data-value="hooks">Hooks</button>
+      </div>
+    </div>
+    <span class="result-count" id="result-count" aria-live="polite"></span>
+  </div>
+</nav>
 
-<!-- Live region for screen reader announcements -->
-<div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+<main class="main" id="main"></main>
 
+<footer class="site-footer">
+  <p>Plugin Marketplace by Pau Velasco · <a href="https://github.com/pau-vega/my-marketplace" target="_blank" rel="noopener">GitHub</a> · <a href="https://github.com/pau-vega/my-marketplace/blob/main/README.md" target="_blank" rel="noopener">Docs</a></p>
+</footer>
+
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title"></div>
+        <div class="modal-subtitle" id="modal-subtitle"></div>
+      </div>
+      <button class="modal-close" id="modal-close" aria-label="Close dialog">&times;</button>
+    </div>
+    <div class="modal-tabs" id="modal-tabs"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script>
 // AUTO-GENERATED: do not edit manually — run scripts/build-marketplace.sh
 const PLUGINS = [
@@ -1059,30 +1141,33 @@ const PLUGINS = [
       "name": "TypeScript Rules",
       "version": "1.0.0",
       "description": "TypeScript coding conventions with automatic validation, review command, and reviewer agent. Enforces interface extends over &, discriminated unions, no enums, no any, no default exports, and import type usage.",
-      "category": "development",
+      "category": "typescript",
       "icon": "TS",
-      "iconClass": "typescript",
-      "accentColor": "#7c6aef",
-      "source": "./",
+      "accent": "#7c6aef",
+      "source": "./typescript-rules",
       "skills": [
         {
           "name": "typescript-conventions",
           "version": "0.0.0",
           "description": "TypeScript coding conventions for any TS project. Covers types & interfaces (interface extends over &, discriminated unions, no enums), functions & error handling (Result types, no any, explicit return types), imports (import type, no default exports), and naming conventions. Use when writing or reviewing TypeScript code.",
-          "command": "/typescript-rules:typescript-conventions"
+          "command": "/typescript-rules:typescript-conventions",
+          "body": "\n# TypeScript Conventions\n\n## Types & Interfaces\n\n### Prefer `interface extends` over `&`\n\nThe `&` (intersection) operator has poor performance in the TypeScript compiler. Use `interface extends` for inheritance — it's faster and produces clearer error messages.\n\n```ts\n// Avoid\ntype C = A & B;\n\n// Prefer\ninterface C extends A, B {}\n```\n\nOnly use `&` where `interface extends` is not possible (e.g., combining mapped types).\n\n### Use discriminated unions for variant data\n\nModel data that can be in different shapes with a shared discriminant field. This prevents the \"bag of optionals\" problem where impossible states are representable.\n\n```ts\n// Avoid — allows { status: \"idle\", data: someValue }\ntype FetchingState<TData> = {\n  status: \"idle\" | \"loading\" | \"success\" | \"error\";\n  data?: TData;\n  error?: Error;\n};\n\n// Prefer — each status carries exactly the right fields\ntype FetchingState<TData> =\n  | { status: \"idle\" }\n  | { status: \"loading\" }\n  | { status: \"success\"; data: TData }\n  | { status: \"error\"; error: Error };\n```\n\nHandle discriminated unions with `switch` statements:\n\n```ts\nconst handleEvent = (event: Event) => {\n  switch (event.type) {\n    case \"user.created\":\n      console.log(event.data.email);\n      break;\n    case \"user.deleted\":\n      console.log(event.data.id);\n      break;\n  }\n};\n```\n\n### Avoid `readonly` unless strictly needed\n\nDo not add `readonly` to properties by default. Only use it when immutability is a critical invariant that must be enforced at compile time (e.g., a shared config object that must never be mutated).\n\n```ts\n// Default — no readonly\ntype User = {\n  id: string;\n  name: string;\n};\n```\n\n### Prefer optional properties over `T | undefined`\n\nUse `prop?: T` for optional properties — it's more concise and idiomatic.\n\n```ts\n// Avoid\ntype AuthOptions = {\n  userId: string | undefined;\n};\n\n// Prefer\ntype AuthOptions = {\n  userId?: string;\n};\n```\n\n### `noUncheckedIndexedAccess` awareness\n\nWhen this tsconfig option is enabled, indexing into arrays and records returns `T | undefined` instead of `T`. Handle the `undefined` case — don't assume the value exists.\n\n```ts\nconst arr: string[] = [];\nconst value = arr[0]; // string | undefined — check before using\n```\n\n### No enums — use `as const` objects\n\nEnums have surprising behavior (numeric reverse mappings, `Object.keys` doubling). Use `as const` objects instead:\n\n```ts\nconst SIZE = {\n  xs: \"EXTRA_SMALL\",\n  sm: \"SMALL\",\n  md: \"MEDIUM\",\n} as const;\n\ntype SizeKey = keyof typeof SIZE; // \"xs\" | \"sm\" | \"md\"\ntype SizeValue = (typeof SIZE)[SizeKey]; // \"EXTRA_SMALL\" | \"SMALL\" | \"MEDIUM\"\n```\n\nRetain existing enums in the codebase — don't convert them unless asked.\n\n### Prefix type parameters with `T`\n\n```ts\ntype RecordOfArrays<TItem> = Record<string, TItem[]>;\n```\n\n## Functions & Error Handling\n\n### Declare return types on top-level functions\n\nExplicit return types on module-level functions help both humans and AI assistants understand intent. Exceptions: JSX components and custom hooks don't need a return type annotation.\n\n```ts\nconst parseInput = (raw: string): ParsedInput => { ... };\n\n// Components — no return type needed\nconst MyComponent = () => {\n  return <div>Hello</div>;\n};\n\n// Custom hooks — no return type needed\nconst useMyHook = () => {\n  const [value, setValue] = useState(0);\n  return { value, setValue };\n};\n```\n\n### Use Result types instead of throwing\n\nThrown errors require manual try-catch and lose type information. Use a Result type for operations that can fail predictably:\n\n```ts\ntype Result<T, E extends Error> =\n  | { ok: true; value: T }\n  | { ok: false; error: E };\n```\n\nThrowing is fine when the framework handles it (e.g., inside a request handler that catches errors automatically). Use Result when the caller would need a manual try-catch.\n\n### Never use `any` — prefer generics or `unknown`\n\n`any` disables type checking entirely and defeats the purpose of TypeScript. Always use a more precise alternative:\n\n- **Generic types** when the type varies but has structure:\n\n```ts\n// Avoid\nconst first = (arr: any[]): any => arr[0];\n\n// Prefer\nconst first = <TItem>(arr: TItem[]): TItem | undefined => arr[0];\n```\n\n- **`unknown`** when the type is truly unknown — forces the caller to narrow before using:\n\n```ts\n// Avoid\nconst parse = (raw: string): any => JSON.parse(raw);\n\n// Prefer\nconst parse = (raw: string): unknown => JSON.parse(raw);\n```\n\n- **Function overloads** when a generic function has conditional return types that TypeScript can't infer:\n\n```ts\n// Avoid — `as any` inside generic body\nconst toggle = <T extends \"on\" | \"off\">(\n  input: T,\n): T extends \"on\" ? \"off\" : \"on\" => {\n  return (input === \"on\" ? \"off\" : \"on\") as any;\n};\n\n// Prefer — overloads with a generic implementation signature\nfunction toggle(input: \"on\"): \"off\";\nfunction toggle(input: \"off\"): \"on\";\nfunction toggle(input: \"on\" | \"off\"): \"on\" | \"off\" {\n  return input === \"on\" ? \"off\" : \"on\";\n}\n```\n\nIf none of the above work, use `as unknown as T` instead of `as any` — it preserves type safety at the boundary.\n\n## Imports & Exports\n\n### Use `import type` for type-only imports\n\nAlways use top-level `import type` — not inline `import { type ... }`. Without this, some bundlers leave behind an empty import side-effect.\n\n```ts\n// Avoid — may leave behind `import \"./user\"` after transpilation\nimport { type User } from \"./user\";\n\n// Prefer\nimport type { User } from \"./user\";\n```\n\n### No default exports\n\nDefault exports create ambiguity at the import site — the name is arbitrary and disconnected from the source. Use named exports.\n\n```ts\n// Avoid\nexport default function myFunction() { ... }\n\n// Prefer\nexport function myFunction() { ... }\n```\n\nException: frameworks that require default exports (e.g., Next.js pages).\n\n## Naming & Style\n\n| Element | Convention | Example |\n|---------|-----------|---------|\n| Files | kebab-case | `my-component.ts` |\n| Variables & functions | camelCase | `myVariable`, `myFunction()` |\n| Classes, types, interfaces | PascalCase | `MyClass`, `MyInterface` |\n| Constants & enum values | ALL_CAPS | `MAX_COUNT`, `Color.RED` |\n| Type parameters | T-prefixed | `TKey`, `TValue` |\n\n### JSDoc comments\n\nAdd JSDoc only when the function's behavior isn't self-evident. Be concise. Use `{@link}` to reference related functions.\n\n```ts\n/** Subtracts two numbers */\nconst subtract = (a: number, b: number) => a - b;\n\n/** Does the opposite of {@link subtract} */\nconst add = (a: number, b: number) => a + b;\n```\n\n## Dependencies\n\nWhen installing libraries, always use the package manager CLI (e.g., `pnpm add`, `yarn add`, `npm install`) rather than manually editing `package.json`. This ensures you get the latest version, since training data has a cutoff date.\n\n```bash\npnpm add -D @typescript-eslint/eslint-plugin\n```"
         }
       ],
       "agents": [
         {
           "name": "ts-reviewer",
-          "description": "Reviews TypeScript code for rule compliance, suggests refactorings aligned with conventions (e.g. & to interface extends), and detects bugs, logic issues, and opportunities for stricter typing. Use when reviewing TypeScript code quality."
+          "description": "Reviews TypeScript code for rule compliance, suggests refactorings aligned with conventions (e.g. & to interface extends), and detects bugs, logic issues, and opportunities for stricter typing. Use when reviewing TypeScript code quality.",
+          "body": "\nYou are a TypeScript code reviewer. Your job is to review TypeScript code for compliance with the project's conventions, suggest improvements, and detect bugs.\n\n## Review Process\n\n1. **Load conventions:** Read `${CLAUDE_PLUGIN_ROOT}/skills/typescript-conventions/SKILL.md` to get the full set of TypeScript conventions. Use these as your review checklist.\n\n2. **Discover files to review:**\n   - If a specific path was provided, use Glob to find all `.ts` and `.tsx` files in that path\n   - If no path was provided, run `git diff --name-only HEAD` to find changed files, then filter for `.ts`/`.tsx`\n   - If there are no uncommitted changes, run `git diff --name-only HEAD~1` to review the last commit\n\n3. **Read each file** using the Read tool\n\n4. **Check against conventions** — verify each file against every rule from the loaded conventions.\n\n5. **Detect bugs and logic issues** — look for:\n   - Incorrect type narrowing\n   - Missing null/undefined checks\n   - Incorrect generic constraints\n   - Unreachable code\n   - Potential runtime errors\n\n6. **Report findings** organized by file, with severity levels:\n   - **Error**: Rule violations that must be fixed\n   - **Warning**: Patterns that should be improved\n   - **Suggestion**: Opportunities for stricter typing or cleaner code\n\n## Output Format\n\nFor each file with findings:\n\n```\n### path/to/file.ts\n\n- **Error**: Line 15 — Uses `any` as return type. Use `unknown` or a generic.\n- **Warning**: Line 42 — `type Props = Base & Extra` should use `interface Props extends Base, Extra {}`\n- **Suggestion**: Line 78 — Function `processData` has no explicit return type. Add `: ProcessedData`.\n```\n\nEnd with a summary: total files reviewed, errors, warnings, suggestions.\n\nIf no issues are found, report: \"All files pass convention checks.\""
         }
       ],
       "hooks": [
         {
           "event": "PreToolUse (Bash)",
           "rules": [
-            "Enforce Pnpm"
+            "Enforce Pnpm",
+            "Lint Before Commit",
+            "Typecheck Before Commit"
           ]
         },
         {
@@ -1104,7 +1189,8 @@ const PLUGINS = [
       "commands": [
         {
           "name": "/typescript-rules:ts-review",
-          "description": "Run a full TypeScript code review against project conventions"
+          "description": "Run a full TypeScript code review against project conventions",
+          "body": "\nDispatch the `ts-reviewer` agent to perform a full TypeScript code review.\n\nTarget: $ARGUMENTS\n\nIf no target was provided, the agent should review all uncommitted `.ts`/`.tsx` changes. If a file or directory path was provided, the agent should review that path."
         }
       ]
     },
@@ -1113,23 +1199,24 @@ const PLUGINS = [
       "name": "JSDoc Standards",
       "version": "0.1.0",
       "description": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings on missing docs, and on-demand review command.",
-      "category": "development",
+      "category": "documentation",
       "icon": "/**",
-      "iconClass": "documentation",
-      "accentColor": "#c8a040",
+      "accent": "#c8a040",
       "source": "./jsdoc-standards",
       "skills": [
         {
           "name": "jsdoc-conventions",
           "version": "0.0.0",
           "description": "TypeScript JSDoc documentation conventions with three enforcement levels (Minimal, Standard, Strict). This skill should be used when the user asks to \"add JSDoc\", \"document this code\", \"add documentation\", \"write JSDocs\", \"improve documentation\", \"set JSDoc level\", \"which JSDoc level\", or when applying JSDoc conventions to TypeScript code. Provides rules for tag usage, format, and level selection across any TypeScript project.",
-          "command": "/jsdoc-standards:jsdoc-conventions"
+          "command": "/jsdoc-standards:jsdoc-conventions",
+          "body": "\n# JSDoc Conventions for TypeScript\n\n## Enforcement Levels\n\nThree levels control documentation scope. Each level includes all requirements from the previous one.\n\n### Minimal\n\nDocument **exported** functions, classes, interfaces, and type aliases with a brief summary line.\n\n```ts\n/** Parses a raw CSV string into structured row objects. */\nexport const parseCsv = (raw: string): CsvRow[] => { ... };\n\n/** Represents a single row of parsed CSV data. */\nexport interface CsvRow { ... }\n```\n\n### Standard\n\nEverything in Minimal, plus:\n\n- `@param` and `@returns` tags on exported functions\n- Public class methods documented\n- Complex type parameters described\n\n```ts\n/**\n * Fetches a user by ID from the database.\n *\n * @param userId - The unique identifier of the user\n * @returns The user object, or undefined if not found\n */\nexport const getUser = async (userId: string): Promise<User | undefined> => { ... };\n```\n\n### Strict\n\nEverything in Standard, plus:\n\n- Module-level constants documented\n- Private and internal helper functions documented\n- `@example` blocks on non-trivial functions\n- `@throws`, `@see`, and `{@link}` where applicable\n\n```ts\n/** Maximum number of retry attempts for failed API calls. */\nconst MAX_RETRIES = 3;\n\n/**\n * Retries an async operation with exponential backoff.\n *\n * @param fn - The async function to retry\n * @param maxAttempts - Maximum retry attempts (defaults to {@link MAX_RETRIES})\n * @returns The result of the first successful invocation\n * @throws {RetryExhaustedError} When all attempts fail\n *\n * @example\n * ```ts\n * const data = await retry(() => fetchApi(\"/users\"), 5);\n * ```\n *\n * @see {@link MAX_RETRIES} for the default retry limit\n */\nconst retry = async <TResult>(\n  fn: () => Promise<TResult>,\n  maxAttempts: number = MAX_RETRIES,\n): Promise<TResult> => { ... };\n```\n\n## Core Rules (All Levels)\n\n### Format\n\n- Always use `/** */` block comments, never `//` for documentation\n- First line is a concise summary ending with a period\n- Separate summary from tags with a blank line\n\n### Do Not Duplicate TypeScript Types\n\nTypeScript already provides type information. Never repeat it in JSDoc tags.\n\n```ts\n// Avoid — redundant type annotation\n/** @param {string} name - The user name */\n\n// Prefer — description only\n/** @param name - The user name */\n```\n\nDo not use `@type` tags — the TypeScript compiler is the source of truth.\n\n### Tag Conventions\n\n| Tag | When to use | Format |\n|-----|------------|--------|\n| `@param` | Standard+ level, every parameter | `@param name - Description` |\n| `@returns` | Standard+ level, non-void functions | `@returns Description` |\n| `@throws` | Strict level, functions that throw | `@throws {ErrorType} When...` |\n| `@example` | Strict level, non-trivial functions | Fenced code block |\n| `@see` | Strict level, related functions/docs | `@see {@link OtherThing}` |\n| `@deprecated` | Any level, deprecated APIs | `@deprecated Use {@link replacement} instead` |\n| `{@link}` | Any level, cross-references | `{@link FunctionOrType}` |\n\n### Use `@returns`, Not `@return`\n\nThe canonical tag is `@returns` (with an \"s\"). Both work, but consistency matters.\n\n### Exempt Constructs\n\nThese never require JSDoc at any level:\n\n- Trivial type aliases that are self-descriptive (`type UserId = string`)\n- Single-field interfaces with obvious meaning\n- Re-exports (`export { Thing } from \"./thing\"`)\n- Index signature types\n- JSX component return types and custom hook return types (already clear from usage)\n\n### What Not to Document\n\nAvoid stating the obvious. Ensure every JSDoc comment adds information beyond what the code already says.\n\n```ts\n// Avoid — adds nothing\n/** Gets the user ID. */\nconst getUserId = (user: User): string => user.id;\n\n// Prefer — explains why or how\n/** Extracts the user ID, falling back to the session ID if unauthenticated. */\nconst getUserId = (user: User | null, sessionId: string): string =>\n  user?.id ?? sessionId;\n```\n\n### Multi-Line Descriptions\n\nFor complex functions, use a summary line followed by a detailed paragraph.\n\n```ts\n/**\n * Validates and normalizes an email address.\n *\n * Strips leading/trailing whitespace, lowercases the domain part, and checks\n * against RFC 5322. Returns a Result with the normalized email on success\n * or a validation error on failure.\n *\n * @param raw - The unprocessed email string from user input\n * @returns A Result containing the normalized email or a validation error\n */\n```\n\n### Classes and Interfaces\n\nDocument the construct itself, not just its members.\n\n```ts\n/**\n * Manages WebSocket connections with automatic reconnection.\n *\n * Handles connection lifecycle, message queuing during disconnects,\n * and exponential backoff for reconnection attempts.\n */\nexport class ConnectionManager { ... }\n```\n\n## Level Selection Guidelines\n\n| Scenario | Recommended level |\n|----------|------------------|\n| Internal tooling, scripts, prototypes | Minimal |\n| Libraries consumed by other teams, production apps | Standard |\n| Public APIs, SDKs, open-source libraries | Strict |\n\n## Additional Resources\n\n### Reference Files\n\nFor detailed patterns and edge cases:\n- **`references/patterns.md`** — Extended JSDoc patterns for each level with more examples and edge cases"
         }
       ],
       "agents": [
         {
           "name": "jsdoc-reviewer",
-          "description": "Reviews TypeScript code for JSDoc documentation compliance across three enforcement levels (Minimal, Standard, Strict). Use this agent when reviewing JSDoc quality or auditing documentation coverage."
+          "description": "Reviews TypeScript code for JSDoc documentation compliance across three enforcement levels (Minimal, Standard, Strict). Use this agent when reviewing JSDoc quality or auditing documentation coverage.",
+          "body": "\nYou are a JSDoc documentation reviewer. Your job is to audit TypeScript files for JSDoc compliance at a specified enforcement level.\n\n## Enforcement Levels\n\nThree levels control what must be documented. Each level includes all requirements from the previous one.\n\n**Minimal:**\n- Exported functions, classes, interfaces, and type aliases have a summary line\n\n**Standard:**\n- Everything in Minimal\n- `@param` and `@returns` tags on exported functions\n- Public class methods documented\n- Complex type parameters described\n\n**Strict:**\n- Everything in Standard\n- Module-level constants documented\n- Private and internal helper functions documented\n- `@example` blocks on non-trivial functions\n- `@throws`, `@see`, `{@link}` where applicable\n\n## Review Process\n\n1. **Load conventions:** Read `${CLAUDE_PLUGIN_ROOT}/skills/jsdoc-conventions/SKILL.md` and `${CLAUDE_PLUGIN_ROOT}/skills/jsdoc-conventions/references/patterns.md` for the full rule set.\n\n2. **Determine level:** Use the level provided by the user. If none specified, default to `standard`.\n\n3. **Discover files to review:**\n   - If a specific path was provided, use Glob to find all `.ts` and `.tsx` files at that path\n   - If no path was provided, run `git diff --name-only HEAD` to find changed files, then filter for `.ts`/`.tsx`\n   - If there are no uncommitted changes, run `git diff --name-only HEAD~1` to review the last commit\n   - Exclude `.d.ts` declaration files, test files (`*.test.ts`, `*.spec.ts`), and generated files\n\n4. **Read each file** using the Read tool.\n\n5. **Check against level requirements:**\n   - Identify all constructs that require JSDoc at the selected level\n   - Verify JSDoc format follows conventions (`/** */`, no type duplication, correct tags)\n   - Check tag completeness (`@param`, `@returns`, `@throws`, `@example` as required)\n   - Verify cross-references use `{@link}`\n\n6. **Report findings** organized by file, with severity levels:\n   - **Error**: Required JSDoc is completely missing for the level\n   - **Warning**: JSDoc is present but incomplete or malformed (missing tags, duplicated types)\n   - **Suggestion**: Opportunity to improve quality (better descriptions, add `{@link}`, etc.)\n\n## Core Format Rules (All Levels)\n\n- Must use `/** */` block comments, not `//`\n- First line is a concise summary ending with a period\n- No TypeScript type duplication in JSDoc tags (no `@param {string}`)\n- Use `@returns` not `@return`\n- Blank line between summary and tags\n\n## Exempt Constructs (Never Flag)\n\n- Trivially self-descriptive type aliases (`type UserId = string`)\n- Single-field interfaces with obvious meaning\n- Re-exports\n- Index signature types\n- JSX component return types and custom hook return types\n- `.d.ts` declaration files\n- Test files\n\n## Output Format\n\nFor each file with findings:\n\n```\n### path/to/file.ts\n\n- **Error**: Line 15 — Exported function `processData` has no JSDoc.\n- **Warning**: Line 42 — `fetchUser` is missing `@returns` tag (required at standard level).\n- **Suggestion**: Line 78 — `parseConfig` would benefit from an `@example` block.\n```\n\nEnd with a summary:\n\n```\n## Summary\n\n- **Level:** Standard\n- **Files reviewed:** 12\n- **Errors:** 3\n- **Warnings:** 5\n- **Suggestions:** 2\n```\n\nIf no issues are found, report: \"All files pass JSDoc compliance at [level] level.\""
         }
       ],
       "hooks": [
@@ -1143,7 +1230,8 @@ const PLUGINS = [
       "commands": [
         {
           "name": "/jsdoc-standards:jsdoc-review",
-          "description": "Review TypeScript files for JSDoc compliance at a specified enforcement level. This skill should be used when the user runs \"/jsdoc-review\", \"/jsdoc-review minimal\", \"/jsdoc-review standard\", or \"/jsdoc-review strict\"."
+          "description": "Review TypeScript files for JSDoc compliance at a specified enforcement level. This skill should be used when the user runs \"/jsdoc-review\", \"/jsdoc-review minimal\", \"/jsdoc-review standard\", or \"/jsdoc-review strict\".",
+          "body": "\n# JSDoc Review\n\nDispatch the `jsdoc-reviewer` agent to audit TypeScript files for JSDoc compliance.\n\nArguments: $ARGUMENTS\n\n## Argument Parsing\n\nParse the arguments to extract the enforcement level and optional path:\n\n- **No arguments** — use `standard` level, review changed files\n- **Level only** (e.g., `strict`) — use that level, review changed files\n- **Level and path** (e.g., `standard src/utils`) — use that level, review files at path\n- **Path only** (e.g., `src/utils`) — use `standard` level, review files at path\n\nValid levels: `minimal`, `standard`, `strict`.\n\n## Execution\n\n1. Load the jsdoc-conventions skill from `${CLAUDE_PLUGIN_ROOT}/skills/jsdoc-conventions/SKILL.md` to get the full rule set\n2. Determine the enforcement level from arguments (default: `standard`)\n3. Discover target `.ts` and `.tsx` files:\n   - If a path was provided, glob for files at that path\n   - If no path, run `git diff --name-only HEAD` to find changed files\n   - If no uncommitted changes, run `git diff --name-only HEAD~1` for the last commit\n   - Filter for `.ts` and `.tsx` files only\n4. Read each file and check against the rules for the selected level\n5. Report findings grouped by file, using severity levels:\n   - **Error** — Required JSDoc is completely missing\n   - **Warning** — JSDoc is present but incomplete or malformed for the level\n   - **Suggestion** — Opportunity to improve documentation quality\n6. End with a summary: total files reviewed, errors, warnings, suggestions, and the level used"
         }
       ]
     },
@@ -1152,96 +1240,78 @@ const PLUGINS = [
       "name": "Workflow Toolkit",
       "version": "0.1.0",
       "description": "A collection of developer workflow skills covering the full lifecycle from idea stress-testing to PRD writing, issue breakdown, TDD implementation, and codebase architecture improvement.",
-      "category": "development",
+      "category": "workflow",
       "icon": "WT",
-      "iconClass": "workflow",
-      "accentColor": "#34b482",
+      "accent": "#34b482",
       "source": "./workflow-toolkit",
       "skills": [
-        {
-          "name": "create-workflow",
-          "version": "0.0.0",
-          "description": "This skill should be used when the user asks to \"show my workflow\", \"what skills are available\", \"start a workflow\", \"create-workflow\", \"show the development process\", or wants an overview of the available development workflow skills and when to use each one.",
-          "command": "/workflow-toolkit:create-workflow"
-        },
         {
           "name": "grill-me",
           "version": "0.0.0",
           "description": "This skill should be used when the user asks to \"grill me\", \"stress-test my plan\", \"challenge my design\", \"poke holes in this\", \"review my architecture\", \"play devil's advocate\", \"find the flaws\", \"what am I missing\", or wants critical feedback on a plan, design, or idea before implementation.",
-          "command": "/workflow-toolkit:grill-me"
+          "command": "/workflow-toolkit:grill-me",
+          "body": "\n# Grill Me — Design Interrogator\n\nInterview the user relentlessly about every aspect of their plan until reaching shared understanding. Break the plan into categories and resolve dependencies between decisions one by one.\n\n## Process\n\n### 1. Identify the Plan\n\nAsk the user to describe their plan, design, or idea in detail. If the plan is already in the conversation context, summarize the understanding and confirm before proceeding.\n\n### 2. Categorize Decision Branches\n\nBreak the plan into categories. Common categories include:\n\n- **Problem definition** — Is the problem clearly scoped? Who is affected? What happens if it's not solved?\n- **Architecture** — What are the major components? How do they communicate? What are the boundaries?\n- **Data model** — What data exists? How does it flow? What are the invariants?\n- **User experience** — Who uses this? What are the key interactions? What happens on failure?\n- **Edge cases** — What breaks? What happens at scale? What about empty states, concurrent access, partial failures?\n- **Dependencies** — What does this depend on? What depends on this? What's the migration path?\n- **Trade-offs** — What alternatives were considered? What was traded away and why?\n\nAdapt categories to the plan. Not every plan is technical — the same rigor applies to product plans, process changes, or organizational decisions.\n\n### 3. Interrogate Each Branch\n\nFor each category:\n\n1. Ask one focused question at a time\n2. Provide a recommended answer based on the codebase, context, or best practices\n3. If the answer can be found by exploring the codebase (using Glob, Grep, Read), explore first and report findings instead of asking\n4. Resolve dependencies between decisions before moving forward — do not ask about implementation details before the approach is settled\n5. Push back on vague answers. \"It depends\" is not an answer — ask what it depends on\n\nKeep the tone constructive but relentless. The goal is to surface blind spots, not to criticize. Challenge assumptions directly. If something sounds hand-wavy, say so.\n\n### 4. Produce a Decision Log\n\nAfter all branches are resolved, produce a structured decision log:\n\n```markdown\n## Decision Log\n\n### Category: [Category Name]\n\n| # | Question | Decision | Rationale |\n|---|----------|----------|-----------|\n| 1 | [Question asked] | [Answer agreed upon] | [Why this was chosen] |\n| 2 | ... | ... | ... |\n\n### Category: [Next Category]\n\n| # | Question | Decision | Rationale |\n|---|----------|----------|-----------|\n| 1 | ... | ... | ... |\n\n### Open Questions\n\n- [Any unresolved items that need further investigation]\n\n### Key Risks\n\n- [Risks identified during the interrogation that the user should monitor]\n```\n\n### 5. Confirm and Close\n\nPresent the decision log to the user. Ask if anything was missed or if any decisions need revisiting. The interrogation is complete only when the user confirms the log is accurate.\n\n## Guidelines\n\n- **One question at a time.** Do not dump a list of questions. Each answer may change the next question.\n- **Recommend answers.** For every question, provide a recommended answer. This accelerates the process and surfaces disagreements faster.\n- **Use the codebase.** If exploring the repo would answer a question, do that instead of asking the user. Report findings, then ask the follow-up.\n- **Resolve dependencies first.** If decision B depends on decision A, resolve A before asking about B.\n- **Adapt to scope.** A quick feature gets 5-10 questions. A system redesign gets 30+. Match the depth to the stakes.\n- **No softballs.** The value of this process is in the hard questions. If everything sounds fine, dig deeper — something is being overlooked.\n\n## Next Step\n\nOnce the decision log is confirmed, suggest: \"When ready to formalize this into a requirements document, ask me to **write a PRD**.\""
         },
         {
           "name": "improve-codebase-architecture",
           "version": "0.0.0",
           "description": "This skill should be used when the user asks to \"improve the architecture\", \"find refactoring opportunities\", \"deepen modules\", \"make the codebase more testable\", \"consolidate tightly-coupled modules\", \"review codebase architecture\", or wants to surface architectural friction and propose module-deepening refactors.",
-          "command": "/workflow-toolkit:improve-codebase-architecture"
+          "command": "/workflow-toolkit:improve-codebase-architecture",
+          "body": "\n# Improve Codebase Architecture\n\nExplore a codebase organically, surface architectural friction, discover opportunities for improving testability, and propose module-deepening refactors as GitHub issue RFCs.\n\nA **deep module** (John Ousterhout, \"A Philosophy of Software Design\") has a small interface hiding a large implementation. Deep modules are more testable, more navigable, and enable testing at the boundary instead of inside.\n\n## Process\n\n### 1. Explore the Codebase\n\nUse the Agent tool with `subagent_type=Explore` to navigate the codebase naturally. Do not follow rigid heuristics — explore organically and note where friction occurs:\n\n- Where does understanding one concept require bouncing between many small files?\n- Where are modules so shallow that the interface is nearly as complex as the implementation?\n- Where have pure functions been extracted just for testability, but the real bugs hide in how they are called?\n- Where do tightly-coupled modules create integration risk in the seams between them?\n- Which parts of the codebase are untested or hard to test?\n\nThe friction encountered IS the signal.\n\n### 2. Present Candidates\n\nPresent a numbered list of deepening opportunities. For each candidate, show:\n\n- **Cluster** — Which modules/concepts are involved\n- **Why they're coupled** — Shared types, call patterns, co-ownership of a concept\n- **Dependency category** — See `references/dependency-categories.md` for the four categories\n- **Test impact** — What existing tests would be replaced by boundary tests\n\nDo not propose interfaces yet. Ask: \"Which of these would you like to explore?\"\n\n### 3. User Picks a Candidate\n\nWait for the user to select one.\n\n### 4. Frame the Problem Space\n\nBefore spawning sub-agents, write a user-facing explanation of the problem space:\n\n- The constraints any new interface would need to satisfy\n- The dependencies it would need to rely on\n- A rough illustrative code sketch to make the constraints concrete — this is not a proposal, just a way to ground the discussion\n\nPresent this to the user, then immediately proceed to Step 5. The user reads while the sub-agents work in parallel.\n\n### 5. Design Multiple Interfaces\n\nSpawn 3+ sub-agents in parallel using the Agent tool. Each must produce a radically different interface for the deepened module.\n\nPrompt each sub-agent with a separate technical brief (file paths, coupling details, dependency category, what is being hidden). Give each agent a different design constraint:\n\n- Agent 1: \"Minimize the interface — aim for 1-3 entry points max\"\n- Agent 2: \"Maximize flexibility — support many use cases and extension\"\n- Agent 3: \"Optimize for the most common caller — make the default case trivial\"\n- Agent 4 (if applicable): \"Design around the ports & adapters pattern for cross-boundary dependencies\"\n\nEach sub-agent outputs:\n\n1. Interface signature (types, methods, params)\n2. Usage example showing how callers use it\n3. What complexity it hides internally\n4. Dependency strategy (see `references/dependency-categories.md`)\n5. Trade-offs\n\nPresent designs sequentially, then compare them in prose. Give a clear recommendation: which design is strongest and why. If elements from different designs combine well, propose a hybrid. Be opinionated — the user wants a strong read, not just a menu.\n\n### 6. User Picks an Interface\n\nWait for selection or accept the recommendation.\n\n### 7. Create GitHub Issue\n\nCreate a refactor RFC as a GitHub issue using `gh issue create` with the template in `references/issue-template.md`. Do not ask the user to review before creating — create it and share the URL.\n\n## Guidelines\n\n- **Explore organically.** The friction experienced while navigating is the primary signal. Do not run static analysis or follow checklists.\n- **Deep over shallow.** Every proposal should make modules deeper — small interface, large implementation, testable at the boundary.\n- **Replace, don't layer.** Old unit tests on shallow modules are waste once boundary tests exist. Delete them.\n- **Be opinionated.** Recommend a design. The user is looking for a strong architectural perspective, not a list of options.\n\n## Additional Resources\n\n- **`references/dependency-categories.md`** — Four dependency categories (in-process, local-substitutable, ports & adapters, mock) and testing strategies\n- **`references/issue-template.md`** — GitHub issue template for refactor RFCs"
         },
         {
           "name": "prd-to-issues",
           "version": "0.0.0",
           "description": "This skill should be used when the user asks to \"break down a PRD\", \"convert PRD to issues\", \"create issues from a PRD\", \"split a PRD into tickets\", \"create implementation tickets\", or wants to turn a product requirements document into independently-grabbable GitHub issues.",
-          "command": "/workflow-toolkit:prd-to-issues"
+          "command": "/workflow-toolkit:prd-to-issues",
+          "body": "\n# PRD to Issues\n\nBreak a PRD into independently-grabbable GitHub issues using vertical slices (tracer bullets). Each issue cuts through all integration layers end-to-end — not horizontal slices of a single layer.\n\n## Process\n\n### 1. Locate the PRD\n\nAsk the user for the PRD GitHub issue number or URL. If the PRD is not already in the conversation context, fetch it with `gh issue view <number>`.\n\n### 2. Explore the Codebase\n\nIf the codebase has not already been explored, read relevant files to understand the current architecture. This grounds the slice boundaries in reality.\n\n### 3. Draft Vertical Slices\n\nBreak the PRD into tracer bullet issues. Each issue is a thin vertical slice that cuts through ALL integration layers end-to-end.\n\nSlices are either:\n\n- **AFK** — Can be implemented and merged without human interaction. Prefer these.\n- **HITL** — Require a human decision (architectural choice, design review, etc.).\n\nRules for slicing:\n\n- Each slice delivers a narrow but complete path through every layer (schema, API, UI, tests)\n- A completed slice is demoable or verifiable on its own\n- Prefer many thin slices over few thick ones\n- Identify dependencies between slices explicitly\n\n### 4. Quiz the User\n\nPresent the proposed breakdown as a numbered list. For each slice, show:\n\n- **Title** — Short descriptive name\n- **Type** — AFK or HITL\n- **Blocked by** — Which other slices must complete first (if any)\n- **User stories covered** — Which user stories from the PRD this addresses\n\nThen ask:\n\n- Does the granularity feel right? (too coarse / too fine)\n- Are the dependency relationships correct?\n- Should any slices be merged or split further?\n- Are the correct slices marked as AFK and HITL?\n\nIterate until the user approves the breakdown.\n\n### 5. Create GitHub Issues\n\nFor each approved slice, create a GitHub issue using `gh issue create` with the template in `references/issue-template.md`.\n\nCreate issues in dependency order (blockers first) so real issue numbers can be referenced in the \"Blocked by\" field.\n\nDo NOT close or modify the parent PRD issue.\n\n## Guidelines\n\n- **Vertical over horizontal.** Never create issues like \"build the database layer\" or \"add the UI.\" Each issue delivers a thin but complete feature path.\n- **AFK by default.** Mark slices as HITL only when a genuine human decision is required. The goal is maximum parallelism.\n- **Dependency order matters.** Create blocker issues first so downstream issues can reference real numbers.\n- **Reference, don't duplicate.** Issue bodies should point back to the parent PRD, not copy its content.\n- **Iterate the breakdown.** The first draft is rarely right. Expect 1-2 rounds of adjustment with the user.\n\n## Next Step\n\nOnce the issues are created, suggest: \"Pick an issue to start on, and ask me to **use TDD** to implement it.\"\n\n## Additional Resources\n\n- **`references/issue-template.md`** — GitHub issue body template for each vertical slice"
         },
         {
           "name": "tdd",
           "version": "0.0.0",
           "description": "This skill should be used when the user asks to \"use TDD\", \"write tests first\", \"red-green-refactor\", \"test-driven development\", \"build this with tests\", \"fix this bug with TDD\", or wants to implement features or fix bugs using a test-first approach.",
-          "command": "/workflow-toolkit:tdd"
+          "command": "/workflow-toolkit:tdd",
+          "body": "\n# Test-Driven Development\n\nImplement features and fix bugs using the red-green-refactor loop. Write one test, make it pass, repeat. Never write all tests first — work in vertical slices.\n\n## Philosophy\n\nTests verify behavior through public interfaces, not implementation details. Code can change entirely; tests should not break unless behavior changes. A good test reads like a specification — \"user can checkout with valid cart\" tells you exactly what capability exists.\n\nSee `references/tests.md` for good vs bad test examples and `references/mocking.md` for mocking guidelines.\n\n## Anti-Pattern: Horizontal Slices\n\nNever write all tests first, then all implementation. This produces tests that verify imagined behavior instead of actual behavior.\n\n```\nWRONG (horizontal):\n  RED:   test1, test2, test3, test4, test5\n  GREEN: impl1, impl2, impl3, impl4, impl5\n\nRIGHT (vertical):\n  RED→GREEN: test1→impl1\n  RED→GREEN: test2→impl2\n  RED→GREEN: test3→impl3\n```\n\nEach test responds to what was learned from the previous cycle.\n\n## Workflow\n\n### 1. Planning\n\nBefore writing any code:\n\n- Confirm with the user what interface changes are needed\n- Confirm which behaviors to test and prioritize them\n- Identify opportunities for deep modules (see `references/deep-modules.md`)\n- Design interfaces for testability (see `references/interface-design.md`)\n- List behaviors to test — not implementation steps\n- Get user approval on the plan\n\nAsk: \"What should the public interface look like? Which behaviors are most important to test?\"\n\nNot everything can be tested. Focus testing effort on critical paths and complex logic, not every possible edge case.\n\n### 2. Tracer Bullet\n\nWrite ONE test that confirms ONE thing about the system:\n\n```\nRED:   Write test for first behavior → test fails\nGREEN: Write minimal code to pass → test passes\n```\n\nThis proves the path works end-to-end.\n\n### 3. Incremental Loop\n\nFor each remaining behavior:\n\n```\nRED:   Write next test → fails\nGREEN: Minimal code to pass → passes\n```\n\nRules:\n- One test at a time\n- Only enough code to pass the current test\n- Do not anticipate future tests\n- Keep tests focused on observable behavior\n\n### 4. Refactor\n\nAfter all tests pass, look for refactor candidates (see `references/refactoring.md`):\n\n- Extract duplication\n- Deepen modules — move complexity behind simple interfaces\n- Apply SOLID principles where natural\n- Consider what new code reveals about existing code\n- Run tests after each refactor step\n\nNever refactor while RED. Get to GREEN first.\n\n## Checklist Per Cycle\n\n- [ ] Test describes behavior, not implementation\n- [ ] Test uses public interface only\n- [ ] Test would survive an internal refactor\n- [ ] Code is minimal for this test\n- [ ] No speculative features added\n\n## Next Step\n\nOnce the feature is implemented and tests pass, suggest: \"When the codebase has grown enough to warrant it, ask me to **improve the architecture** to find deepening opportunities.\"\n\n## Additional Resources\n\n### Reference Files\n\n- **`references/tests.md`** — Good vs bad test examples with code\n- **`references/mocking.md`** — When to mock and designing for mockability\n- **`references/deep-modules.md`** — Deep vs shallow module design\n- **`references/interface-design.md`** — Interface design for testability\n- **`references/refactoring.md`** — Refactor candidates after the TDD cycle"
         },
         {
           "name": "write-a-prd",
           "version": "0.0.0",
           "description": "This skill should be used when the user asks to \"write a PRD\", \"create a product requirements document\", \"plan a new feature\", \"write requirements\", \"draft a spec\", \"spec out a feature\", \"define requirements\", or wants to plan and define what to build before building it.",
-          "command": "/workflow-toolkit:write-a-prd"
+          "command": "/workflow-toolkit:write-a-prd",
+          "body": "\n# Write a PRD\n\nCreate a Product Requirements Document through structured user interview, codebase exploration, and module design. Submit the final PRD as a GitHub issue, or write it as a markdown file if no repository is available or the user prefers.\n\nSteps may be skipped if clearly unnecessary for the scope of the work.\n\n## Process\n\n### 1. Gather the Problem\n\nAsk the user for a thorough description of:\n\n- The problem they want to solve\n- Who experiences the problem\n- Any potential ideas for solutions they already have\n\nLet the user talk. Do not interrupt with questions yet — the goal is to get the full picture before digging in.\n\n### 2. Explore the Codebase\n\nVerify the user's assertions and understand the current state:\n\n- Read relevant files to understand existing architecture\n- Identify what exists that can be reused or extended\n- Note any constraints the codebase imposes on the solution\n- Flag any discrepancies between what the user described and what the code shows\n\nReport findings to the user before proceeding.\n\n### 3. Interview\n\nInterview the user relentlessly about every aspect of the plan until reaching shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.\n\nFor each question, provide a recommended answer. If a question can be answered by exploring the codebase, explore the codebase instead of asking.\n\nCover at minimum:\n\n- Exact scope — what is in, what is out\n- User stories and workflows\n- Error states and edge cases\n- Data model implications\n- API contracts if applicable\n- Migration path from current state\n\n### 4. Design Modules\n\nSketch out the major modules to build or modify. Actively look for opportunities to extract **deep modules** — modules that encapsulate significant functionality behind a simple, testable interface that rarely changes.\n\nA deep module (as opposed to a shallow module) provides:\n- A simple interface\n- Complex internal implementation\n- Strong encapsulation\n- Independent testability\n\nPresent the module sketch to the user. Confirm:\n\n- The modules match their expectations\n- Which modules they want tests written for\n- Any modules they want to approach differently\n\n### 5. Write the PRD\n\nOnce there is complete understanding of the problem and solution, write the PRD using the template in `references/prd-template.md`.\n\n### 6. Submit\n\n- **If in a git repository**: Submit the PRD as a GitHub issue using `gh issue create`\n- **If no repo or user prefers**: Write the PRD as a markdown file\n- Ask the user which approach they prefer if unclear\n\n## Guidelines\n\n- **The interview is the core of the process.** Do not rush to writing. A thorough interview produces a better PRD with less revision.\n- **One question at a time.** Each answer may change the next question.\n- **Recommend answers.** For every question, provide a recommended answer to accelerate the process.\n- **Use the codebase.** Explore the repo to ground decisions in reality, not assumptions.\n- **Write exhaustive user stories.** 10-30 stories is normal for a meaningful feature. If there are only 3, dig deeper.\n- **Deep modules over shallow modules.** Prefer fewer modules with rich internals and simple interfaces over many thin wrappers.\n- **Keep implementation decisions abstract.** No file paths or code in the PRD — it ages well.\n\n## Next Step\n\nOnce the PRD is submitted, suggest: \"When ready to break this into implementation tickets, ask me to **convert the PRD to issues**.\"\n\n## Additional Resources\n\n- **`references/prd-template.md`** — PRD template with all required sections"
         }
       ],
       "agents": [],
       "hooks": [],
-      "commands": []
+      "commands": [
+        {
+          "name": "/workflow-toolkit:create-workflow",
+          "description": "Start a guided development workflow from idea to implementation",
+          "body": "\n# Development Workflow\n\nA guided development process from idea to implementation. Each skill handles one phase and suggests the next step when complete. Use them in order for a full workflow, or jump to any skill individually.\n\n## The Workflow\n\n```\n1. grill-me          Stress-test an idea or design\n       ↓\n2. write-a-prd       Formalize into a requirements document\n       ↓\n3. prd-to-issues     Break the PRD into GitHub issues\n       ↓\n4. tdd               Implement issues using test-driven development\n       ↓\n5. improve-codebase-architecture    Refactor and deepen modules\n```\n\n## Skills\n\n### 1. Grill Me\n\n**When to use:** An idea or design needs to be challenged before committing to it.\n\n**What it does:** Interrogates every aspect of the plan, one question at a time, with recommended answers. Produces a structured decision log.\n\n**Trigger:** \"Grill me on my plan to...\"\n\n---\n\n### 2. Write a PRD\n\n**When to use:** The plan is solid and needs to be documented as formal requirements.\n\n**What it does:** Interviews about the problem and solution, explores the codebase, designs modules, and produces a PRD. Submits as a GitHub issue or markdown file.\n\n**Trigger:** \"Write a PRD for...\"\n\n---\n\n### 3. PRD to Issues\n\n**When to use:** A PRD exists and needs to be broken into implementable work items.\n\n**What it does:** Breaks the PRD into vertical slice GitHub issues (tracer bullets), each cutting through all layers end-to-end.\n\n**Trigger:** \"Break down the PRD into issues\"\n\n---\n\n### 4. TDD\n\n**When to use:** Ready to implement a feature or fix a bug, test-first.\n\n**What it does:** Guides the red-green-refactor loop — one test at a time, minimal code to pass, refactor when green.\n\n**Trigger:** \"Use TDD to build...\"\n\n---\n\n### 5. Improve Codebase Architecture\n\n**When to use:** The codebase has grown and needs architectural review.\n\n**What it does:** Explores the codebase organically, surfaces friction, proposes module-deepening refactors, and creates RFC issues with multiple interface design options.\n\n**Trigger:** \"Improve the architecture\"\n\n## Getting Started\n\nStart at any point. Not every project needs all five steps — a quick bug fix might only need TDD, while a new feature benefits from the full pipeline. Each skill works independently.\n\nIf an argument was provided, begin with **Grill Me** to stress-test the idea:\n\n$ARGUMENTS"
+        }
+      ]
     }
 ];
 
-// HTML escaping to prevent XSS
-const _escEl = document.createElement('span');
-function esc(str) {
-  _escEl.textContent = str;
-  return _escEl.innerHTML;
-}
-
-// Screen reader announcements
-function announce(message) {
-  const region = document.getElementById('live-region');
-  region.textContent = '';
-  requestAnimationFrame(() => { region.textContent = message; });
-}
-
-// State
 const state = {
   search: '',
+  categoryFilter: 'all',
   componentFilter: 'all',
   expanded: new Set(),
 };
 
-// Compute stats
-function getStats() {
-  const visible = getFilteredPlugins();
-  return {
-    plugins: visible.length,
-    skills: visible.reduce((n, p) => n + p.skills.length, 0),
-    agents: visible.reduce((n, p) => n + p.agents.length, 0),
-    hooks: visible.reduce((n, p) => n + p.hooks.length, 0),
-  };
+function escapeHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
 }
 
-function renderStats() {
-  const s = getStats();
-  const parts = [
-    `<span class="stat-value">${s.plugins}</span> plugin${s.plugins !== 1 ? 's' : ''}`,
-    `<span class="stat-value">${s.skills}</span> skill${s.skills !== 1 ? 's' : ''}`,
-    `<span class="stat-value">${s.agents}</span> agent${s.agents !== 1 ? 's' : ''}`,
-    `<span class="stat-value">${s.hooks}</span> hook rule${s.hooks !== 1 ? 's' : ''}`,
-  ];
-  document.getElementById('stats-bar').innerHTML = parts.join('<span class="stat-sep">\u00b7</span>');
+function escapeAttr(str) {
+  return escapeHtml(str).replace(/`/g, '&#96;');
+}
+
+function getFilteredPlugins() {
+  return PLUGINS.filter(p => matchesSearch(p) && matchesCategory(p) && matchesComponent(p));
 }
 
 function matchesSearch(plugin) {
@@ -1249,11 +1319,17 @@ function matchesSearch(plugin) {
   const q = state.search.toLowerCase();
   const hay = [
     plugin.name, plugin.description, plugin.id,
-    ...plugin.skills.map(s => s.name + ' ' + s.description),
-    ...plugin.agents.map(a => a.name + ' ' + a.description),
+    ...plugin.skills.map(s => [s.name, s.description, s.body || '', s.knownIssues || ''].join(' ')),
+    ...plugin.agents.map(a => [a.name, a.description, a.body || ''].join(' ')),
+    ...(plugin.commands || []).map(c => [c.name, c.description, c.body || ''].join(' ')),
     ...plugin.hooks.flatMap(h => [h.event, ...h.rules]),
   ].join(' ').toLowerCase();
   return q.split(/\s+/).every(w => hay.includes(w));
+}
+
+function matchesCategory(plugin) {
+  if (state.categoryFilter === 'all') return true;
+  return plugin.category === state.categoryFilter;
 }
 
 function matchesComponent(plugin) {
@@ -1261,345 +1337,336 @@ function matchesComponent(plugin) {
   if (state.componentFilter === 'skills') return plugin.skills.length > 0;
   if (state.componentFilter === 'agents') return plugin.agents.length > 0;
   if (state.componentFilter === 'hooks') return plugin.hooks.length > 0;
-  if (state.componentFilter === 'commands') return plugin.commands && plugin.commands.length > 0;
   return true;
 }
 
-function getFilteredPlugins() {
-  return PLUGINS.filter(p => matchesSearch(p) && matchesComponent(p));
+function totalStats() {
+  return {
+    plugins: PLUGINS.length,
+    skills: PLUGINS.reduce((n, p) => n + p.skills.length, 0),
+    agents: PLUGINS.reduce((n, p) => n + p.agents.length, 0),
+    hooks: PLUGINS.reduce((n, p) => n + p.hooks.reduce((x, h) => x + h.rules.length, 0), 0),
+    commands: PLUGINS.reduce((n, p) => n + (p.commands?.length || 0), 0),
+  };
 }
 
-function safeCopy(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text);
-  }
-  // Fallback for non-HTTPS or older browsers
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;opacity:0;left:-9999px';
-  document.body.appendChild(ta);
-  ta.select();
-  try { document.execCommand('copy'); } catch (e) { /* best effort */ }
-  document.body.removeChild(ta);
-  return Promise.resolve();
+function renderHeroStats() {
+  const s = totalStats();
+  document.getElementById('hero-plugins').textContent = s.plugins;
+  document.getElementById('hero-skills').textContent = s.skills;
+  document.getElementById('hero-agents').textContent = s.agents;
+  document.getElementById('hero-commands').textContent = s.commands;
+  document.getElementById('hero-hooks').textContent = s.hooks;
 }
 
-function handleCopy(text, btn, opts = {}) {
-  safeCopy(text).then(() => {
-    announce(opts.announce || 'Copied to clipboard');
-    if (opts.feedbackEl) {
-      opts.feedbackEl.classList.add('show');
-      setTimeout(() => opts.feedbackEl.classList.remove('show'), 1200);
-    } else if (btn) {
-      const original = btn.textContent;
-      if (btn.classList.contains('install-copy-btn')) {
-        btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:middle;margin-right:3px" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Copied';
-        btn.classList.add('success');
-        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('success'); }, 1800);
-      } else {
-        btn.textContent = 'Copied';
-        setTimeout(() => { btn.textContent = original; }, 1200);
-      }
+function renderResultCount() {
+  const total = PLUGINS.length;
+  const visible = getFilteredPlugins().length;
+  const el = document.getElementById('result-count');
+  el.innerHTML = visible === total
+    ? `<strong>${total}</strong> plugins`
+    : `<strong>${visible}</strong> of ${total} plugins`;
+}
+
+function copyText(text, feedbackEl) {
+  navigator.clipboard?.writeText(text).then(() => {
+    if (feedbackEl) {
+      feedbackEl.classList.add('show');
+      setTimeout(() => feedbackEl.classList.remove('show'), 1200);
     }
-  }).catch(() => {
-    announce('Could not copy — try selecting the text manually');
   });
 }
 
+function categoryLabel(cat) {
+  return ({ typescript: 'TypeScript', documentation: 'Documentation', workflow: 'Workflow' })[cat] || cat;
+}
+
+function pluralize(n, word) { return `${n} ${word}${n === 1 ? '' : 's'}`; }
+
 function renderPlugins() {
-  const mainEl = document.getElementById('main');
+  const main = document.getElementById('main');
   const plugins = getFilteredPlugins();
 
   if (plugins.length === 0) {
-    mainEl.innerHTML = `
-      <div class="empty-state" role="status">
+    main.innerHTML = `
+      <div class="empty-state">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <h3>No plugins match</h3>
         <p>Try adjusting your search or filters.</p>
-        <button class="empty-state-reset" onclick="resetFilters()">Clear all filters</button>
+        <button class="empty-state-reset" onclick="resetFilters()">Reset filters</button>
       </div>
     `;
     return;
   }
 
-  mainEl.innerHTML = plugins.map(p => {
+  main.innerHTML = plugins.map(p => {
     const isExpanded = state.expanded.has(p.id);
-    const detailId = `detail-${esc(p.id)}`;
+    const accent = p.accent || '#7c6aef';
 
     const tags = [];
-    if (p.skills.length) tags.push(`<span class="tag skill">${p.skills.length} skill${p.skills.length > 1 ? 's' : ''}</span>`);
-    if (p.agents.length) tags.push(`<span class="tag agent">${p.agents.length} agent${p.agents.length > 1 ? 's' : ''}</span>`);
-    if (p.hooks.length) {
-      const hookCount = p.hooks.reduce((n, h) => n + h.rules.length, 0);
-      tags.push(`<span class="tag hook">${hookCount} hook rule${hookCount > 1 ? 's' : ''}</span>`);
-    }
-    if (p.commands && p.commands.length) tags.push(`<span class="tag command">${p.commands.length} command${p.commands.length > 1 ? 's' : ''}</span>`);
+    if (p.skills.length) tags.push(`<span class="tag skill">${pluralize(p.skills.length, 'skill')}</span>`);
+    if (p.agents.length) tags.push(`<span class="tag agent">${pluralize(p.agents.length, 'agent')}</span>`);
+    const hookRules = p.hooks.reduce((n, h) => n + h.rules.length, 0);
+    if (hookRules) tags.push(`<span class="tag hook">${pluralize(hookRules, 'hook rule')}</span>`);
+    if (p.commands?.length) tags.push(`<span class="tag command">${pluralize(p.commands.length, 'command')}</span>`);
 
-    let detailContent = '';
-    let sections = '<div class="detail-divider"></div>';
+    let detail = '';
+    if (isExpanded) {
+      const sections = [];
 
-    if (p.skills.length) {
-      sections += `
-        <div class="detail-section">
-          <div class="detail-section-title section-skills">Skills</div>
-          ${p.skills.map(s => `
-            <div class="detail-item">
-              <div class="detail-item-header">
-                <span class="detail-item-name">${esc(s.name)}</span>
-                ${s.version !== '0.0.0' ? `<span class="detail-item-version">v${esc(s.version)}</span>` : ''}
+      if (p.skills.length) {
+        sections.push(`
+          <div class="detail-section">
+            <div class="detail-section-title">Skills</div>
+            ${p.skills.map((s, i) => `
+              <div class="detail-item">
+                <div class="detail-item-header">
+                  <span class="detail-item-name">${escapeHtml(s.name)}</span>
+                  ${s.version !== '0.0.0' ? `<span class="detail-item-version">v${escapeHtml(s.version)}</span>` : ''}
+                  ${s.body ? `<button class="view-btn" onclick="event.stopPropagation(); openModal('skill', '${escapeAttr(p.id)}', ${i})">View</button>` : ''}
+                </div>
+                <div class="detail-item-desc">${escapeHtml(s.description)}</div>
+                ${s.command ? `<span class="detail-item-command" onclick="event.stopPropagation(); copyText('${escapeAttr(s.command)}', this.querySelector('.copy-feedback'))">${escapeHtml(s.command)} <span class="copy-feedback">Copied!</span></span>` : ''}
               </div>
-              <div class="detail-item-desc">${esc(s.description)}</div>
-              ${s.command ? `<button class="detail-item-command" data-copy="${esc(s.command)}">${esc(s.command)} <span class="copy-feedback" aria-hidden="true">✓ copied</span></button>` : ''}
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
+            `).join('')}
+          </div>
+        `);
+      }
 
-    if (p.agents.length) {
-      sections += `
-        <div class="detail-section">
-          <div class="detail-section-title section-agents">Agents</div>
-          ${p.agents.map(a => `
-            <div class="detail-item">
-              <div class="detail-item-header">
-                <span class="detail-item-name">${esc(a.name)}</span>
+      if (p.agents.length) {
+        sections.push(`
+          <div class="detail-section">
+            <div class="detail-section-title">Agents</div>
+            ${p.agents.map((a, i) => `
+              <div class="detail-item">
+                <div class="detail-item-header">
+                  <span class="detail-item-name">${escapeHtml(a.name)}</span>
+                  ${a.body ? `<button class="view-btn" onclick="event.stopPropagation(); openModal('agent', '${escapeAttr(p.id)}', ${i})">View</button>` : ''}
+                </div>
+                <div class="detail-item-desc">${escapeHtml(a.description)}</div>
               </div>
-              <div class="detail-item-desc">${esc(a.description)}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
+            `).join('')}
+          </div>
+        `);
+      }
 
-    if (p.hooks.length) {
-      sections += `
-        <div class="detail-section">
-          <div class="detail-section-title section-hooks">Hooks</div>
-          ${p.hooks.map(h => `
-            <div class="hook-item">
-              <span class="hook-event">${esc(h.event)}</span>
-              ${h.rules.map(r => `<span class="hook-desc">\u2022 ${esc(r)}</span>`).join('')}
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    if (p.commands && p.commands.length) {
-      sections += `
-        <div class="detail-section">
-          <div class="detail-section-title section-commands">Commands</div>
-          ${p.commands.map(c => `
-            <div class="detail-item">
-              <div class="detail-item-header">
-                <span class="detail-item-name">${esc(c.name)}</span>
+      if (p.commands?.length) {
+        sections.push(`
+          <div class="detail-section">
+            <div class="detail-section-title">Commands</div>
+            ${p.commands.map((c, i) => `
+              <div class="detail-item">
+                <div class="detail-item-header">
+                  <span class="detail-item-name">${escapeHtml(c.name)}</span>
+                  ${c.body ? `<button class="view-btn" onclick="event.stopPropagation(); openModal('command', '${escapeAttr(p.id)}', ${i})">View</button>` : ''}
+                </div>
+                <div class="detail-item-desc">${escapeHtml(c.description)}</div>
               </div>
-              <div class="detail-item-desc">${esc(c.description)}</div>
-            </div>
-          `).join('')}
+            `).join('')}
+          </div>
+        `);
+      }
+
+      if (p.hooks.length) {
+        sections.push(`
+          <div class="detail-section">
+            <div class="detail-section-title">Hooks</div>
+            ${p.hooks.map(h => `
+              <div class="hook-item">
+                <span class="hook-event">${escapeHtml(h.event)}</span>
+                ${h.rules.map(r => `<span class="hook-desc">• ${escapeHtml(r)}</span>`).join('')}
+              </div>
+            `).join('')}
+          </div>
+        `);
+      }
+
+      const installCmd = `claude mcp add-plugin ${p.source}`;
+      sections.push(`
+        <div class="detail-section">
+          <div class="detail-section-title">Install</div>
+          <div class="install-section">
+            <code class="install-cmd">${escapeHtml(installCmd)}</code>
+            <button class="install-copy-btn" onclick="event.stopPropagation(); copyInstall(this, '${escapeAttr(installCmd)}')">Copy</button>
+          </div>
         </div>
-      `;
+      `);
+
+      detail = `<div class="detail-inner">${sections.join('')}</div>`;
     }
-
-    const installCmd = `claude mcp add-plugin ${p.source}`;
-    sections += `
-      <div class="install-section">
-        <code class="install-cmd">${esc(installCmd)}</code>
-        <button class="install-copy-btn" data-install="${esc(installCmd)}">Copy</button>
-      </div>
-    `;
-
-    detailContent = `<div class="card-detail-inner-wrap"><div class="detail-inner">${sections}</div></div>`;
 
     return `
-      <article class="plugin-card ${isExpanded ? 'expanded' : ''}" data-id="${esc(p.id)}" style="--card-accent: ${esc(p.accentColor || '#7c6aef')}">
-        <button class="card-toggle" aria-expanded="${isExpanded}" aria-controls="${detailId}" data-card-id="${esc(p.id)}">
+      <article class="plugin-card ${isExpanded ? 'expanded' : ''}" data-id="${escapeAttr(p.id)}" style="--accent: ${escapeAttr(accent)};">
+        <div class="card-header" onclick="toggleCard('${escapeAttr(p.id)}')" role="button" tabindex="0" aria-expanded="${isExpanded}">
           <div class="card-top">
-            <div class="card-title-row">
-              <div class="plugin-icon icon-${esc(p.iconClass)}" aria-hidden="true">${esc(p.icon)}</div>
-              <span class="card-name">${esc(p.name)}</span>
-              <span class="card-version">v${esc(p.version)}</span>
+            <div class="plugin-icon" aria-hidden="true">${escapeHtml(p.icon || '◇')}</div>
+            <div class="card-meta">
+              <div class="card-name-row">
+                <span class="card-name">${escapeHtml(p.name)}</span>
+                <span class="card-version">v${escapeHtml(p.version)}</span>
+              </div>
+              <span class="card-category">${categoryLabel(p.category)}</span>
             </div>
             <svg class="expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="card-desc">${esc(p.description)}</div>
+          <div class="card-desc">${escapeHtml(p.description)}</div>
           <div class="card-tags">${tags.join('')}</div>
-        </button>
-        <div class="card-install-bar">
-          <code>${esc(installCmd)}</code>
-          <button class="card-install-quick" data-install="${esc(installCmd)}">Copy</button>
         </div>
-        <div class="card-detail" id="${detailId}" role="region" aria-label="${esc(p.name)} details">${detailContent}</div>
+        <div class="card-detail">${detail}</div>
       </article>
     `;
   }).join('');
 }
 
 function toggleCard(id) {
-  const isExpanding = !state.expanded.has(id);
-  if (isExpanding) { state.expanded.add(id); } else { state.expanded.delete(id); }
+  if (state.expanded.has(id)) state.expanded.delete(id);
+  else state.expanded.add(id);
+  renderPlugins();
+}
 
-  // Surgical DOM update instead of full re-render
-  const card = document.querySelector(`.plugin-card[data-id="${id}"]`);
-  if (card) {
-    card.classList.toggle('expanded', isExpanding);
-    const toggle = card.querySelector('.card-toggle');
-    if (toggle) toggle.setAttribute('aria-expanded', String(isExpanding));
-    announce(isExpanding ? 'Expanded' : 'Collapsed');
-  } else {
-    renderPlugins();
-  }
+function copyInstall(btn, cmd) {
+  navigator.clipboard?.writeText(cmd).then(() => {
+    const original = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.textContent = original; }, 1200);
+  });
 }
 
 function resetFilters() {
   state.search = '';
+  state.categoryFilter = 'all';
   state.componentFilter = 'all';
   document.getElementById('search').value = '';
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.setAttribute('aria-pressed', b.dataset.value === 'all' ? 'true' : 'false');
+  document.querySelectorAll('.seg-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.value === 'all');
   });
   render();
-  announce('Filters cleared');
 }
+
+const modalState = { kind: null, plugin: null, index: 0, tab: 'body' };
+
+function getModalItem() {
+  const p = PLUGINS.find(x => x.id === modalState.plugin);
+  if (!p) return null;
+  const list = modalState.kind === 'skill' ? p.skills
+             : modalState.kind === 'agent' ? p.agents
+             : modalState.kind === 'command' ? (p.commands || []) : [];
+  return list[modalState.index] || null;
+}
+
+function renderModal() {
+  const item = getModalItem();
+  if (!item) return;
+  const p = PLUGINS.find(x => x.id === modalState.plugin);
+
+  document.getElementById('modal-title').textContent = item.name;
+  document.getElementById('modal-subtitle').textContent =
+    `${modalState.kind} · ${p.name} (${p.id})`;
+
+  const tabs = [{ id: 'body', label: modalState.kind === 'skill' ? 'SKILL.md' : 'Definition' }];
+  if (modalState.kind === 'skill' && item.knownIssues) {
+    tabs.push({ id: 'issues', label: 'KNOWN_ISSUES.md' });
+  }
+  document.getElementById('modal-tabs').innerHTML = tabs.length > 1
+    ? tabs.map(t => `<button class="modal-tab ${modalState.tab === t.id ? 'active' : ''}" onclick="setModalTab('${t.id}')">${t.label}</button>`).join('')
+    : '';
+
+  const md = modalState.tab === 'issues' ? item.knownIssues : item.body;
+  document.getElementById('modal-body').innerHTML = window.marked
+    ? window.marked.parse(md || '')
+    : `<pre>${escapeHtml(md || '')}</pre>`;
+  document.getElementById('modal-body').scrollTop = 0;
+}
+
+function setModalTab(tab) {
+  modalState.tab = tab;
+  renderModal();
+}
+
+function openModal(kind, pluginId, index) {
+  modalState.kind = kind;
+  modalState.plugin = pluginId;
+  modalState.index = index;
+  modalState.tab = 'body';
+  document.getElementById('modal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  renderModal();
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', closeModal);
+document.getElementById('modal-close').addEventListener('click', e => {
+  e.stopPropagation();
+  closeModal();
+});
 
 function render() {
-  renderStats();
+  renderHeroStats();
   renderPlugins();
+  renderResultCount();
 }
 
-// Debounce search for performance
-let searchTimeout;
-document.getElementById('search').addEventListener('input', (e) => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    state.search = e.target.value;
-    render();
-    const count = getFilteredPlugins().length;
-    announce(`${count} plugin${count !== 1 ? 's' : ''} found`);
-  }, 200);
+document.getElementById('search').addEventListener('input', e => {
+  state.search = e.target.value;
+  renderPlugins();
+  renderResultCount();
 });
 
-// Event delegation for card toggles, copy buttons, install buttons
-document.getElementById('main').addEventListener('click', (e) => {
-  const toggle = e.target.closest('.card-toggle');
-  if (toggle) {
-    toggleCard(toggle.dataset.cardId);
-    return;
-  }
-
-  const copyBtn = e.target.closest('.detail-item-command');
-  if (copyBtn) {
-    e.stopPropagation();
-    handleCopy(copyBtn.dataset.copy, copyBtn, { feedbackEl: copyBtn.querySelector('.copy-feedback') });
-    return;
-  }
-
-  const quickInstallBtn = e.target.closest('.card-install-quick');
-  if (quickInstallBtn) {
-    e.stopPropagation();
-    handleCopy(quickInstallBtn.dataset.install, quickInstallBtn, { announce: 'Install command copied to clipboard' });
-    return;
-  }
-
-  const installBtn = e.target.closest('.install-copy-btn');
-  if (installBtn) {
-    e.stopPropagation();
-    handleCopy(installBtn.dataset.install, installBtn, { announce: 'Install command copied to clipboard' });
-    return;
-  }
-});
-
-document.getElementById('filters').addEventListener('click', (e) => {
-  const btn = e.target.closest('.filter-btn');
+document.querySelector('.toolbar').addEventListener('click', e => {
+  const btn = e.target.closest('.seg-btn');
   if (!btn) return;
 
   const filterType = btn.dataset.filter;
   const value = btn.dataset.value;
 
+  if (filterType === 'category') state.categoryFilter = value;
   if (filterType === 'component') state.componentFilter = value;
 
-  document.querySelectorAll(`.filter-btn[data-filter="${filterType}"]`).forEach(b => {
-    b.setAttribute('aria-pressed', 'false');
-  });
-  btn.setAttribute('aria-pressed', 'true');
+  document.querySelectorAll(`.seg-btn[data-filter="${filterType}"]`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
 
-  render();
-  announce(`Filter: ${value}`);
+  renderPlugins();
+  renderResultCount();
 });
 
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('.card-header')) {
+    e.preventDefault();
+    const id = e.target.closest('.plugin-card').dataset.id;
+    toggleCard(id);
+  }
+  if (e.key === 'Escape') closeModal();
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault();
     document.getElementById('search').focus();
   }
-  // Escape collapses all expanded cards
-  if (e.key === 'Escape' && state.expanded.size > 0 && document.activeElement !== document.getElementById('search')) {
-    state.expanded.clear();
-    renderPlugins();
-    announce('All cards collapsed');
-  }
 });
 
-// Theme toggle
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+const savedTheme = localStorage.getItem('marketplace-theme') || 'dark';
+applyTheme(savedTheme);
+
 document.getElementById('theme-toggle').addEventListener('click', () => {
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
   const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  try { localStorage.setItem('marketplace-theme', next); } catch (e) { /* private browsing */ }
-  announce(`${next} theme`);
-
-  const btn = document.getElementById('theme-toggle');
-  btn.classList.remove('spinning');
-  void btn.offsetWidth; // reflow to restart animation
-  btn.classList.add('spinning');
-  btn.addEventListener('animationend', () => btn.classList.remove('spinning'), { once: true });
+  applyTheme(next);
+  try { localStorage.setItem('marketplace-theme', next); } catch(e) {}
 });
 
-// How it works — first-visit onboarding
-(function initOnboarding() {
-  const section = document.getElementById('how-it-works');
-  try {
-    if (localStorage.getItem('marketplace-onboarding-seen')) {
-      section.hidden = true;
-      return;
-    }
-  } catch (e) { /* private browsing — show onboarding */ }
-  document.getElementById('dismiss-how-it-works').addEventListener('click', () => {
-    section.hidden = true;
-    try { localStorage.setItem('marketplace-onboarding-seen', '1'); } catch (e) { /* best effort */ }
-    announce('How it works dismissed');
-  });
-})();
-
-// Initial render
 render();
 
-// Animate stat numbers on first load
-(function animateStats() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.querySelectorAll('#stats-bar .stat-value').forEach(el => {
-    const target = parseInt(el.textContent, 10);
-    if (!target) return;
-    el.textContent = '0';
-    const start = performance.now();
-    const duration = 600;
-    const tick = (now) => {
-      const t = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - t, 3); // ease-out-cubic
-      el.textContent = Math.round(eased * target);
-      if (t < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  });
-})();
-
-// Console easter egg for the curious developer
 console.log(
   '%c Plugin Marketplace %c v1.0.0 \n%c👋 Hello, developer. Snooping around? Nice instinct.\n   Try → /typescript-rules:typescript-conventions\n   or   → /jsdoc-standards:jsdoc-review',
   'background:#7c6aef;color:#fff;padding:2px 8px;border-radius:4px 0 0 4px;font-weight:600',
   'background:#2a2824;color:#9b9990;padding:2px 8px;border-radius:0 4px 4px 0;font-family:monospace',
-  'color:#7a7870;font-size:11px;line-height:1.8'
+  'color:#7a7870;font-size:11px;line-height:1.8',
 );
 </script>
 </body>
