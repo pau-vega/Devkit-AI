@@ -85,3 +85,22 @@ Three words: **reliable, precise, unassuming**
 3. **Consistent over clever.** Predictable spacing, transition timing, and color usage build the sense of a well-maintained tool.
 4. **Accessible by default.** Target WCAG 2.1 AA. Focus rings, ARIA roles, reduced motion, and sufficient contrast are not optional.
 5. **Warm, not sterile.** Prefer warm neutrals over cool grays. The palette should feel hand-picked, not auto-generated.
+
+## GSD Workflow
+
+This project uses the Get Shit Done (GSD) planning workflow.
+
+**Planning artifacts:** `.planning/`
+- `PROJECT.md` — project context and requirements
+- `REQUIREMENTS.md` — scoped v1 requirements with REQ-IDs
+- `ROADMAP.md` — 4-phase execution plan
+- `STATE.md` — current phase and status
+- `research/` — OpenCode compatibility research
+
+**Current state:** Phase 1 not started. Run `/gsd-plan-phase 1` to begin.
+
+**Workflow commands:**
+- `/gsd-plan-phase N` — plan a phase before executing
+- `/gsd-execute-phase N` — execute a planned phase
+- `/gsd-progress` — check current status
+- `/gsd-discuss-phase N` — discuss approach before planning
