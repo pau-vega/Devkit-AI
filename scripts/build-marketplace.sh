@@ -289,6 +289,28 @@ discover_hooks() {
   echo "$result"
 }
 
+# ── Cursor symlinks ────────────────────────────────────────────
+
+# Generate .cursor/skills/ symlinks for Cursor discovery
+generate_cursor_symlinks() {
+  local repo_root="$1"
+
+  # Create .cursor/skills/ directory
+  mkdir -p "$repo_root/.cursor/skills/typescript-rules"
+  mkdir -p "$repo_root/.cursor/skills/jsdoc-standards"
+
+  # typescript-rules: symlink from .cursor/skills/typescript-rules/ to skills/typescript-conventions/
+  # Use relative path so symlinks work regardless of clone location
+  (cd "$repo_root/.cursor/skills/typescript-rules" && \
+   ln -sf ../../../typescript-rules/skills/typescript-conventions/SKILL.md SKILL.md)
+
+  # jsdoc-standards: symlink from .cursor/skills/jsdoc-standards/ to skills/jsdoc-conventions/
+  (cd "$repo_root/.cursor/skills/jsdoc-standards" && \
+   ln -sf ../../../jsdoc-standards/skills/jsdoc-conventions/SKILL.md SKILL.md)
+
+  echo "Created .cursor/skills/ symlinks for typescript-rules and jsdoc-standards" >&2
+}
+
 # ── Main ─────────────────────────────────────────────────────────────
 
 main() {
@@ -301,6 +323,9 @@ main() {
     echo "ERROR: marketplace.html not found at $MARKETPLACE_HTML" >&2
     exit 1
   fi
+
+  # Generate .cursor/skills/ symlinks for Cursor compatibility
+  generate_cursor_symlinks "$REPO_ROOT"
 
   local plugin_count
   plugin_count=$(jq '.plugins | length' "$MARKETPLACE_JSON")
