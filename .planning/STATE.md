@@ -4,25 +4,25 @@
 See: .planning/PROJECT.md (updated 2026-05-06)
 
 **Core value:** Developers using OpenCode or Cursor get the same real-time convention enforcement and on-demand review experience as Claude Code users.
-**Current focus:** Phase1 — Skills Compatibility (OpenCode + Cursor)
+**Current focus:** Phase 2 — Commands and Agents Port
 
 ## Current Phase
-Phase 1 — Skills Compatibility (OpenCode + Cursor)
+Phase 1 — Skills Compatibility (OpenCode + Cursor) ✓
 
 ## Status
-In progress
+Complete
 
 ## Phases
 | # | Name | Status |
 |---|------|--------|
-| 1 | Skills Compatibility (OpenCode + Cursor) | In progress |
+| 1 | Skills Compatibility (OpenCode + Cursor) | ✓ Complete |
 | 2 | Commands and Agents Port (OpenCode + Cursor where supported) | Pending |
 | 3 | Hook Enforcement Port (OpenCode + Cursor) | Pending |
 | 4 | Marketplace UI and Install Docs (tri-runtime) | Pending |
 
 ## Performance Metrics
-- Phases complete: 0/4
-- Requirements complete: 3/27 (SKILL-01, SKILL-02, SKILL-03)
+- Phases complete: 1/4
+- Requirements complete: 6/27 (SKILL-01, SKILL-02, SKILL-03, CUR-SKILL-01, CUR-SKILL-02, CUR-SKILL-03)
 
 ## Accumulated Context
 
@@ -43,15 +43,15 @@ In progress
 ### Todos
 - [x] 01-01: Add YAML frontmatter to all 7 SKILL.md files
 - [x] 01-02: Create .cursor/skills/ symlinks for typescript-rules and jsdoc-standards
-- [ ] 01-03: Create .cursor/skills/workflow-toolkit/ symlinks for all 5 skills
+- [x] 01-03: Create .cursor/skills/workflow-toolkit/ symlinks for all 5 skills
 
 ### Blockers
 - (none)
 
 ## Session Continuity
 - Roadmap created: 2026-05-05
-- Last activity: 2026-05-06 — Phase1 Wave 1 complete (01-01 done)
-- Next action: Execute Wave 2 (01-02, 01-03)
+- Last activity: 2026-05-06 — Phase 1 complete (all 3 plans)
+- Next action: Plan Phase 2 (Commands and Agents Port)
 
 ## Quick Tasks
 | Date | ID | Type | Description | Outcome |

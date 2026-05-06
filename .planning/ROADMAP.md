@@ -6,7 +6,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Skills Compatibility** - All SKILL.md files are auto-discovered and readable by OpenCode AND Cursor agents
+- [x] **Phase 1: Skills Compatibility** - All SKILL.md files are auto-discovered and readable by OpenCode AND Cursor agents
 - [ ] **Phase 2: Commands and Agents Port** - On-demand review commands and agents work in OpenCode (full) and Cursor (commands via disable-model-invocation skills; agents inline — no portable subagent file)
 - [ ] **Phase 3: Hook Enforcement Port** - Real-time convention enforcement fires on write/edit in OpenCode (TypeScript plugin) and Cursor (`.cursor/hooks.json` reusing existing shell scripts verbatim)
 - [ ] **Phase 4: Marketplace UI and Install Docs** - Landing page advertises tri-runtime compatibility (Claude Code + OpenCode + Cursor) with three install paths
@@ -38,7 +38,7 @@
 Plans:
 - [x] 01-01-PLAN.md — Add YAML frontmatter to all 7 SKILL.md files (OpenCode discovery)
 - [x] 01-02-PLAN.md — Create .cursor/skills/ symlinks for typescript-rules and jsdoc-standards
-- [ ] 01-03-PLAN.md — Create .cursor/skills/workflow-toolkit/ symlinks for all 5 skills
+- [x] 01-03-PLAN.md — Create .cursor/skills/workflow-toolkit/ symlinks for all 5 skills
 **UI hint**: no
 
 ### Phase 2: Commands and Agents Port
@@ -90,7 +90,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Skills Compatibility | 0/? | Not started | - |
+| 1. Skills Compatibility | 3/3 | ✓ | 2026-05-06 |
 | 2. Commands and Agents Port | 0/? | Not started | - |
 | 3. Hook Enforcement Port | 0/? | Not started | - |
 | 4. Marketplace UI and Install Docs | 0/? | Not started | - |
