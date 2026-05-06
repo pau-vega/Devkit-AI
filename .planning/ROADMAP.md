@@ -36,8 +36,8 @@
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Add YAML frontmatter to all 7 SKILL.md files (OpenCode discovery)
-- [ ] 01-02-PLAN.md — Create .cursor/skills/ symlinks for typescript-rules and jsdoc-standards
+- [x] 01-01-PLAN.md — Add YAML frontmatter to all 7 SKILL.md files (OpenCode discovery)
+- [x] 01-02-PLAN.md — Create .cursor/skills/ symlinks for typescript-rules and jsdoc-standards
 - [ ] 01-03-PLAN.md — Create .cursor/skills/workflow-toolkit/ symlinks for all 5 skills
 **UI hint**: no
 
