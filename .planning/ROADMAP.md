@@ -33,7 +33,12 @@
 4. A Cursor agent in a project with `.cursor/skills/typescript-rules/` returns the same TypeScript guidance via `/typescript-rules` invocation
 5. A Cursor agent loads jsdoc-standards from `.cursor/skills/jsdoc-standards/SKILL.md` with `paths:` frontmatter scoping it to JS/TS files
 6. A Cursor agent finds all 5 workflow-toolkit skills under `.cursor/skills/<name>/` and can invoke each by name
-**Plans:** TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Add YAML frontmatter to all 7 SKILL.md files (OpenCode discovery)
+- [ ] 01-02-PLAN.md — Create .cursor/skills/ symlinks for typescript-rules and jsdoc-standards
+- [ ] 01-03-PLAN.md — Create .cursor/skills/workflow-toolkit/ symlinks for all 5 skills
 **UI hint**: no
 
 ### Phase 2: Commands and Agents Port
