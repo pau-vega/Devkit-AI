@@ -1,6 +1,7 @@
 ---
 name: prd-to-issues
 description: This skill should be used when the user asks to "break down a PRD", "convert PRD to issues", "create issues from a PRD", "split a PRD into tickets", "create implementation tickets", or wants to turn a product requirements document into independently-grabbable GitHub issues.
+paths: ["*.md", "*.txt"]
 ---
 
 # PRD to Issues

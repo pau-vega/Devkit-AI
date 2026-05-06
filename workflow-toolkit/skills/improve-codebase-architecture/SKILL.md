@@ -1,6 +1,7 @@
 ---
 name: improve-codebase-architecture
 description: This skill should be used when the user asks to "improve the architecture", "find refactoring opportunities", "deepen modules", "make the codebase more testable", "consolidate tightly-coupled modules", "review codebase architecture", or wants to surface architectural friction and propose module-deepening refactors.
+paths: ["*.ts", "*.tsx", "*.js", "*.jsx"]
 ---
 
 # Improve Codebase Architecture

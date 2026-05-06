@@ -1,6 +1,7 @@
 ---
 name: grill-me
 description: This skill should be used when the user asks to "grill me", "stress-test my plan", "challenge my design", "poke holes in this", "review my architecture", "play devil's advocate", "find the flaws", "what am I missing", or wants critical feedback on a plan, design, or idea before implementation.
+paths: ["*.md", "*.txt"]
 ---
 
 # Grill Me — Design Interrogator

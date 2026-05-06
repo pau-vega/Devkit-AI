@@ -1,6 +1,7 @@
 ---
 name: write-a-prd
 description: This skill should be used when the user asks to "write a PRD", "create a product requirements document", "plan a new feature", "write requirements", "draft a spec", "spec out a feature", "define requirements", or wants to plan and define what to build before building it.
+paths: ["*.md", "*.txt"]
 ---
 
 # Write a PRD

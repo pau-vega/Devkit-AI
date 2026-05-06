@@ -1,6 +1,7 @@
 ---
 name: tdd
 description: This skill should be used when the user asks to "use TDD", "write tests first", "red-green-refactor", "test-driven development", "build this with tests", "fix this bug with TDD", or wants to implement features or fix bugs using a test-first approach.
+paths: ["*.ts", "*.tsx", "*.js", "*.jsx"]
 ---
 
 # Test-Driven Development
