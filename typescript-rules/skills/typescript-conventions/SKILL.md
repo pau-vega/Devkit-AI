@@ -6,6 +6,7 @@ description: >
   handling (Result types, no any, explicit return types), imports (import type,
   no default exports), and naming conventions. Use when writing or reviewing
   TypeScript code.
+paths: ["*.ts", "*.tsx"]
 ---
 
 # TypeScript Conventions
