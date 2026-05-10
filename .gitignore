@@ -3,3 +3,8 @@
 node_modules/
 .claude/settings.local.json
 .playwright-mcp/
+
+# npm
+package-lock.json
+.npmrc
+*.tgz

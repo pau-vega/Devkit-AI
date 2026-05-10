@@ -1,0 +1,38 @@
+{
+  "name": "@pau-vega/my-marketplace",
+  "version": "1.0.0",
+  "description": "Install the my-marketplace plugins (typescript-rules, jsdoc-standards, workflow-toolkit) into Claude Code, Cursor, or OpenCode.",
+  "type": "module",
+  "bin": {
+    "my-marketplace": "bin/install.mjs"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "typescript-rules/",
+    "jsdoc-standards/",
+    "workflow-toolkit/",
+    ".claude-plugin/marketplace.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pau-vega/my-marketplace.git"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.10.0"
+  },
+  "scripts": {
+    "pack:dry": "npm pack --dry-run"
+  },
+  "author": "Pau Velasco Garrofe",
+  "license": "MIT"
+}
