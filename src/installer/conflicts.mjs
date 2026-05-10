@@ -13,6 +13,7 @@ import { confirm, isCancel, select } from "@clack/prompts";
  *
  * @typedef {object} ConflictState
  * @property {ConflictAction | null} remembered
+ * @property {boolean} [askedRemember]
  */
 
 /**
@@ -21,7 +22,7 @@ import { confirm, isCancel, select } from "@clack/prompts";
  * @param {{
  *   targetPath: string,
  *   oldSize: number,
- *   newSize: number,
+ *   newSize: number | null,
  *   state: ConflictState,
  * }} args
  * @returns {Promise<ConflictAction>}
@@ -29,8 +30,9 @@ import { confirm, isCancel, select } from "@clack/prompts";
 export async function resolveConflict({ targetPath, oldSize, newSize, state }) {
   if (state.remembered) return state.remembered;
 
+  const newLabel = newSize === null ? "unknown size" : `${newSize}B`;
   const action = await select({
-    message: `${targetPath} already exists (existing ${oldSize}B, new ${newSize}B). Action?`,
+    message: `${targetPath} already exists (existing ${oldSize}B, new ${newLabel}). Action?`,
     options: [
       { value: "skip", label: "Skip (keep existing)" },
       { value: "overwrite", label: "Overwrite" },
@@ -40,14 +42,19 @@ export async function resolveConflict({ targetPath, oldSize, newSize, state }) {
   });
   if (isCancel(action)) return "abort";
 
-  const remember = await confirm({
-    message: "Apply this choice to all remaining conflicts?",
-    initialValue: false,
-  });
-  if (isCancel(remember)) return "abort";
+  // Only ask the remember toggle once per run — once declined, it stays
+  // declined (otherwise users get re-asked on every conflict).
+  if (!state.askedRemember) {
+    state.askedRemember = true;
+    const remember = await confirm({
+      message: "Apply this choice to all remaining conflicts?",
+      initialValue: false,
+    });
+    if (isCancel(remember)) return "abort";
 
-  if (remember) {
-    state.remembered = /** @type {ConflictAction} */ (action);
+    if (remember) {
+      state.remembered = /** @type {ConflictAction} */ (action);
+    }
   }
 
   return /** @type {ConflictAction} */ (action);

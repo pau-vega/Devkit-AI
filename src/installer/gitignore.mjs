@@ -48,13 +48,17 @@ export function upsertGitignoreBlock({ cwd, entries }) {
   const blockLines = [BEGIN, ...ordered, END];
   const blockText = blockLines.join("\n");
 
+  // Match a well-formed block: BEGIN at line start, END at line start,
+  // non-greedy. If markers are present but malformed (END before BEGIN,
+  // duplicated, or embedded mid-line), the test fails and we fall through
+  // to append — never silently no-op.
+  const re = new RegExp(
+    `^${escapeRegex(BEGIN)}\\n[\\s\\S]*?^${escapeRegex(END)}$`,
+    "m",
+  );
+
   let next;
-  if (existing.includes(BEGIN) && existing.includes(END)) {
-    // Replace in place. Use a non-greedy match between markers.
-    const re = new RegExp(
-      `${escapeRegex(BEGIN)}[\\s\\S]*?${escapeRegex(END)}`,
-      "m",
-    );
+  if (re.test(existing)) {
     next = existing.replace(re, blockText);
   } else {
     // Append, ensuring exactly one blank line before the block.

@@ -87,8 +87,14 @@ export async function copyPluginFiles({
       }
     }
 
+    if (existing && dryRun) {
+      log.info(`would write (overwrites existing): ${entry.dest}`);
+      result.written.push(entry.dest);
+      continue;
+    }
+
     if (existing) {
-      let newSize = 0;
+      let newSize = null;
       try {
         newSize = fs.statSync(entry.src).size;
       } catch {
