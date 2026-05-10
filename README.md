@@ -1,3 +1,108 @@
+# my-marketplace
+
+A small marketplace of Claude Code plugins — `typescript-rules`, `jsdoc-standards`, and
+`workflow-toolkit` — installable into Claude Code, Cursor, or OpenCode with a single
+command.
+
+## Install (with auth)
+
+The package is published to GitHub Packages, which requires authentication for both
+public and private packages. Configure your `~/.npmrc` once with a classic personal
+access token scoped to `read:packages`:
+
+```text
+@pau-vega:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=<your-classic-pat>
+```
+
+Then run the installer with `npx`:
+
+```bash
+npx @pau-vega/my-marketplace
+```
+
+Generate the token at GitHub -> Settings -> Developer settings -> Personal access tokens
+(classic), with the `read:packages` scope only. Do not commit your `~/.npmrc` to any
+repo — this project's `.gitignore` excludes `.npmrc` for that reason.
+
+## Install (zero-auth fallback)
+
+If you would rather skip the token setup, npm can fetch the installer directly from this
+repository over `git`:
+
+```bash
+npx github:pau-vega/my-marketplace
+```
+
+The trade-off: this clones the default branch HEAD (no version pinning), and the first
+run is slightly slower because npm has to resolve and fetch from GitHub directly.
+Functionally the installer behaves identically.
+
+## What the installer prompts
+
+1. **Editor** — Claude Code, Cursor, or OpenCode.
+2. **Scope** — project (committed to the repo), project-local (gitignored, just for you),
+   or user-global (every project on this machine).
+3. **Plugins** — multi-select; all three are pre-checked. Empty selection cancels the run.
+4. **Conflicts** — when a destination file already exists, the installer asks per file
+   whether to overwrite, skip, or abort. The first conflict offers a "remember for this
+   run" toggle so you do not have to answer the same question repeatedly.
+
+Ctrl-C at any prompt is a clean exit — no files are written until you confirm at the end
+of the prompt flow.
+
+## Where files land
+
+| Editor      | project / project-local         | user-global               |
+| ----------- | ------------------------------- | ------------------------- |
+| Claude Code | `<cwd>/.claude/`                | `~/.claude/`              |
+| Cursor      | `<cwd>/.cursor/`                | `~/.cursor/`              |
+| OpenCode    | `<cwd>/.opencode/`              | `~/.config/opencode/`     |
+
+Inside each target the installer writes the standard subdirectories — `skills/`,
+`commands/`, `agents/`, and either `hooks/hooks.json` (Claude Code, OpenCode) or
+`hooks.json` at the root (Cursor). For project-local scope, the installer maintains a
+delimited block in `<cwd>/.gitignore` listing every file it wrote, so re-running the
+installer replaces the block in place and never duplicates entries:
+
+```text
+# >>> my-marketplace
+.claude/skills/typescript-conventions/SKILL.md
+.claude/commands/ts-review.md
+...
+# <<< my-marketplace
+```
+
+## Known limitations
+
+- **OpenCode hooks are skipped.** OpenCode does not consume `hooks.json`; it expects a
+  TypeScript plugin instead. Skills and commands are installed; real-time enforcement
+  hooks won't fire under OpenCode until a TypeScript port ships.
+- **Cursor agents are skipped.** Cursor does not currently expose a portable agent file
+  format, so `agents/*.md` from `typescript-rules` and `jsdoc-standards` is not copied
+  for Cursor targets. The skills and commands carry the relevant context.
+- **Cursor user-global scope ships best-effort.** Only `~/.cursor/hooks.json` and
+  `~/.cursor/hooks/` are formally documented. Commands, rules, and skills at user scope
+  follow the same shape but are not officially documented by Cursor.
+
+## Flags
+
+| Flag        | Effect                                                            |
+| ----------- | ----------------------------------------------------------------- |
+| `--dry-run` | Print every file that would be written, without touching disk.    |
+| `--help`    | Show usage and exit.                                              |
+| `--version` | Print the installer version and exit.                             |
+
+## Releasing (maintainer note)
+
+Publishing happens automatically on a tagged GitHub Release. Cut a release in the GitHub
+UI (Releases -> Draft a new release -> publish a `vX.Y.Z` tag). The
+`.github/workflows/publish.yml` workflow runs `npm pack --dry-run` (sanity check) and
+then `npm publish` against GitHub Packages, authenticated by the workflow's
+`GITHUB_TOKEN`.
+
+---
+
 # typescript-rules
 
 A Claude Code plugin that enforces TypeScript coding conventions with automatic validation, code review, and a dedicated reviewer agent.

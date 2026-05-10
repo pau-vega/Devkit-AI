@@ -4,3 +4,8 @@ node_modules/
 .claude/settings.local.json
 .playwright-mcp/
 .cursor/
+
+# npm
+package-lock.json
+.npmrc
+*.tgz
