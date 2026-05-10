@@ -131,7 +131,7 @@ discover_skills() {
     local s_name s_desc s_ver s_cmd s_body
     s_name=$(echo "$fm" | jq -r '.name')
     s_desc=$(echo "$fm" | jq -r '.description')
-    s_ver=$(echo "$fm" | jq -r 'if .version then .version else "0.0.0" end')
+    s_ver=$(echo "$fm" | jq -r 'if .version then .version else "0.0.1" end')
     s_cmd="/${plugin_name}:${s_name}"
     s_body=$(read_body "$skill_file")
 

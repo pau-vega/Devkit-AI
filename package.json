@@ -1,6 +1,6 @@
 {
   "name": "@pau-vega/my-marketplace",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Install the my-marketplace plugins (typescript-rules, jsdoc-standards, workflow-toolkit) into Claude Code, Cursor, or OpenCode.",
   "type": "module",
   "bin": {

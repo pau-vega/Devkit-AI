@@ -2,7 +2,7 @@
   "name": "my-marketplace",
   "description": "Curated collection of Claude Code plugins for TypeScript development",
   "owner": {"name": "Pau Velasco Garrofe"},
-  "version": "0.1.0",
+  "version": "0.1 .0",
   "plugins": [
     {
       "name": "typescript-rules",
@@ -10,7 +10,7 @@
       "source": "./typescript-rules",
       "description": "TypeScript coding conventions with automatic validation, review command, and reviewer agent",
       "longDescription": "TypeScript coding conventions with automatic validation, review command, and reviewer agent. Enforces interface extends over &, discriminated unions, no enums, no any, no default exports, and import type usage.",
-      "version": "1.0.0",
+      "version": "0.1.0",
       "category": "typescript",
       "icon": "TS",
       "iconClass": "typescript",
