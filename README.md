@@ -45,8 +45,9 @@ Functionally the installer behaves identically.
    or user-global (every project on this machine).
 3. **Plugins** — multi-select; all three are pre-checked. Empty selection cancels the run.
 4. **Conflicts** — when a destination file already exists, the installer asks per file
-   whether to overwrite, skip, or abort. The first conflict offers a "remember for this
-   run" toggle so you do not have to answer the same question repeatedly.
+   whether to overwrite, skip (default), or abort. On the first conflict the installer
+   also asks once whether to apply your choice to every remaining conflict in this run,
+   so you do not have to answer the same question repeatedly.
 
 Ctrl-C at any prompt is a clean exit — no files are written until you confirm at the end
 of the prompt flow.
@@ -87,11 +88,11 @@ installer replaces the block in place and never duplicates entries:
 
 ## Flags
 
-| Flag        | Effect                                                            |
-| ----------- | ----------------------------------------------------------------- |
-| `--dry-run` | Print every file that would be written, without touching disk.    |
-| `--help`    | Show usage and exit.                                              |
-| `--version` | Print the installer version and exit.                             |
+| Flag        | Effect                                                                                                                                            |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--dry-run` | Print every file that would be written, without touching disk. Existing destinations are listed as `would write (overwrites existing)` — no prompts fire. |
+| `--help`    | Show usage and exit.                                                                                                                              |
+| `--version` | Print the installer version and exit.                                                                                                             |
 
 ## Releasing (maintainer note)
 
@@ -100,6 +101,11 @@ UI (Releases -> Draft a new release -> publish a `vX.Y.Z` tag). The
 `.github/workflows/publish.yml` workflow runs `npm pack --dry-run` (sanity check) and
 then `npm publish` against GitHub Packages, authenticated by the workflow's
 `GITHUB_TOKEN`.
+
+**Package visibility is set in the GitHub UI**, not in `package.json`. GitHub Packages
+ignores the `publishConfig.access` field — to make the package public, open the
+repository's Packages page and change the package's visibility there. The first publish
+inherits the repository's default visibility.
 
 ---
 
