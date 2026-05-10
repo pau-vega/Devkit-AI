@@ -50,11 +50,12 @@ Complete
 
 ## Session Continuity
 - Roadmap created: 2026-05-05
-- Last activity: 2026-05-06 — Phase 1 complete (all 3 plans)
-- Next action: Plan Phase 2 (Commands and Agents Port)
+- Last activity: 2026-05-10 — Completed quick task 260510-jtr: npx installer (multi-editor, multi-scope) — Needs Review (smoke test)
+- Next action: Run interactive smoke test of `bin/install.mjs` against `/tmp/mm-smoke` (Plan Task 4), then Plan Phase 2 (Commands and Agents Port)
 
 ## Quick Tasks
 | Date | ID | Type | Description | Outcome |
 |------|----|----|-------------|---------|
 | 2026-05-06 | 260506-612 | research + plan | Cursor + OpenCode compatibility research and scope extension | RESEARCH.md + PLAN.md produced; ROADMAP/REQUIREMENTS/PROJECT/STATE updated to dual-runtime |
 | 2026-05-06 | 260506-613 | discuss | Phase1 Skills Compatibility context gathering | 01-CONTEXT.md + 01-DISCUSSION-LOG.md created with D-01 through D-06 decisions |
+| 2026-05-10 | 260510-jtr | quick-full (discuss + research + plan-check + verify + review) | npx installer for marketplace plugins — 3 editors (Claude Code, Cursor, OpenCode) × 3 scopes (project, project-local, user); GitHub Packages distribution + `npx github:` fallback; @clack/prompts UX; per-file conflict prompts | package.json + bin/install.mjs + 7 src/installer/*.mjs + .github/workflows/publish.yml + README install matrix; code-review BLOCKER (gitignore silent no-op) + 2 WARNINGs fixed; verifier: 9/11 must_haves verified, 2 deferred to live-publish smoke test (Needs Review) |
