@@ -58,9 +58,9 @@ INFO items about defensive cleanups.
 
 Reproduction: a `.gitignore` containing
 ```
-# <<< my-marketplace
+# <<< AI-Devkit
 foo
-# >>> my-marketplace
+# >>> AI-Devkit
 ```
 will trip the `.includes()` check, fail the regex, and produce no diff.
 
@@ -170,10 +170,10 @@ And change the prompt message in `conflicts.mjs` to handle a `null` `newSize`.
 **Issue:** Cancelling the **action** select returns `"abort"` (treated as abort by `copy.mjs`). Cancelling the **remember-toggle** confirm also returns `"abort"`, even though the user already chose an action. This means Ctrl-C on the remember prompt aborts the install and discards the action they just selected. Surprising.
 **Fix:** Treat `isCancel(remember)` as "don't remember, but proceed with the chosen action": `if (isCancel(remember)) return action;`.
 
-### IN-05: `existing.includes(BEGIN)` does not match line-anchored markers, so `# >>> my-marketplace` appearing inside another comment trips replacement mode
+### IN-05: `existing.includes(BEGIN)` does not match line-anchored markers, so `# >>> AI-Devkit` appearing inside another comment trips replacement mode
 
 **File:** `src/installer/gitignore.mjs:52`
-**Issue:** If a user has `# Avoid the # >>> my-marketplace block stuff` as a literal comment, the substring check will succeed. Combined with BL-01's regex matching, the comment block could be partially clobbered. Low likelihood, but the markers should be matched line-anchored to be safe.
+**Issue:** If a user has `# Avoid the # >>> AI-Devkit block stuff` as a literal comment, the substring check will succeed. Combined with BL-01's regex matching, the comment block could be partially clobbered. Low likelihood, but the markers should be matched line-anchored to be safe.
 **Fix:** Use `re.test(existing)` directly with line-anchored regex (see BL-01 fix); drop the `.includes` shortcut.
 
 ### IN-06: `engines.node` check is `>=20.11.0`, but `fs.readdirSync({ recursive: true, withFileTypes: true })` requires Node `20.1.0+` and `entry.parentPath` was added in `20.12.0`

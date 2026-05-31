@@ -40,7 +40,7 @@ import { resolveTargetRoot } from "./targets.mjs";
  * }>}
  */
 export async function runPromptFlow({ packageRoot, dryRun }) {
-  intro(dryRun ? "my-marketplace installer (dry-run)" : "my-marketplace installer");
+  intro(dryRun ? "AI-Devkit installer (dry-run)" : "AI-Devkit installer");
 
   const editor = await select({
     message: "Which editor are you installing for?",

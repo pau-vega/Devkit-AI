@@ -1,6 +1,6 @@
-# my-marketplace
+# AI-Devkit
 
-A small marketplace of Claude Code plugins — `typescript-rules`, `jsdoc-standards`, and
+A curated collection of Claude Code plugins — `typescript-rules`, `jsdoc-standards`, and
 `workflow-toolkit` — installable into Claude Code, Cursor, or OpenCode with a single
 command.
 
@@ -18,7 +18,7 @@ access token scoped to `read:packages`:
 Then run the installer with `npx`:
 
 ```bash
-npx @pau-vega/my-marketplace
+npx @pau-vega/ai-devkit
 ```
 
 Generate the token at GitHub -> Settings -> Developer settings -> Personal access tokens
@@ -31,7 +31,7 @@ If you would rather skip the token setup, npm can fetch the installer directly f
 repository over `git`:
 
 ```bash
-npx github:pau-vega/my-marketplace
+npx github:pau-vega/ai-devkit
 ```
 
 The trade-off: this clones the default branch HEAD (no version pinning), and the first
@@ -67,11 +67,11 @@ delimited block in `<cwd>/.gitignore` listing every file it wrote, so re-running
 installer replaces the block in place and never duplicates entries:
 
 ```text
-# >>> my-marketplace
+# >>> AI-Devkit
 .claude/skills/typescript-conventions/SKILL.md
 .claude/commands/ts-review.md
 ...
-# <<< my-marketplace
+# <<< AI-Devkit
 ```
 
 ## Known limitations
@@ -133,13 +133,13 @@ Requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v1.0.33 o
 From within Claude Code, run:
 
 ```
-/plugin marketplace add pau-vega/my-marketplace
+/plugin marketplace add pau-vega/ai-devkit
 ```
 
 ### 2. Install the plugin
 
 ```
-/plugin install typescript-rules@pau-vega-my-marketplace
+/plugin install typescript-rules@pau-vega-ai-devkit
 ```
 
 ### 3. Activate
@@ -151,8 +151,8 @@ Run `/reload-plugins` to load the plugin without restarting.
 Clone the repo and load it directly:
 
 ```bash
-git clone https://github.com/pau-vega/my-marketplace.git
-claude --plugin-dir ./my-marketplace
+git clone https://github.com/pau-vega/ai-devkit.git
+claude --plugin-dir ./ai-devkit
 ```
 
 ## Usage

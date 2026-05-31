@@ -1,4 +1,4 @@
-# My Marketplace — Dual-Runtime Compatibility (OpenCode + Cursor)
+# AI-Devkit — Dual-Runtime Compatibility (OpenCode + Cursor)
 
 ## What This Is
 

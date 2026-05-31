@@ -30,7 +30,7 @@ Each plugin follows the standard layout:
 ## How to Test Locally
 
 ```bash
-claude --plugin-dir ./my-marketplace
+claude --plugin-dir ./ai-devkit
 ```
 
 To regenerate the landing page after changing plugin metadata or components:

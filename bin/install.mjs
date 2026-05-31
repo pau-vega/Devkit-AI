@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * my-marketplace installer entry point.
+ * AI-Devkit installer entry point.
  *
  * Resolves the bundled package root, runs the prompt flow, copies files, and
  * (for project-local scope) writes a delimited gitignore block. All prompts
@@ -24,11 +24,11 @@ const PACKAGE_ROOT = path.resolve(__dirname, "..");
 
 const REQUIRED_NODE = [20, 11, 0];
 
-const HELP = `my-marketplace — install plugins into Claude Code, Cursor, or OpenCode.
+const HELP = `AI-Devkit — install plugins into Claude Code, Cursor, or OpenCode.
 
 Usage:
-  npx @pau-vega/my-marketplace [--dry-run]
-  npx github:pau-vega/my-marketplace [--dry-run]
+  npx @pau-vega/ai-devkit [--dry-run]
+  npx github:pau-vega/ai-devkit [--dry-run]
 
 Flags:
   --dry-run    Print every file that would be written, without touching disk.
