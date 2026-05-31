@@ -4,9 +4,9 @@
  *
  * The block is delimited by:
  *
- *   # >>> my-marketplace
+ *   # >>> AI-Devkit
  *   <one repo-relative path per line>
- *   # <<< my-marketplace
+ *   # <<< AI-Devkit
  *
  * On every run the existing block (if any) is replaced verbatim — paths are
  * deduplicated and listed in stable order. Trailing newline is preserved.
@@ -15,11 +15,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const BEGIN = "# >>> my-marketplace";
-const END = "# <<< my-marketplace";
+const BEGIN = "# >>> AI-Devkit";
+const END = "# <<< AI-Devkit";
 
 /**
- * Insert or replace the my-marketplace gitignore block.
+ * Insert or replace the AI-Devkit gitignore block.
  *
  * @param {{ cwd: string, entries: string[] }} args
  * @returns {{ written: number, path: string }}

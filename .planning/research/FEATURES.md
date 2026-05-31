@@ -59,7 +59,7 @@ OpenCode has NO equivalent of Claude Code's `--plugin-dir` flag. There is no plu
 
 ```
 1. Clone or copy the plugin directory into the project:
-   git clone https://github.com/<user>/my-marketplace .opencode-plugins
+   git clone https://github.com/<user>/AI-Devkit .opencode-plugins
 
 2. For each plugin, place the OpenCode-specific files at the right paths:
    .opencode/plugins/typescript-rules.ts   ← enforcement hook

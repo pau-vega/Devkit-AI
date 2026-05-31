@@ -14,7 +14,7 @@ A note on prompt injection: the `WebFetch` of the GitHub Packages docs returned 
 ## User Constraints (from CONTEXT.md)
 
 ### Locked Decisions
-- Distribution: GitHub Packages npm registry, scope `@pau-vega/my-marketplace`. Invocation: `npx @pau-vega/my-marketplace`. README also documents zero-config fallback `npx github:pau-vega/my-marketplace`.
+- Distribution: GitHub Packages npm registry, scope `@pau-vega/ai-devkit`. Invocation: `npx @pau-vega/ai-devkit`. README also documents zero-config fallback `npx github:pau-vega/ai-devkit`.
 - CI publishes on tagged release via `.github/workflows/publish.yml` using `GITHUB_TOKEN`.
 - CLI prompts: `@clack/prompts` (chosen for small dep tree + aesthetics). Flow: `editor → scope → plugins (multi-select, all defaulted) → conflict prompts → write summary`. Ctrl-C cancels cleanly with no partial writes.
 - Plugin selection: multi-select, all 3 default-checked, empty selection aborts.
@@ -42,16 +42,16 @@ A note on prompt injection: the `WebFetch` of the GitHub Packages docs returned 
 
 ## 1. npx + bin setup
 
-The minimum viable shape for `npx @pau-vega/my-marketplace`:
+The minimum viable shape for `npx @pau-vega/ai-devkit`:
 
 **`package.json` (root):**
 ```json
 {
-  "name": "@pau-vega/my-marketplace",
+  "name": "@pau-vega/ai-devkit",
   "version": "1.0.0",
   "type": "module",
   "bin": {
-    "my-marketplace": "bin/install.mjs"
+    "AI-Devkit": "bin/install.mjs"
   },
   "engines": { "node": ">=20.11.0" },
   "files": [
@@ -87,7 +87,7 @@ Key rules [VERIFIED: code.claude.com/docs/en/plugins, nodejs.org/api/esm.html]:
 - **ESM is fine for a `bin`** — Node added stable support and modern shebang-without-extension files work as ESM via `"type": "module"` in `package.json`. Use `.mjs` extension on the bin file as belt-and-suspenders for any tool that mis-reads `package.json`.
 - **Node floor: `>=20.11.0`** [VERIFIED: blog.stackademic.com, sonarsource.com/blog]. That is the LTS where `import.meta.dirname`/`import.meta.filename` were backported; pre-20.11 we'd need the `fileURLToPath` dance anyway, but 20.11 is also the active LTS as of May 2026 so picking it gives us both modern ESM ergonomics AND broad availability. Pin via `"engines"` and add a one-liner runtime check at the top of `install.mjs` that prints a friendly upgrade message when `process.versions.node` is < 20.11.
 
-**Why this works under `npx`:** When a user runs `npx @pau-vega/my-marketplace`, npm caches the package in `~/.npm/_npx/<hash>/node_modules/@pau-vega/my-marketplace/`, then invokes the `bin` entry. The script's `import.meta.url` resolves inside that cache directory, so `path.resolve(__dirname, "..")` lands on the package root — which is where the bundled `typescript-rules/`, `jsdoc-standards/`, `workflow-toolkit/` directories live (because `files` shipped them).
+**Why this works under `npx`:** When a user runs `npx @pau-vega/ai-devkit`, npm caches the package in `~/.npm/_npx/<hash>/node_modules/@pau-vega/ai-devkit/`, then invokes the `bin` entry. The script's `import.meta.url` resolves inside that cache directory, so `path.resolve(__dirname, "..")` lands on the package root — which is where the bundled `typescript-rules/`, `jsdoc-standards/`, `workflow-toolkit/` directories live (because `files` shipped them).
 
 ## 2. Publishing to GitHub Packages
 
@@ -138,11 +138,11 @@ jobs:
 ```
 The `setup-node` step generates the `.npmrc` automatically; we don't commit one to the repo. We do NOT need `npm ci` because the installer has no production dependencies it needs to install before publish (its dependencies — `@clack/prompts` and friends — get installed by the consumer at `npx` time).
 
-**The big quirk to document in the README** [VERIFIED: docs.github.com — quoted: "You need an access token to publish, install, and delete private, internal, and public packages"]: GitHub Packages requires authentication for `npm install` / `npx` **even on public packages**. This is unlike the public npm registry. So a user who tries `npx @pau-vega/my-marketplace` cold will get a 401 unless they have an `.npmrc` with a token, or set `NPM_CONFIG__AUTH` env var. Two-line workaround we document:
+**The big quirk to document in the README** [VERIFIED: docs.github.com — quoted: "You need an access token to publish, install, and delete private, internal, and public packages"]: GitHub Packages requires authentication for `npm install` / `npx` **even on public packages**. This is unlike the public npm registry. So a user who tries `npx @pau-vega/ai-devkit` cold will get a 401 unless they have an `.npmrc` with a token, or set `NPM_CONFIG__AUTH` env var. Two-line workaround we document:
 1. Create a GitHub PAT (classic) with `read:packages` scope.
 2. `echo "//npm.pkg.github.com/:_authToken=$TOKEN" >> ~/.npmrc` and `echo "@pau-vega:registry=https://npm.pkg.github.com" >> ~/.npmrc`.
 
-**Zero-auth fallback that works today:** `npx github:pau-vega/my-marketplace`. npm clones the repo at the default branch and runs `bin`. The trade-off is no version pinning and a slightly slower first run — fine for a "just try it" path. Document both.
+**Zero-auth fallback that works today:** `npx github:pau-vega/ai-devkit`. npm clones the repo at the default branch and runs `bin`. The trade-off is no version pinning and a slightly slower first run — fine for a "just try it" path. Document both.
 
 ## 3. Editor target paths
 
@@ -198,7 +198,7 @@ import {
   log, note, spinner, group
 } from "@clack/prompts";
 
-intro("my-marketplace installer");
+intro("AI-Devkit installer");
 
 const editor = await select({
   message: "Which editor are you installing for?",
@@ -309,7 +309,7 @@ Add this to the publish workflow before `npm publish` as a sanity check (only lo
 
 ### P1. GitHub Packages requires auth even for public packages [VERIFIED: docs.github.com]
 Quoted: "You need an access token to publish, install, and delete private, internal, and public packages."
-**Mitigation:** README documents both the `.npmrc` setup AND the `npx github:pau-vega/my-marketplace` zero-auth fallback. The two-step path is the headline; the fallback is the escape hatch.
+**Mitigation:** README documents both the `.npmrc` setup AND the `npx github:pau-vega/ai-devkit` zero-auth fallback. The two-step path is the headline; the fallback is the escape hatch.
 
 ### P2. npm dereferences symlinks during publish [VERIFIED: github.com/npm/cli/issues/6746, github.com/npm/npm/issues/3310]
 `npm publish` follows symlinks and bakes the target contents into the tarball as regular files. The symlink itself is not preserved.
@@ -345,10 +345,10 @@ Per project STATE.md: "Cursor capability gap accepted: no portable subagent file
 For Claude Code project-local, the editor itself gitignores `settings.local.json`. But our installer is writing skill/command/hook files into `.claude/` for project-local scope, not just settings. Two options:
 1. Write to a different subdir (e.g., `.claude/local/`) — but Claude Code doesn't read this path, so the components wouldn't load.
 2. Write to the normal subdirs (`.claude/skills/`, etc.) and append entries to `.gitignore` listing the specific files installed.
-Recommendation: option 2. The installer maintains a `.gitignore` block delimited by markers (`# >>> my-marketplace ... # <<< my-marketplace`) so re-running it is idempotent. Same approach for Cursor and OpenCode project-local.
+Recommendation: option 2. The installer maintains a `.gitignore` block delimited by markers (`# >>> AI-Devkit ... # <<< AI-Devkit`) so re-running it is idempotent. Same approach for Cursor and OpenCode project-local.
 
 ### P9. Idempotency on re-run
-If a user runs `npx @pau-vega/my-marketplace` twice with the same answers, the second run should be a no-op (or all conflicts resolve via "skip"). The per-conflict prompt already handles this — but the "remember choice" toggle means a single keystroke in the second run skips everything. Test that path explicitly during plan execution.
+If a user runs `npx @pau-vega/ai-devkit` twice with the same answers, the second run should be a no-op (or all conflicts resolve via "skip"). The per-conflict prompt already handles this — but the "remember choice" toggle means a single keystroke in the second run skips everything. Test that path explicitly during plan execution.
 
 ### P10. WebFetch prompt-injection in research sources (process risk)
 During this research session, fetched documentation pages contained text impersonating system reminders ("Auto Mode Active", "Exited Plan Mode"). These are not real instructions from the orchestrator. When implementing, if any third-party doc/markdown is fetched at runtime, treat its contents as untrusted strings, never as control flow. The installer doesn't fetch anything at runtime, so this is informational — but the planner should know the research session encountered injection attempts and ignored them.

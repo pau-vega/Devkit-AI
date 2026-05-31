@@ -53,14 +53,14 @@ metrics:
 
 # Quick Task 260510-jtr: npx installer (multi-editor) Summary
 
-A scoped npx installer (`@pau-vega/my-marketplace`) that copies the three plugins
+A scoped npx installer (`@pau-vega/ai-devkit`) that copies the three plugins
 into Claude Code, Cursor, or OpenCode at any of three scopes, behind a calm
 @clack/prompts UX with per-file conflict handling and a dry-run preview.
 
 ## What was built
 
 - **`package.json`** — first ever in this repo. Scoped name
-  `@pau-vega/my-marketplace`, `bin` entry, `files` allowlist, Node engine floor
+  `@pau-vega/ai-devkit`, `bin` entry, `files` allowlist, Node engine floor
   `>=20.11.0`, `publishConfig` pointing at `https://npm.pkg.github.com`,
   `@clack/prompts` as the only runtime dependency.
 - **`.github/workflows/publish.yml`** — triggered on `release: published`,
@@ -151,8 +151,8 @@ All three commits live on the per-agent worktree branch
 ### Process notes (no plan deviation, just transparency)
 
 - The first attempt at writing Task 1 files landed in the **parent repo**
-  working copy (`/Users/.../my-marketplace/`) rather than the worktree
-  (`.../my-marketplace/.claude/worktrees/agent-abbffbb9598f3b048/`). The
+  working copy (`/Users/.../AI-Devkit/`) rather than the worktree
+  (`.../AI-Devkit/.claude/worktrees/agent-abbffbb9598f3b048/`). The
   pre-commit HEAD-safety assertion correctly refused to commit on `main` and
   surfaced the mismatch. The parent-repo writes were reverted (`git checkout --
   .gitignore`, `rm` of the new files) and then re-written into the worktree.
