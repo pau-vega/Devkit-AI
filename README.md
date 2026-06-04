@@ -1,8 +1,9 @@
 # AI-Devkit
 
-A curated collection of Claude Code plugins — `typescript-rules` and `jsdoc-standards` —
-installable into Claude Code, Cursor, or OpenCode with a single
-command.
+A curated collection of reusable skills, agents, and hooks — `typescript-rules`
+and `jsdoc-standards` — installable into Claude Code, Cursor, or OpenCode
+with a single command. Source files are runtime-neutral; the installer
+translates per-target so no runtime is privileged.
 
 ## Install
 
@@ -57,6 +58,12 @@ installer replaces the block in place and never duplicates entries:
 - **Cursor user-global scope ships best-effort.** Only `~/.cursor/hooks.json` and
   `~/.cursor/hooks/` are formally documented. Commands, rules, and skills at user scope
   follow the same shape but are not officially documented by Cursor.
+- **OpenCode agents and commands are translated at install time.** The source files
+  use Claude Code's frontmatter format (`model: sonnet`, `${CLAUDE_PLUGIN_ROOT}`).
+  For OpenCode targets, the installer drops the model line (so the agent inherits
+  the user's `opencode.json` model — any provider), adds `mode: subagent`, removes
+  Claude Code's `allowed-tools: [Agent]`, and rewrites plugin-root paths to `..`.
+  The body of every agent and command reads the same in both runtimes.
 
 ## Flags
 
@@ -80,7 +87,7 @@ stored in the repository's GitHub secrets).
 
 # typescript-rules
 
-A Claude Code plugin that enforces TypeScript coding conventions with automatic validation, code review, and a dedicated reviewer agent.
+A plugin that enforces TypeScript coding conventions with automatic validation, code review, and a dedicated reviewer agent.
 
 ## Overview
 
@@ -89,40 +96,47 @@ This plugin provides opinionated TypeScript conventions and enforces them automa
 ## Features
 
 - **Conventions skill** — full TypeScript style guide covering types, error handling, imports, naming, and dependencies
-- **Code review agent** — AI-powered reviewer that checks files against the conventions and reports issues with severity levels
+- **Code review agent** — AI-powered reviewer that checks files against the conventions and reports issues with severity levels (Claude Code and OpenCode)
 - **`/ts-review` command** — run a code review on specific files, directories, or your uncommitted changes
-- **Enforcement hooks** — automatically blocks `any`, `enum`, `export default`, manual `package.json` edits, and non-pnpm package managers
+- **Enforcement hooks** — automatically blocks `any`, `enum`, `export default`, manual `package.json` edits, and non-pnpm package managers (Claude Code and Cursor; OpenCode does not consume `hooks.json`)
 
 ## Installation
 
+The recommended path is the cross-runtime installer:
+
+```bash
+npx devkit-ai
+```
+
+It prompts for editor, scope, and plugins. To target a specific editor without prompts, see `npx devkit-ai --help`.
+
+### Claude Code (direct)
+
 Requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v1.0.33 or later.
 
-### 1. Add the marketplace
-
-From within Claude Code, run:
+From within Claude Code, add the marketplace and install:
 
 ```
 /plugin marketplace add pau-vega/ai-devkit
-```
-
-### 2. Install the plugin
-
-```
 /plugin install typescript-rules@pau-vega-ai-devkit
 ```
 
-### 3. Activate
+Then run `/reload-plugins` to activate without restarting.
 
-Run `/reload-plugins` to load the plugin without restarting.
-
-### Alternative: test locally
-
-Clone the repo and load it directly:
+To load a local clone directly:
 
 ```bash
 git clone https://github.com/pau-vega/ai-devkit.git
 claude --plugin-dir ./ai-devkit
 ```
+
+### OpenCode
+
+Use the installer (`npx devkit-ai`) and pick `opencode`. The agent is translated at install time: the `model: sonnet` line is dropped (the agent inherits your `opencode.json` model — Anthropic, OpenAI, Google, local, anything OpenCode supports), `mode: subagent` is added, and `${CLAUDE_PLUGIN_ROOT}` paths are rewritten to relative `..` references.
+
+### Cursor
+
+Use the installer (`npx devkit-ai`) and pick `cursor`. Agents are skipped (Cursor has no portable agent format); skills, commands, and hooks are installed. Restart Cursor to load the new files.
 
 ## Usage
 
@@ -136,17 +150,17 @@ claude --plugin-dir ./ai-devkit
 
 ### Reference conventions
 
-Ask Claude to use the `typescript-conventions` skill when writing or reviewing TypeScript code. The conventions are applied automatically on every file write and edit via prompt hooks.
+The assistant consults the `typescript-conventions` skill automatically when writing or reviewing TypeScript code. On Claude Code and Cursor, the prompt-based hooks also validate writes against the conventions in real time.
 
 ### Hooks
 
-No setup needed — hooks activate automatically once the plugin is installed. They block non-compliant patterns in real time and suggest the correct alternative.
+On Claude Code and Cursor, hooks activate automatically once the plugin is installed — they block non-compliant patterns and suggest the correct alternative. OpenCode does not currently consume `hooks.json`.
 
 ---
 
 # jsdoc-standards
 
-A Claude Code plugin that enforces consistent JSDoc documentation across TypeScript projects with three configurable enforcement levels.
+A plugin that enforces consistent JSDoc documentation across TypeScript projects, with three configurable enforcement levels.
 
 ## Overview
 
@@ -156,28 +170,35 @@ This plugin provides opinionated JSDoc documentation rules and warns about missi
 
 - **Conventions skill** — full JSDoc style guide covering format, tag usage, and the three enforcement levels (Minimal, Standard, Strict)
 - **JSDoc review command** — run a documentation audit at a chosen level
-- **Reviewer agent** — autonomous JSDoc coverage checker with Error/Warning/Suggestion severity
-- **PreToolUse hook** — warns (never blocks) when exported TypeScript constructs are missing JSDoc
+- **Reviewer agent** — autonomous JSDoc coverage checker with Error/Warning/Suggestion severity (Claude Code and OpenCode)
+- **PreToolUse hook** — warns (never blocks) when exported TypeScript constructs are missing JSDoc (Claude Code and Cursor; OpenCode does not consume `hooks.json`)
 
 ## Installation
 
-### 1. Add the marketplace
+The recommended path is the cross-runtime installer:
 
-From within Claude Code, run:
+```bash
+npx devkit-ai
+```
+
+### Claude Code (direct)
+
+From within Claude Code:
 
 ```
 /plugin marketplace add pau-vega/ai-devkit
-```
-
-### 2. Install the plugin
-
-```
 /plugin install jsdoc-standards@pau-vega-ai-devkit
 ```
 
-### 3. Activate
+Then run `/reload-plugins` to activate without restarting.
 
-Run `/reload-plugins` to load the plugin without restarting.
+### OpenCode
+
+Use the installer (`npx devkit-ai`) and pick `opencode`. The reviewer's `model` line is dropped at install time (inherits your `opencode.json` model), and plugin-root paths are rewritten to relative references.
+
+### Cursor
+
+Use the installer (`npx devkit-ai`) and pick `cursor`. The reviewer agent is skipped (Cursor has no portable agent format); the command, skill, and warning hook are installed.
 
 ## Usage
 
@@ -191,8 +212,8 @@ Run `/reload-plugins` to load the plugin without restarting.
 
 ### Reference conventions
 
-Ask Claude to use the `jsdoc-conventions` skill when writing or documenting TypeScript code. The conventions are applied automatically on every file write and edit via prompt hooks.
+The assistant consults the `jsdoc-conventions` skill automatically when writing or documenting TypeScript code. On Claude Code and Cursor, the prompt-based hook validates writes against the conventions in real time.
 
 ### Hooks
 
-No setup needed — hooks activate automatically once the plugin is installed. They warn about missing JSDoc in real time.
+On Claude Code and Cursor, hooks activate automatically once the plugin is installed — they warn about missing JSDoc on every write. OpenCode does not currently consume `hooks.json`.

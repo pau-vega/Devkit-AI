@@ -14,6 +14,7 @@ import { log } from "@clack/prompts";
 
 import { resolveConflict } from "./conflicts.mjs";
 import { mapPluginFiles } from "./targets.mjs";
+import { transformSourceForEditor } from "./translator.mjs";
 
 const ABORT_SENTINEL = "ABORTED_BY_USER";
 
@@ -128,7 +129,13 @@ export async function copyPluginFiles({
 
     try {
       fs.mkdirSync(path.dirname(entry.dest), { recursive: true });
-      fs.copyFileSync(entry.src, entry.dest);
+      const sourceContent = fs.readFileSync(entry.src, "utf8");
+      const translated = transformSourceForEditor({
+        editor,
+        kind: entry.kind,
+        content: sourceContent,
+      });
+      fs.writeFileSync(entry.dest, translated);
       if (
         entry.kind === "hook-script" &&
         os.platform() !== "win32" &&

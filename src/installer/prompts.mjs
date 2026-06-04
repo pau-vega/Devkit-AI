@@ -46,8 +46,8 @@ export async function runPromptFlow({ packageRoot, dryRun }) {
     message: "Which editor are you installing for?",
     options: [
       { value: "claude-code", label: "Claude Code" },
-      { value: "cursor", label: "Cursor" },
       { value: "opencode", label: "OpenCode" },
+      { value: "cursor", label: "Cursor" },
     ],
   });
   if (isCancel(editor)) {

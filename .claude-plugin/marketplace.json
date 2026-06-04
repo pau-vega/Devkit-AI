@@ -1,6 +1,6 @@
 {
   "name": "AI-Devkit",
-  "description": "Curated collection of Claude Code plugins for TypeScript development",
+  "description": "Reusable skills, agents, and hooks for TypeScript development, installable into Claude Code, Cursor, or OpenCode.",
   "owner": {
     "name": "Pau Velasco Garrofe"
   },

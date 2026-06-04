@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI-Devkit by Pau Velasco</title>
-<meta name="description" content="Reusable Claude Code skills, agents, and hooks for TypeScript, documentation, and developer workflow.">
+<meta name="description" content="Reusable skills, agents, and hooks for TypeScript development, installable into Claude Code, Cursor, or OpenCode via npx devkit-ai.">
 <script>
   try {
     document.documentElement.setAttribute('data-theme', localStorage.getItem('marketplace-theme') || 'dark');
@@ -1076,8 +1076,8 @@
 <section class="hero">
   <div class="hero-inner">
     <span class="hero-eyebrow">Pau Velasco</span>
-    <h1 class="hero-title">Plugins for Claude&nbsp;Code, crafted for developers.</h1>
-    <p class="hero-subtitle">Reusable skills, agents, and hooks that enforce conventions as you code. Drop them into any repo with one command and let Claude do the heavy lifting.</p>
+    <h1 class="hero-title">Plugins for AI coding editors, crafted for developers.</h1>
+    <p class="hero-subtitle">Reusable skills, agents, and hooks that enforce conventions as you code. Drop them into any repo with one command and run them in Claude Code, Cursor, or OpenCode.</p>
     <div class="hero-stats" id="hero-stats">
       <span class="hero-stat"><strong id="hero-plugins">0</strong><span>plugins</span></span>
       <span class="hero-stat"><strong id="hero-skills">0</strong><span>skills</span></span>
@@ -1424,7 +1424,7 @@ function renderPlugins() {
         `);
       }
 
-      const installCmd = `claude mcp add-plugin ${p.source}`;
+      const installCmd = `npx devkit-ai`;
       sections.push(`
         <div class="detail-section">
           <div class="detail-section-title">Install</div>

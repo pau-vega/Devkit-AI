@@ -1,6 +1,6 @@
 # jsdoc-standards
 
-A Claude Code plugin that enforces consistent JSDoc documentation across TypeScript projects with three configurable enforcement levels.
+A plugin that enforces consistent JSDoc documentation across TypeScript projects, with three configurable enforcement levels. Installable into Claude Code, Cursor, or OpenCode via `npx devkit-ai`.
 
 ## Enforcement Levels
 
@@ -14,7 +14,7 @@ A Claude Code plugin that enforces consistent JSDoc documentation across TypeScr
 
 ### Skill: `jsdoc-conventions`
 
-Reference guide with the full JSDoc style rules. Claude consults this automatically when writing or documenting TypeScript code.
+Reference guide with the full JSDoc style rules. The assistant consults this automatically when writing or documenting TypeScript code.
 
 ### Command: `jsdoc-review`
 
@@ -28,16 +28,23 @@ User-invoked review command:
 
 ### Agent: `jsdoc-reviewer`
 
-Autonomous reviewer that triggers when you ask about JSDoc quality (e.g., "review my JSDocs", "check documentation coverage"). Reports findings by file with Error/Warning/Suggestion severity.
+Autonomous reviewer that triggers when you ask about JSDoc quality (e.g., "review my JSDocs", "check documentation coverage"). Reports findings by file with Error/Warning/Suggestion severity. Available for Claude Code and OpenCode; Cursor has no portable agent file format.
 
 ### Hooks
 
-PreToolUse hook on Write/Edit that **warns** (never blocks) when exported TypeScript constructs are missing JSDoc comments.
+PreToolUse hook on Write/Edit that **warns** (never blocks) when exported TypeScript constructs are missing JSDoc comments. Claude Code only — OpenCode does not consume `hooks.json`, and Cursor's hook schema differs.
 
 ## Installation
 
 ```bash
-claude --plugin-dir /path/to/jsdoc-standards
+npx devkit-ai
+```
+
+The installer prompts for editor (Claude Code / OpenCode / Cursor), scope (project / project-local / user), and which plugins to install. To install jsdoc-standards into Claude Code without the installer:
+
+```bash
+git clone https://github.com/pau-vega/ai-devkit.git
+claude --plugin-dir ./ai-devkit/jsdoc-standards
 ```
 
 ## License
