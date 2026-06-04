@@ -39,6 +39,10 @@
  *                                        dispatches subagents via
  *                                        `opencode.json`'s `subtask: true`,
  *                                        not frontmatter)
+ *     - drop `argument-hint:` line       (Claude Code-specific; OpenCode's
+ *                                        command frontmatter only consumes
+ *                                        `description` and the field would
+ *                                        be silently ignored)
  *     - replace `${CLAUDE_PLUGIN_ROOT}` → `..`
  *                                        (commands live at
  *                                        `.opencode/commands/`, so `..` lands
@@ -167,6 +171,12 @@ function translateCommandToOpenCode(source) {
       allowedToolsIndent = (line.match(/^(\s*)/) ?? [""])[0];
       continue;
     }
+    if (/^argument-hint\s*:/.test(line)) {
+      // Drop `argument-hint:`. Claude Code-specific; OpenCode's command
+      // frontmatter only consumes `description` (and optional `agent`),
+      // and `argument-hint` would be silently ignored.
+      continue;
+    }
     if (inAllowedTools) {
       const lineIndent = (line.match(/^(\s*)/) ?? [""])[0];
       if (line.trim() === "" || lineIndent.length > allowedToolsIndent.length) {
@@ -191,10 +201,11 @@ function translateCommandToOpenCode(source) {
     const agentName = dispatchMatch[1];
     const hint =
       `\n## Runtime\n\n` +
-      `In OpenCode, dispatch the agent with the \`task\` tool — the equivalent of Claude Code's \`Agent\` tool:\n\n` +
+      `Dispatch the agent with the \`task\` tool:\n\n` +
       `\`\`\`\n` +
       `task({ subagent_type: "${agentName}", description: "<short task>", prompt: "<full request>" })\n` +
       `\`\`\`\n` +
+      `\n` +
       `Pass the enforcement level and target path through \`prompt\` so the subagent has the full context.\n`;
     body = body.trimEnd() + "\n" + hint;
   }
