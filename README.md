@@ -68,11 +68,13 @@ installer replaces the block in place and never duplicates entries:
 
 ## Releasing (maintainer note)
 
-Publishing happens automatically on a tagged GitHub Release. Cut a release in the GitHub
-UI (Releases -> Draft a new release -> publish a `vX.Y.Z` tag). The
-`.github/workflows/publish.yml` workflow runs `npm pack --dry-run` (sanity check) and
-then `npm publish` to the public npm registry, authenticated by an `NPM_TOKEN` secret
-(an npm access token with publish permissions, stored in the repository's GitHub secrets).
+Releases are managed by [release-please](https://github.com/googleapis/release-please). On every push to `main`, release-please opens (or
+updates) a PR that bumps the version in `package.json` and `.claude-plugin/marketplace.json`
+and appends a changelog entry. Merging that PR creates a GitHub release with a `vX.Y.Z` tag,
+which triggers the `publish` job in `.github/workflows/release-please.yml`. That job runs
+`npm pack --dry-run` (sanity check) and then `npm publish` to the public npm registry,
+authenticated by an `NPM_TOKEN` secret (an npm access token with publish permissions,
+stored in the repository's GitHub secrets).
 
 ---
 
@@ -139,3 +141,106 @@ Ask Claude to use the `typescript-conventions` skill when writing or reviewing T
 ### Hooks
 
 No setup needed — hooks activate automatically once the plugin is installed. They block non-compliant patterns in real time and suggest the correct alternative.
+
+---
+
+# jsdoc-standards
+
+A Claude Code plugin that enforces consistent JSDoc documentation across TypeScript projects with three configurable enforcement levels.
+
+## Overview
+
+This plugin provides opinionated JSDoc documentation rules and warns about missing documentation as you code. It includes a full conventions reference, a PreToolUse hook that warns (never blocks) on missing JSDoc, an on-demand review command, and a dedicated reviewer agent.
+
+## Features
+
+- **Conventions skill** — full JSDoc style guide covering format, tag usage, and the three enforcement levels (Minimal, Standard, Strict)
+- **JSDoc review command** — run a documentation audit at a chosen level
+- **Reviewer agent** — autonomous JSDoc coverage checker with Error/Warning/Suggestion severity
+- **PreToolUse hook** — warns (never blocks) when exported TypeScript constructs are missing JSDoc
+
+## Installation
+
+### 1. Add the marketplace
+
+From within Claude Code, run:
+
+```
+/plugin marketplace add pau-vega/ai-devkit
+```
+
+### 2. Install the plugin
+
+```
+/plugin install jsdoc-standards@pau-vega-ai-devkit
+```
+
+### 3. Activate
+
+Run `/reload-plugins` to load the plugin without restarting.
+
+## Usage
+
+### Review your JSDoc coverage
+
+```
+/jsdoc-standards:jsdoc-review                 # standard level, changed files
+/jsdoc-standards:jsdoc-review strict          # strict level, changed files
+/jsdoc-standards:jsdoc-review minimal src/utils  # minimal level, specific path
+```
+
+### Reference conventions
+
+Ask Claude to use the `jsdoc-conventions` skill when writing or documenting TypeScript code. The conventions are applied automatically on every file write and edit via prompt hooks.
+
+### Hooks
+
+No setup needed — hooks activate automatically once the plugin is installed. They warn about missing JSDoc in real time.
+
+---
+
+# workflow-toolkit
+
+A Claude Code plugin that ships developer workflow skills for planning, design review, and product requirements. Five skills cover the full lifecycle from idea stress-testing to PRD writing, issue breakdown, TDD implementation, and codebase architecture improvement.
+
+## Skills
+
+- **grill-me** — interview-style interrogation of a plan, design, or idea
+- **write-a-prd** — draft a Product Requirements Document
+- **prd-to-issues** — break a PRD into small, well-scoped issues
+- **tdd** — test-driven development guidance with deep-module design references
+- **improve-codebase-architecture** — find refactoring opportunities and deepen modules
+
+## Installation
+
+### 1. Add the marketplace
+
+From within Claude Code, run:
+
+```
+/plugin marketplace add pau-vega/ai-devkit
+```
+
+### 2. Install the plugin
+
+```
+/plugin install workflow-toolkit@pau-vega-ai-devkit
+```
+
+### 3. Activate
+
+Run `/reload-plugins` to load the plugin without restarting.
+
+## Usage
+
+### Introduce the workflow skill set
+
+```
+/workflow-toolkit:create-workflow
+```
+
+This command is the entry point — it tells Claude about the available workflow skills so you can invoke them by name.
+
+### Invoke a skill
+
+After running `/create-workflow`, ask Claude to use any skill by name (e.g., "grill me on this design" or "write a PRD for X").

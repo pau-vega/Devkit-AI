@@ -8,7 +8,19 @@
       "release-type": "node",
       "changelog-path": "CHANGELOG.md",
       "include-v-in-tag": true,
-      "versioning-strategy": "always-bump-minor"
+      "versioning-strategy": "always-bump-minor",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": ".claude-plugin/marketplace.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": ".claude-plugin/marketplace.json",
+          "jsonpath": "$.plugins[*].version"
+        }
+      ]
     }
   }
 }

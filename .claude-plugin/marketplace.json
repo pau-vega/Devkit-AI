@@ -1,8 +1,10 @@
 {
   "name": "AI-Devkit",
   "description": "Curated collection of Claude Code plugins for TypeScript development",
-  "owner": {"name": "Pau Velasco Garrofe"},
-  "version": "0.0.0",
+  "owner": {
+    "name": "Pau Velasco Garrofe"
+  },
+  "version": "0.1.0",
   "plugins": [
     {
       "name": "typescript-rules",
@@ -15,8 +17,15 @@
       "icon": "TS",
       "iconClass": "typescript",
       "accentColor": "#7c6aef",
-      "author": {"name": "Pau Velasco Garrofe"},
-      "tags": ["typescript", "conventions", "code-review", "linting"]
+      "author": {
+        "name": "Pau Velasco Garrofe"
+      },
+      "tags": [
+        "typescript",
+        "conventions",
+        "code-review",
+        "linting"
+      ]
     },
     {
       "name": "jsdoc-standards",
@@ -29,8 +38,15 @@
       "icon": "/**",
       "iconClass": "documentation",
       "accentColor": "#c8a040",
-      "author": {"name": "Pau Velasco Garrofe"},
-      "tags": ["jsdoc", "documentation", "typescript", "code-quality"]
+      "author": {
+        "name": "Pau Velasco Garrofe"
+      },
+      "tags": [
+        "jsdoc",
+        "documentation",
+        "typescript",
+        "code-quality"
+      ]
     },
     {
       "name": "workflow-toolkit",
@@ -43,8 +59,16 @@
       "icon": "WT",
       "iconClass": "workflow",
       "accentColor": "#34b482",
-      "author": {"name": "Pau Velasco Garrofe"},
-      "tags": ["workflow", "planning", "tdd", "prd", "code-review"]
+      "author": {
+        "name": "Pau Velasco Garrofe"
+      },
+      "tags": [
+        "workflow",
+        "planning",
+        "tdd",
+        "prd",
+        "code-review"
+      ]
     }
   ]
 }
