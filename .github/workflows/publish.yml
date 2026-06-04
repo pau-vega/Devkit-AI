@@ -15,7 +15,6 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-          scope: '@pau-vega'
       - name: Pack dry-run (sanity log)
         run: npm pack --dry-run
       - name: Publish

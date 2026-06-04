@@ -7,7 +7,7 @@ command.
 ## Install
 
 ```bash
-npx @pau-vega/ai-devkit
+npx devkit-ai
 ```
 
 ## What the installer prompts
