@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1](https://github.com/pau-vega/AI-Devkit/compare/devkit-ai-v0.1.0...devkit-ai-v0.1.1) (2026-06-04)
+
+
+### Features
+
+* translate agent and command files to OpenCode format on install ([bb3d08b](https://github.com/pau-vega/AI-Devkit/commit/bb3d08b87e321561c17874dd8b415bef2c50cf85))
+
+
+### Bug Fixes
+
+* **translator:** drop argument-hint, fix markdown in hint, remove Claude Code name leak ([f06b066](https://github.com/pau-vega/AI-Devkit/commit/f06b066690ad85d6f51b54bb87d3e1ecc2709720))
+
 ## 0.1.0 (2026-06-04)
 
 
