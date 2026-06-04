@@ -11,8 +11,8 @@ import { note, outro } from "@clack/prompts";
 const NEXT_STEPS = {
   "claude-code":
     "Run `/reload-plugins` in Claude Code, or restart the session, to pick up the new files.",
-  cursor: "Restart Cursor so the new commands, rules, hooks, and skills are loaded.",
   opencode: "Restart your OpenCode session to load the new commands and skills.",
+  cursor: "Restart Cursor so the new commands, rules, hooks, and skills are loaded.",
 };
 
 /**

@@ -24,7 +24,12 @@ const PACKAGE_ROOT = path.resolve(__dirname, "..");
 
 const REQUIRED_NODE = [20, 11, 0];
 
-const HELP = `AI-Devkit — install plugins into Claude Code, Cursor, or OpenCode.
+const HELP = `AI-Devkit — install reusable skills, agents, and hooks into your AI coding editor.
+
+Supports Claude Code, Cursor, and OpenCode. Source files are runtime-neutral;
+the installer translates per-target (e.g. drops model aliases that don't exist
+in OpenCode, rewrites plugin-root paths, and skips components the target
+runtime can't consume).
 
 Usage:
   npx devkit-ai [--dry-run]
