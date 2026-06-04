@@ -27,7 +27,7 @@ const REQUIRED_NODE = [20, 11, 0];
 const HELP = `AI-Devkit — install plugins into Claude Code, Cursor, or OpenCode.
 
 Usage:
-  npx @pau-vega/ai-devkit [--dry-run]
+  npx devkit-ai [--dry-run]
   npx github:pau-vega/ai-devkit [--dry-run]
 
 Flags:

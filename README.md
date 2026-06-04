@@ -4,39 +4,11 @@ A curated collection of Claude Code plugins — `typescript-rules`, `jsdoc-stand
 `workflow-toolkit` — installable into Claude Code, Cursor, or OpenCode with a single
 command.
 
-## Install (with auth)
-
-The package is published to GitHub Packages, which requires authentication for both
-public and private packages. Configure your `~/.npmrc` once with a classic personal
-access token scoped to `read:packages`:
-
-```text
-@pau-vega:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=<your-classic-pat>
-```
-
-Then run the installer with `npx`:
+## Install
 
 ```bash
-npx @pau-vega/ai-devkit
+npx devkit-ai
 ```
-
-Generate the token at GitHub -> Settings -> Developer settings -> Personal access tokens
-(classic), with the `read:packages` scope only. Do not commit your `~/.npmrc` to any
-repo — this project's `.gitignore` excludes `.npmrc` for that reason.
-
-## Install (zero-auth fallback)
-
-If you would rather skip the token setup, npm can fetch the installer directly from this
-repository over `git`:
-
-```bash
-npx github:pau-vega/ai-devkit
-```
-
-The trade-off: this clones the default branch HEAD (no version pinning), and the first
-run is slightly slower because npm has to resolve and fetch from GitHub directly.
-Functionally the installer behaves identically.
 
 ## What the installer prompts
 
@@ -99,13 +71,8 @@ installer replaces the block in place and never duplicates entries:
 Publishing happens automatically on a tagged GitHub Release. Cut a release in the GitHub
 UI (Releases -> Draft a new release -> publish a `vX.Y.Z` tag). The
 `.github/workflows/publish.yml` workflow runs `npm pack --dry-run` (sanity check) and
-then `npm publish` against GitHub Packages, authenticated by the workflow's
-`GITHUB_TOKEN`.
-
-**Package visibility is set in the GitHub UI**, not in `package.json`. GitHub Packages
-ignores the `publishConfig.access` field — to make the package public, open the
-repository's Packages page and change the package's visibility there. The first publish
-inherits the repository's default visibility.
+then `npm publish` to the public npm registry, authenticated by an `NPM_TOKEN` secret
+(an npm access token with publish permissions, stored in the repository's GitHub secrets).
 
 ---
 
