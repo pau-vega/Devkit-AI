@@ -108,8 +108,8 @@ export function mapPluginFiles({
 
   // Cursor collapses the inner skill-name segment when a plugin ships a single
   // skill (precedent: `.cursor/skills/typescript-rules/SKILL.md`). With more
-  // than one skill, the inner segment is preserved (precedent:
-  // `.cursor/skills/workflow-toolkit/<name>/SKILL.md`). We pre-count skills so
+  // than one skill, the inner segment is preserved (e.g.
+  // `.cursor/skills/<plugin>/<skill-name>/SKILL.md`). We pre-count skills so
   // resolveDestination can decide.
   const skillDirNames = new Set();
   for (const entry of entries) {
