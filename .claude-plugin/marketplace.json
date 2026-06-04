@@ -4,7 +4,7 @@
   "owner": {
     "name": "Pau Velasco Garrofe"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "plugins": [
     {
       "name": "typescript-rules",
@@ -12,7 +12,7 @@
       "source": "./typescript-rules",
       "description": "TypeScript coding conventions with automatic validation, review command, and reviewer agent",
       "longDescription": "TypeScript coding conventions with automatic validation, review command, and reviewer agent. Enforces interface extends over &, discriminated unions, no enums, no any, no default exports, and import type usage.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "category": "typescript",
       "icon": "TS",
       "iconClass": "typescript",
@@ -33,7 +33,7 @@
       "source": "./jsdoc-standards",
       "description": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings, and on-demand review",
       "longDescription": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings on missing docs, and on-demand review command.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "category": "documentation",
       "icon": "/**",
       "iconClass": "documentation",
