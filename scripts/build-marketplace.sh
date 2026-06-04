@@ -308,25 +308,7 @@ generate_cursor_symlinks() {
   (cd "$repo_root/.cursor/skills/jsdoc-standards" && \
    ln -sf ../../../jsdoc-standards/skills/jsdoc-conventions/SKILL.md SKILL.md)
 
-  # --- workflow-toolkit (namespaced layout per D-03) ---
-  mkdir -p "$repo_root/.cursor/skills/workflow-toolkit/write-a-prd"
-  mkdir -p "$repo_root/.cursor/skills/workflow-toolkit/improve-codebase-architecture"
-  mkdir -p "$repo_root/.cursor/skills/workflow-toolkit/prd-to-issues"
-  mkdir -p "$repo_root/.cursor/skills/workflow-toolkit/tdd"
-  mkdir -p "$repo_root/.cursor/skills/workflow-toolkit/grill-me"
-
-  (cd "$repo_root/.cursor/skills/workflow-toolkit/write-a-prd" && \
-   ln -sf ../../../../workflow-toolkit/skills/write-a-prd/SKILL.md SKILL.md)
-  (cd "$repo_root/.cursor/skills/workflow-toolkit/improve-codebase-architecture" && \
-   ln -sf ../../../../workflow-toolkit/skills/improve-codebase-architecture/SKILL.md SKILL.md)
-  (cd "$repo_root/.cursor/skills/workflow-toolkit/prd-to-issues" && \
-   ln -sf ../../../../workflow-toolkit/skills/prd-to-issues/SKILL.md SKILL.md)
-  (cd "$repo_root/.cursor/skills/workflow-toolkit/tdd" && \
-   ln -sf ../../../../workflow-toolkit/skills/tdd/SKILL.md SKILL.md)
-  (cd "$repo_root/.cursor/skills/workflow-toolkit/grill-me" && \
-   ln -sf ../../../../workflow-toolkit/skills/grill-me/SKILL.md SKILL.md)
-
-  echo "Created .cursor/skills/ symlinks for typescript-rules, jsdoc-standards, and workflow-toolkit" >&2
+  echo "Created .cursor/skills/ symlinks for typescript-rules and jsdoc-standards" >&2
 }
 
 # ── Main ─────────────────────────────────────────────────────────────

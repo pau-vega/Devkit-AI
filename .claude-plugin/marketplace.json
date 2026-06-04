@@ -47,28 +47,6 @@
         "typescript",
         "code-quality"
       ]
-    },
-    {
-      "name": "workflow-toolkit",
-      "displayName": "Workflow Toolkit",
-      "source": "./workflow-toolkit",
-      "description": "A collection of developer workflow skills for planning, design review, and product requirements.",
-      "longDescription": "A collection of developer workflow skills covering the full lifecycle from idea stress-testing to PRD writing, issue breakdown, TDD implementation, and codebase architecture improvement.",
-      "version": "0.1.0",
-      "category": "workflow",
-      "icon": "WT",
-      "iconClass": "workflow",
-      "accentColor": "#34b482",
-      "author": {
-        "name": "Pau Velasco Garrofe"
-      },
-      "tags": [
-        "workflow",
-        "planning",
-        "tdd",
-        "prd",
-        "code-review"
-      ]
     }
   ]
 }

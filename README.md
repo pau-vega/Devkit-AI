@@ -1,7 +1,7 @@
 # AI-Devkit
 
-A curated collection of Claude Code plugins — `typescript-rules`, `jsdoc-standards`, and
-`workflow-toolkit` — installable into Claude Code, Cursor, or OpenCode with a single
+A curated collection of Claude Code plugins — `typescript-rules` and `jsdoc-standards` —
+installable into Claude Code, Cursor, or OpenCode with a single
 command.
 
 ## Install
@@ -15,7 +15,7 @@ npx devkit-ai
 1. **Editor** — Claude Code, Cursor, or OpenCode.
 2. **Scope** — project (committed to the repo), project-local (gitignored, just for you),
    or user-global (every project on this machine).
-3. **Plugins** — multi-select; all three are pre-checked. Empty selection cancels the run.
+3. **Plugins** — multi-select; both are pre-checked. Empty selection cancels the run.
 4. **Conflicts** — when a destination file already exists, the installer asks per file
    whether to overwrite, skip (default), or abort. On the first conflict the installer
    also asks once whether to apply your choice to every remaining conflict in this run,
@@ -196,51 +196,3 @@ Ask Claude to use the `jsdoc-conventions` skill when writing or documenting Type
 ### Hooks
 
 No setup needed — hooks activate automatically once the plugin is installed. They warn about missing JSDoc in real time.
-
----
-
-# workflow-toolkit
-
-A Claude Code plugin that ships developer workflow skills for planning, design review, and product requirements. Five skills cover the full lifecycle from idea stress-testing to PRD writing, issue breakdown, TDD implementation, and codebase architecture improvement.
-
-## Skills
-
-- **grill-me** — interview-style interrogation of a plan, design, or idea
-- **write-a-prd** — draft a Product Requirements Document
-- **prd-to-issues** — break a PRD into small, well-scoped issues
-- **tdd** — test-driven development guidance with deep-module design references
-- **improve-codebase-architecture** — find refactoring opportunities and deepen modules
-
-## Installation
-
-### 1. Add the marketplace
-
-From within Claude Code, run:
-
-```
-/plugin marketplace add pau-vega/ai-devkit
-```
-
-### 2. Install the plugin
-
-```
-/plugin install workflow-toolkit@pau-vega-ai-devkit
-```
-
-### 3. Activate
-
-Run `/reload-plugins` to load the plugin without restarting.
-
-## Usage
-
-### Introduce the workflow skill set
-
-```
-/workflow-toolkit:create-workflow
-```
-
-This command is the entry point — it tells Claude about the available workflow skills so you can invoke them by name.
-
-### Invoke a skill
-
-After running `/create-workflow`, ask Claude to use any skill by name (e.g., "grill me on this design" or "write a PRD for X").
