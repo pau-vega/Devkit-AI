@@ -1,0 +1,33 @@
+name: README lint
+
+on:
+  pull_request:
+    paths:
+      - README.md
+      - .markdownlint.json
+      - .markdown-link-check.json
+      - .github/workflows/readme-lint.yml
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint README markdown
+        run: npx --yes markdownlint-cli2 README.md
+
+      - name: Check every README link returns 200
+        run: npx --yes markdown-link-check README.md --config .markdown-link-check.json
+
+      - name: Enforce 30 KB README size budget
+        run: |
+          SIZE=$(wc -c < README.md)
+          echo "README size: ${SIZE} bytes (budget: 30000)"
+          if [ "$SIZE" -ge 30000 ]; then
+            echo "::error::README is ${SIZE} bytes; budget is 30000."
+            exit 1
+          fi

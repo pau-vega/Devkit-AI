@@ -1,0 +1,30 @@
+{
+  "ignorePatterns": [
+    "^https?://localhost(:\\d+)?(/|$)",
+    "^https?://127\\.0\\.0\\.1(:\\d+)?(/|$)",
+    "^#",
+    "^https?://(www\\.)?npmjs\\.com/"
+  ],
+  "replacementPatterns": [
+    {
+      "pattern": "^/",
+      "replacement": "{{BASEURL}}/"
+    }
+  ],
+  "httpHeaders": [
+    {
+      "urls": ["https://shieldcn.dev/", "https://img.shields.io/"],
+      "headers": { "Accept": "image/*" }
+    },
+    {
+      "urls": ["https://", "http://"],
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (compatible; markdown-link-check/1.0; +https://github.com/pau-vega/ai-devkit)"
+      }
+    }
+  ],
+  "timeout": "10s",
+  "retryCount": 2,
+  "retryOn429": true,
+  "fallbackFiles": []
+}
