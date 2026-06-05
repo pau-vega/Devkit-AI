@@ -7,8 +7,8 @@
 [![npm version](https://shieldcn.dev/npm/devkit-ai.png)](https://www.npmjs.com/package/devkit-ai)
 [![npm license](https://shieldcn.dev/npm/license/devkit-ai.png?variant=outline)](./LICENSE)
 [![npm downloads](https://shieldcn.dev/npm/dw/devkit-ai.png?variant=outline)](https://www.npmjs.com/package/devkit-ai)
-[![GitHub CI](https://shieldcn.dev/github/ci/pau-vega/ai-devkit.png?variant=outline)](https://github.com/pau-vega/ai-devkit/actions)
-[![GitHub stars](https://shieldcn.dev/github/stars/pau-vega/ai-devkit.png?variant=outline)](https://github.com/pau-vega/ai-devkit)
+[![GitHub release](https://shieldcn.dev/github/release/pau-vega/AI-Devkit.png?variant=outline)](https://github.com/pau-vega/AI-Devkit/releases)
+[![GitHub stars](https://shieldcn.dev/github/stars/pau-vega/AI-Devkit.png?variant=outline)](https://github.com/pau-vega/AI-Devkit)
 
 ```bash
 npx devkit-ai
@@ -17,6 +17,7 @@ npx devkit-ai
 [![Claude Code](https://shieldcn.dev/badge/Claude_Code-7c3aed.png?style=for-the-badge)](https://docs.anthropic.com/en/docs/claude-code)
 [![Cursor](https://shieldcn.dev/badge/Cursor-7c3aed.png?style=for-the-badge)](https://cursor.com)
 [![OpenCode](https://shieldcn.dev/badge/OpenCode-7c3aed.png?style=for-the-badge)](https://opencode.ai)
+[![Marketplace](https://shieldcn.dev/badge/Marketplace-7c3aed.png?style=for-the-badge)](https://pau-vega.github.io/AI-Devkit/)
 
 </div>
 
