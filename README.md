@@ -1,8 +1,33 @@
 <div align="center">
 
-# AI-Devkit
+<pre>
+..::::::::::::-:--:---=---::::::-::::-===+===--:.
+.::::::::::.:::::::::------:-::::::::::-----===++===-:.
+..:::::::::::::::::-:------=-=-:::--------===-====++++++==-:
+..:::::::::::::::::---:--========-----==+=++++==+=++++++++++=-:
+.:::::--::::......::::-:--:---===+++===-====+++++++++++=======+==-:
+.::..::-:::::.......:::.::---::-===+++====---+**+++++++++=++++++=++==-:
+....::::::::..........::::-:----=-==+++===-=++****+++++++++++++========-.
+. .:::::::----:...........--:----------=+++==+++****+++==+++++***++========-.
+..... ..::::::::-:::..... .::-:--=-----=-==++++++***++=+++++++++*++++=========-.
+..........::::.::::::..... .::::-:=--:-=-=-===+++++*++++*++++++++++++========+=--.
+...............::..::::::.. .... ...::::--==----==++++++*++++==++++++++=+++++++++==++++=---.
+........::..:::.::-::..:...... . .. .::.:::=--=--===++==+++*++++++++++++=++==+*+++====+++=-----
+......:::::::::-:.:---:.:......... .... .:.::-:=--=====+===++=+++++++++++++++++=*+++++====++==-
+.....:::::::::::---:::::.......:::::. .=--: ..:.:::-=--==========+++++===+++++*+++++=+++*++=-==
+.....::::::::::---:--:::........:::::. :*##+ .:.::----==--=====+=+++++=+=++++++++*++++++**+--==
+......:::::::::::-------::::::::::::..:: =+#**. :.::--====-==+==+=+++=+++++++++=++++++++++*+=--
+......::::::::-::----------::::::::.::..... :+**# .:::--+=+=======+++=++++++++===++++++++++*+==
+.....::::::::::---------------:::::.....:........=++ ..--:-=========+=++++++++++==++++++++*++++
+</pre>
 
-*A curated collection of reusable skills, agents, and hooks — installable into Claude Code, Cursor, or OpenCode.*
+# 🤖 AI-Devkit
+
+*One installer. Any editor. Zero friction.*
+
+```bash
+npx devkit-ai
+```
 
 [![npm version](https://shieldcn.dev/npm/devkit-ai.png)](https://www.npmjs.com/package/devkit-ai)
 [![npm license](https://shieldcn.dev/npm/license/devkit-ai.png?variant=outline)](./LICENSE)
@@ -10,20 +35,52 @@
 [![GitHub release](https://shieldcn.dev/github/release/pau-vega/AI-Devkit.png?variant=outline)](https://github.com/pau-vega/AI-Devkit/releases)
 [![GitHub stars](https://shieldcn.dev/github/stars/pau-vega/AI-Devkit.png?variant=outline)](https://github.com/pau-vega/AI-Devkit)
 
-```bash
-npx devkit-ai
-```
+[![Claude Code](https://shieldcn.dev/badge/Claude_Code-0052CC.png?style=for-the-badge)](https://docs.anthropic.com/en/docs/claude-code)
+[![Cursor](https://shieldcn.dev/badge/Cursor-237A3C.png?style=for-the-badge)](https://cursor.com)
+[![OpenCode](https://shieldcn.dev/badge/OpenCode-6B21A8.png?style=for-the-badge)](https://opencode.ai)
+[![Marketplace](https://shieldcn.dev/badge/Marketplace-0F766E.png?style=for-the-badge)](https://pau-vega.github.io/AI-Devkit/)
 
-[![Claude Code](https://shieldcn.dev/badge/Claude_Code-7c3aed.png?style=for-the-badge)](https://docs.anthropic.com/en/docs/claude-code)
-[![Cursor](https://shieldcn.dev/badge/Cursor-7c3aed.png?style=for-the-badge)](https://cursor.com)
-[![OpenCode](https://shieldcn.dev/badge/OpenCode-7c3aed.png?style=for-the-badge)](https://opencode.ai)
-[![Marketplace](https://shieldcn.dev/badge/Marketplace-7c3aed.png?style=for-the-badge)](https://pau-vega.github.io/AI-Devkit/)
+[![⭐ Star us on GitHub](https://shieldcn.dev/badge/Star_us_on_GitHub-D97706.png?style=for-the-badge)](https://github.com/pau-vega/AI-Devkit)
 
 </div>
 
 ---
 
-## What is AI-Devkit?
+<a name="quick-links"></a>
+
+## 🔗 Quick Links
+
+[![Marketplace](https://shieldcn.dev/badge/Marketplace-0052CC.png?style=for-the-badge)](https://pau-vega.github.io/AI-Devkit/)
+[![Docs](https://shieldcn.dev/badge/Docs-237A3C.png?style=for-the-badge)](https://github.com/pau-vega/AI-Devkit#readme)
+[![Releases](https://shieldcn.dev/badge/Releases-0F766E.png?style=for-the-badge)](https://github.com/pau-vega/AI-Devkit/releases)
+[![Issues](https://shieldcn.dev/badge/Issues-475569.png?style=for-the-badge)](https://github.com/pau-vega/AI-Devkit/issues)
+
+---
+
+<a name="table-of-contents"></a>
+
+## 📑 Table of Contents
+
+- [What is AI-Devkit?](#what-is-ai-devkit)
+- [Plugins](#plugins)
+- [Get Started](#get-started)
+- [Supported Editors](#supported-editors)
+- [What the Installer Prompts](#what-the-installer-prompts)
+- [Where Files Land](#where-files-land)
+- [Commands](#commands)
+- [TypeScript Rules](#typescript-rules)
+- [JSDoc Standards](#jsdoc-standards)
+- [Flags](#flags)
+- [Known Limitations](#known-limitations)
+- [Releasing](#releasing)
+- [Support](#support)
+- [License](#license)
+
+---
+
+<a name="what-is-ai-devkit"></a>
+
+## 🤔 What is AI-Devkit?
 
 AI-Devkit **eliminates the friction** of setting up AI-assisted coding environments. Instead of manually configuring skills, agents, hooks, and commands for each editor, you run a single installer that translates runtime-neutral source files into the native format of your chosen editor. Source files are runtime-neutral; the installer translates per-target so no runtime is privileged.
 
@@ -31,23 +88,25 @@ Two plugins ship today — **typescript-rules** and **jsdoc-standards** — both
 
 ---
 
-## Plugins
+<a name="plugins"></a>
 
-### TypeScript Rules
+## 📦 Plugins
 
-<img alt="Claude Code" src="https://shieldcn.dev/badge/Claude_Code-7c3aed.png?variant=outline" />
-<img alt="Cursor" src="https://shieldcn.dev/badge/Cursor-7c3aed.png?variant=outline" />
-<img alt="OpenCode" src="https://shieldcn.dev/badge/OpenCode-7c3aed.png?variant=outline" />
+### ⚡ TypeScript Rules
+
+<img alt="Claude Code" src="https://shieldcn.dev/badge/Claude_Code-0052CC.png?variant=outline" />
+<img alt="Cursor" src="https://shieldcn.dev/badge/Cursor-0052CC.png?variant=outline" />
+<img alt="OpenCode" src="https://shieldcn.dev/badge/OpenCode-0052CC.png?variant=outline" />
 
 Opinionated TypeScript conventions with automatic validation, code review, and a dedicated reviewer agent. Blocks `any`, `enum`, `export default`, and non-pnpm package managers via real-time hooks.
 
 [See full details &rarr;](#typescript-rules)
 
-### JSDoc Standards
+### 📖 JSDoc Standards
 
-<img alt="Claude Code" src="https://shieldcn.dev/badge/Claude_Code-c8a040.png?variant=outline" />
-<img alt="Cursor" src="https://shieldcn.dev/badge/Cursor-c8a040.png?variant=outline" />
-<img alt="OpenCode" src="https://shieldcn.dev/badge/OpenCode-c8a040.png?variant=outline" />
+<img alt="Claude Code" src="https://shieldcn.dev/badge/Claude_Code-237A3C.png?variant=outline" />
+<img alt="Cursor" src="https://shieldcn.dev/badge/Cursor-237A3C.png?variant=outline" />
+<img alt="OpenCode" src="https://shieldcn.dev/badge/OpenCode-237A3C.png?variant=outline" />
 
 Opinionated JSDoc documentation rules for TypeScript projects, with three configurable enforcement levels (Minimal, Standard, Strict). Warns on missing JSDoc — never blocks.
 
@@ -55,7 +114,9 @@ Opinionated JSDoc documentation rules for TypeScript projects, with three config
 
 ---
 
-## Get Started
+<a name="get-started"></a>
+
+## 🚀 Get Started
 
 ### 1. Run the installer
 
@@ -85,7 +146,9 @@ Review the summary and confirm. Ctrl-C at any prompt is a clean exit — no file
 
 ---
 
-## Supported Editors
+<a name="supported-editors"></a>
+
+## ✨ Supported Editors
 
 | Editor | Skills | Commands | Agents | Hooks |
 | --- | --- | --- | --- | --- |
@@ -95,7 +158,9 @@ Review the summary and confirm. Ctrl-C at any prompt is a clean exit — no file
 
 ---
 
-## What the Installer Prompts
+<a name="what-the-installer-prompts"></a>
+
+## 📝 What the Installer Prompts
 
 1. **Editor** — Claude Code, Cursor, or OpenCode.
 2. **Scope** — project (committed to the repo), project-local (gitignored), or user-global (every project on this machine).
@@ -106,7 +171,9 @@ Ctrl-C at any prompt is a clean exit — no files are written until you confirm 
 
 ---
 
-## Where Files Land
+<a name="where-files-land"></a>
+
+## 📂 Where Files Land
 
 | Editor | project / project-local | user-global |
 | --- | --- | --- |
@@ -126,7 +193,9 @@ Inside each target the installer writes the standard subdirectories — `skills/
 
 ---
 
-## Commands
+<a name="commands"></a>
+
+## ⌨️ Commands
 
 After installation, your AI coding agent will have access to these commands.
 
@@ -147,7 +216,9 @@ After installation, your AI coding agent will have access to these commands.
 
 ---
 
-## TypeScript Rules
+<a name="typescript-rules"></a>
+
+## ⚡ TypeScript Rules
 
 Opinionated TypeScript conventions with automatic validation, code review, and a dedicated reviewer agent.
 
@@ -194,7 +265,9 @@ The assistant consults the `typescript-conventions` skill automatically when wri
 
 ---
 
-## JSDoc Standards
+<a name="jsdoc-standards"></a>
+
+## 📖 JSDoc Standards
 
 Opinionated JSDoc documentation rules for TypeScript projects, with three configurable enforcement levels.
 
@@ -239,7 +312,9 @@ The assistant consults the `jsdoc-conventions` skill automatically when writing 
 
 ---
 
-## Flags
+<a name="flags"></a>
+
+## 🏳️ Flags
 
 | Flag | Effect |
 | --- | --- |
@@ -249,7 +324,9 @@ The assistant consults the `jsdoc-conventions` skill automatically when writing 
 
 ---
 
-## Known Limitations
+<a name="known-limitations"></a>
+
+## ⚠️ Known Limitations
 
 - **OpenCode hooks are skipped.** OpenCode does not consume `hooks.json`; it expects a TypeScript plugin instead. Skills and commands are installed; real-time enforcement hooks won't fire under OpenCode.
 - **Cursor agents are skipped.** Cursor does not expose a portable agent file format, so `agents/*.md` is not copied for Cursor targets. The skills and commands carry the relevant context.
@@ -258,18 +335,24 @@ The assistant consults the `jsdoc-conventions` skill automatically when writing 
 
 ---
 
-## Releasing
+<a name="releasing"></a>
+
+## 🚢 Releasing
 
 Releases are managed by [release-please](https://github.com/googleapis/release-please). On every push to `main`, release-please opens (or updates) a PR that bumps the version in `package.json` and `.claude-plugin/marketplace.json` and appends a changelog entry. Merging that PR creates a GitHub release with a `vX.Y.Z` tag, which triggers the `publish` job in `.github/workflows/release-please.yml`.
 
 ---
 
-## Support
+<a name="support"></a>
+
+## 🆘 Support
 
 For support, open a [GitHub issue](https://github.com/pau-vega/ai-devkit/issues/new). Bug reports, feature requests, and usage questions are welcome.
 
 ---
 
-## License
+<a name="license"></a>
+
+## 📃 License
 
 [MIT](./LICENSE) © Pau Velasco Garrofe
