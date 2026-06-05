@@ -13,7 +13,7 @@ requires:
   speckit_version: ">=0.2.0"
   tools:
     - name: git
-      required: false
+      required: true
 
 provides:
   commands:
@@ -37,16 +37,16 @@ provides:
     - name: "git-config.yml"
       template: "config-template.yml"
       description: "Git branching configuration"
-      required: false
+      required: true
 
 hooks:
   before_constitution:
     command: speckit.git.initialize
-    optional: false
+    optional: true
     description: "Initialize Git repository before constitution setup"
   before_specify:
     command: speckit.git.feature
-    optional: false
+    optional: true
     description: "Create feature branch before specification"
   before_clarify:
     command: speckit.git.commit
