@@ -4,6 +4,7 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 MARKETPLACE_JSON="$REPO_ROOT/.claude-plugin/marketplace.json"
 MARKETPLACE_HTML="$REPO_ROOT/marketplace.html"
+PACKAGE_JSON="$REPO_ROOT/package.json"
 
 # Check dependencies
 command -v jq >/dev/null 2>&1 || { echo "ERROR: jq is required but not installed" >&2; exit 1; }
@@ -412,6 +413,24 @@ main() {
 
 # ── Injection ────────────────────────────────────────────────────────
 
+inject_package_version() {
+  local pkg_version
+  pkg_version=$(jq -r '.version' "$PACKAGE_JSON")
+
+  if [[ -z "$pkg_version" || "$pkg_version" == "null" ]]; then
+    echo "ERROR: could not read version from $PACKAGE_JSON" >&2
+    exit 1
+  fi
+
+  if ! grep -q '__PKG_VERSION__' "$MARKETPLACE_HTML"; then
+    echo "WARN: __PKG_VERSION__ placeholder not found in $MARKETPLACE_HTML (skipping)" >&2
+    return
+  fi
+
+  sed -i '' "s|__PKG_VERSION__|v${pkg_version}|g" "$MARKETPLACE_HTML"
+  echo "Injected package version v${pkg_version} into marketplace.html" >&2
+}
+
 inject_plugins() {
   local json_array="$1"
 
@@ -460,4 +479,5 @@ inject_plugins() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   plugins_json=$(main)
   inject_plugins "$plugins_json"
+  inject_package_version
 fi
