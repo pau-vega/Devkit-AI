@@ -32,9 +32,9 @@ Out of scope: editing the actual plugin contents, building OS-specific binaries,
 ## Implementation Decisions
 
 ### Distribution + invocation form
-- **Publish to GitHub Packages** (npm registry on GitHub) under `@pau-vega/ai-devkit` (scope inferred from `git remote get-url origin` → `pau-vega/ai-devkit`).
-- Users invoke via: `npx @pau-vega/ai-devkit` after configuring scoped registry auth (`.npmrc`: `@pau-vega:registry=https://npm.pkg.github.com`).
-- README documents the `.npmrc` setup AND the zero-config fallback `npx github:pau-vega/ai-devkit` for users who don't want to deal with GitHub Packages auth.
+- **Publish to GitHub Packages** (npm registry on GitHub) under `@pau-vega/Devkit-AI` (scope inferred from `git remote get-url origin` → `pau-vega/Devkit-AI`).
+- Users invoke via: `npx @pau-vega/Devkit-AI` after configuring scoped registry auth (`.npmrc`: `@pau-vega:registry=https://npm.pkg.github.com`).
+- README documents the `.npmrc` setup AND the zero-config fallback `npx github:pau-vega/Devkit-AI` for users who don't want to deal with GitHub Packages auth.
 - CI publishes on tagged release via `.github/workflows/publish.yml` using `GITHUB_TOKEN`.
 
 ### CLI UX

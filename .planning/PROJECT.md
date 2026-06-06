@@ -1,4 +1,4 @@
-# AI-Devkit — Dual-Runtime Compatibility (OpenCode + Cursor)
+# Devkit-AI — Dual-Runtime Compatibility (OpenCode + Cursor)
 
 ## What This Is
 

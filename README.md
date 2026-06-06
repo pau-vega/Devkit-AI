@@ -1,4 +1,4 @@
-# AI-Devkit
+# Devkit-AI
 
 A curated collection of reusable skills, agents, and hooks — `typescript-rules`
 and `jsdoc-standards` — installable into Claude Code, Cursor, or OpenCode
@@ -40,11 +40,11 @@ delimited block in `<cwd>/.gitignore` listing every file it wrote, so re-running
 installer replaces the block in place and never duplicates entries:
 
 ```text
-# >>> AI-Devkit
+# >>> Devkit-AI
 .claude/skills/typescript-conventions/SKILL.md
 .claude/commands/ts-review.md
 ...
-# <<< AI-Devkit
+# <<< Devkit-AI
 ```
 
 ## Known limitations
@@ -117,8 +117,8 @@ Requires [Claude Code](https://docs.anthropic.com/en/docs/claude-code) v1.0.33 o
 From within Claude Code, add the marketplace and install:
 
 ```
-/plugin marketplace add pau-vega/ai-devkit
-/plugin install typescript-rules@pau-vega-ai-devkit
+/plugin marketplace add pau-vega/Devkit-AI
+/plugin install typescript-rules@pau-vega-Devkit-AI
 ```
 
 Then run `/reload-plugins` to activate without restarting.
@@ -126,8 +126,8 @@ Then run `/reload-plugins` to activate without restarting.
 To load a local clone directly:
 
 ```bash
-git clone https://github.com/pau-vega/ai-devkit.git
-claude --plugin-dir ./ai-devkit
+git clone https://github.com/pau-vega/Devkit-AI.git
+claude --plugin-dir ./Devkit-AI
 ```
 
 ### OpenCode
@@ -186,8 +186,8 @@ npx devkit-ai
 From within Claude Code:
 
 ```
-/plugin marketplace add pau-vega/ai-devkit
-/plugin install jsdoc-standards@pau-vega-ai-devkit
+/plugin marketplace add pau-vega/Devkit-AI
+/plugin install jsdoc-standards@pau-vega-Devkit-AI
 ```
 
 Then run `/reload-plugins` to activate without restarting.

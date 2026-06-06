@@ -1,6 +1,6 @@
 # Research Summary — OpenCode Compatibility
 
-**Project:** AI-Devkit (Claude Code plugin marketplace)
+**Project:** Devkit-AI (Claude Code plugin marketplace)
 **Domain:** AI coding agent plugin compatibility layer
 **Researched:** 2026-05-05
 **Confidence:** MEDIUM-HIGH (core API confirmed; two field-level details need empirical validation)

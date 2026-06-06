@@ -4,9 +4,9 @@
  *
  * The block is delimited by:
  *
- *   # >>> AI-Devkit
+ *   # >>> Devkit-AI
  *   <one repo-relative path per line>
- *   # <<< AI-Devkit
+ *   # <<< Devkit-AI
  *
  * On every run the existing block (if any) is replaced verbatim — paths are
  * deduplicated and listed in stable order. Trailing newline is preserved.
@@ -15,16 +15,16 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const BEGIN = "# >>> AI-Devkit";
-const END = "# <<< AI-Devkit";
+const BEGIN = "# >>> Devkit-AI";
+const END = "# <<< Devkit-AI";
 
 /**
- * Insert or replace the AI-Devkit gitignore block.
+ * Insert or replace the Devkit-AI gitignore block.
  *
  * @param {{ cwd: string, entries: string[] }} args
  * @returns {{ written: number, path: string }}
  */
-export function upsertGitignoreBlock({ cwd, entries }) {
+export function upsertGitignoreBlock({cwd, entries}) {
   const gitignorePath = path.join(cwd, ".gitignore");
 
   // Deduplicate while preserving first-seen order.
@@ -52,10 +52,7 @@ export function upsertGitignoreBlock({ cwd, entries }) {
   // non-greedy. If markers are present but malformed (END before BEGIN,
   // duplicated, or embedded mid-line), the test fails and we fall through
   // to append — never silently no-op.
-  const re = new RegExp(
-    `^${escapeRegex(BEGIN)}\\n[\\s\\S]*?^${escapeRegex(END)}$`,
-    "m",
-  );
+  const re = new RegExp(`^${escapeRegex(BEGIN)}\\n[\\s\\S]*?^${escapeRegex(END)}$`, "m");
 
   let next;
   if (re.test(existing)) {
@@ -74,7 +71,7 @@ export function upsertGitignoreBlock({ cwd, entries }) {
   if (!next.endsWith("\n")) next += "\n";
 
   fs.writeFileSync(gitignorePath, next, "utf8");
-  return { written: ordered.length, path: gitignorePath };
+  return {written: ordered.length, path: gitignorePath};
 }
 
 /**

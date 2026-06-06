@@ -1,6 +1,6 @@
 # Stack Research — OpenCode Compatibility
 
-**Project:** AI-Devkit (Claude Code plugin marketplace)
+**Project:** Devkit-AI (Claude Code plugin marketplace)
 **Researched:** 2026-05-05
 **Research mode:** Ecosystem / Feasibility
 
@@ -256,7 +256,7 @@ dependency. Since the repo has no existing `package.json`, this file is additive
 
 ## Pitfall: No `--plugin-dir` Equivalent
 
-Claude Code's `--plugin-dir ./AI-Devkit` loads all three plugins in one command. OpenCode has no such
+Claude Code's `--plugin-dir ./Devkit-AI` loads all three plugins in one command. OpenCode has no such
 flag. Users installing for OpenCode must manually copy or symlink each plugin's `.opencode/` subdirectories.
 This changes the install story and the marketplace UI will need to communicate it clearly.
 

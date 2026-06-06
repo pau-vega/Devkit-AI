@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * AI-Devkit installer entry point.
+ * Devkit-AI installer entry point.
  *
  * Resolves the bundled package root, runs the prompt flow, copies files, and
  * (for project-local scope) writes a delimited gitignore block. All prompts
@@ -12,19 +12,19 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import {fileURLToPath} from "node:url";
 
-import { ABORT_SENTINEL, copyPluginFiles } from "../src/installer/copy.mjs";
-import { upsertGitignoreBlock } from "../src/installer/gitignore.mjs";
-import { runPromptFlow } from "../src/installer/prompts.mjs";
-import { printSummary } from "../src/installer/summary.mjs";
+import {ABORT_SENTINEL, copyPluginFiles} from "../src/installer/copy.mjs";
+import {upsertGitignoreBlock} from "../src/installer/gitignore.mjs";
+import {runPromptFlow} from "../src/installer/prompts.mjs";
+import {printSummary} from "../src/installer/summary.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = path.resolve(__dirname, "..");
 
 const REQUIRED_NODE = [20, 11, 0];
 
-const HELP = `AI-Devkit — install reusable skills, agents, and hooks into your AI coding editor.
+const HELP = `Devkit-AI — install reusable skills, agents, and hooks into your AI coding editor.
 
 Supports Claude Code, Cursor, and OpenCode. Source files are runtime-neutral;
 the installer translates per-target (e.g. drops model aliases that don't exist
@@ -33,7 +33,7 @@ runtime can't consume).
 
 Usage:
   npx devkit-ai [--dry-run]
-  npx github:pau-vega/ai-devkit [--dry-run]
+  npx github:pau-vega/Devkit-AI [--dry-run]
 
 Flags:
   --dry-run    Print every file that would be written, without touching disk.
@@ -76,7 +76,7 @@ async function main() {
     process.exit(2);
   }
 
-  const { editor, scope, plugins, targetRoot } = await runPromptFlow({
+  const {editor, scope, plugins, targetRoot} = await runPromptFlow({
     packageRoot: PACKAGE_ROOT,
     dryRun,
   });
@@ -98,7 +98,7 @@ async function main() {
       .map((rel) => rel.split(path.sep).join("/"));
     if (repoRelEntries.length > 0) {
       try {
-        upsertGitignoreBlock({ cwd, entries: repoRelEntries });
+        upsertGitignoreBlock({cwd, entries: repoRelEntries});
       } catch (err) {
         result.errors.push({
           path: path.join(cwd, ".gitignore"),
@@ -141,9 +141,7 @@ function enforceNodeVersion() {
     if (c > r) return;
     if (c < r) {
       const required = REQUIRED_NODE.join(".");
-      console.error(
-        `Node >=${required} required (you have ${process.versions.node}). Upgrade and retry.`,
-      );
+      console.error(`Node >=${required} required (you have ${process.versions.node}). Upgrade and retry.`);
       process.exit(1);
     }
   }
