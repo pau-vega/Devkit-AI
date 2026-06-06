@@ -12,8 +12,8 @@
   "files": [
     "bin/",
     "src/",
-    "typescript-rules/",
-    "jsdoc-standards/",
+    "plugins/typescript-rules/",
+    "plugins/jsdoc-standards/",
     ".claude-plugin/marketplace.json",
     "README.md",
     "LICENSE"
