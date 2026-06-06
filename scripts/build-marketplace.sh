@@ -302,11 +302,11 @@ generate_cursor_symlinks() {
   # typescript-rules: symlink from .cursor/skills/typescript-rules/ to skills/typescript-conventions/
   # Use relative path so symlinks work regardless of clone location
   (cd "$repo_root/.cursor/skills/typescript-rules" && \
-   ln -sf ../../../typescript-rules/skills/typescript-conventions/SKILL.md SKILL.md)
+   ln -sf ../../../plugins/typescript-rules/skills/typescript-conventions/SKILL.md SKILL.md)
 
   # jsdoc-standards: symlink from .cursor/skills/jsdoc-standards/ to skills/jsdoc-conventions/
   (cd "$repo_root/.cursor/skills/jsdoc-standards" && \
-   ln -sf ../../../jsdoc-standards/skills/jsdoc-conventions/SKILL.md SKILL.md)
+   ln -sf ../../../plugins/jsdoc-standards/skills/jsdoc-conventions/SKILL.md SKILL.md)
 
   echo "Created .cursor/skills/ symlinks for typescript-rules and jsdoc-standards" >&2
 }

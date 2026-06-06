@@ -9,7 +9,7 @@
     {
       "name": "typescript-rules",
       "displayName": "TypeScript Rules",
-      "source": "./typescript-rules",
+      "source": "./plugins/typescript-rules",
       "description": "TypeScript coding conventions with automatic validation, review command, and reviewer agent",
       "longDescription": "TypeScript coding conventions with automatic validation, review command, and reviewer agent. Enforces interface extends over &, discriminated unions, no enums, no any, no default exports, and import type usage.",
       "version": "0.1.1",
@@ -25,7 +25,7 @@
     {
       "name": "jsdoc-standards",
       "displayName": "JSDoc Standards",
-      "source": "./jsdoc-standards",
+      "source": "./plugins/jsdoc-standards",
       "description": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings, and on-demand review",
       "longDescription": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings on missing docs, and on-demand review command.",
       "version": "0.1.1",
