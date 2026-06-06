@@ -20,9 +20,9 @@
   Follow-up TODOs: none (all placeholder tokens fully resolved)
 -->
 
-# AI-Devkit Constitution
+# Devkit-AI Constitution
 
-This constitution governs the AI-Devkit marketplace and every plugin it ships
+This constitution governs the Devkit-AI marketplace and every plugin it ships
 (`typescript-rules`, `jsdoc-standards`, and any future additions). It defines the
 non-negotiable standards for code quality, testing, user experience, and performance
 that all contributions MUST satisfy before merge.

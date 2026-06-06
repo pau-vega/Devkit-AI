@@ -49,13 +49,13 @@ Each plugin follows the standard layout:
 ## How to Test Locally
 
 The marketplace is a *collection* of plugins, not a single plugin — there is
-no `ai-devkit` plugin to load directly. Two options:
+no `Devkit-AI` plugin to load directly. Two options:
 
 **Test the marketplace via Claude Code:**
 
 ```
 /plugin marketplace add /absolute/path/to/this/repo
-/plugin install typescript-rules@pau-vega-ai-devkit
+/plugin install typescript-rules@pau-vega-Devkit-AI
 ```
 
 Then run `/reload-plugins` to load without restarting.

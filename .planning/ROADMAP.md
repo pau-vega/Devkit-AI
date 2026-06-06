@@ -1,6 +1,6 @@
 # Roadmap: Dual-Runtime Compatibility (OpenCode + Cursor)
 
-**Project:** AI-Devkit — Dual-Runtime Compatibility (OpenCode + Cursor)
+**Project:** Devkit-AI — Dual-Runtime Compatibility (OpenCode + Cursor)
 **Core Value:** Developers using OpenCode or Cursor get the same real-time convention enforcement and on-demand review experience as Claude Code users.
 **Granularity:** Coarse (4 phases)
 

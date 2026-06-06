@@ -36,8 +36,8 @@ user_setup:
 
 must_haves:
   truths:
-    - "User can run `npx @pau-vega/ai-devkit` (after .npmrc auth) and reach an interactive prompt"
-    - "User can run `npx github:pau-vega/ai-devkit` with zero auth and reach the same prompt"
+    - "User can run `npx @pau-vega/Devkit-AI` (after .npmrc auth) and reach an interactive prompt"
+    - "User can run `npx github:pau-vega/Devkit-AI` with zero auth and reach the same prompt"
     - "User can pick editor (Claude Code | Cursor | OpenCode) and scope (project | project-local | user)"
     - "User can multi-select plugins with all three pre-checked; empty selection aborts cleanly"
     - "Installer reads `.claude-plugin/marketplace.json` to enumerate plugins (no hard-coded plugin list)"
@@ -50,7 +50,7 @@ must_haves:
   artifacts:
     - path: "package.json"
       provides: "Package manifest with bin entry, files allowlist, publishConfig.registry, engines.node>=20.11.0"
-      contains: "@pau-vega/ai-devkit"
+      contains: "@pau-vega/Devkit-AI"
     - path: "bin/install.mjs"
       provides: "Installer entry point with shebang"
       min_lines: 40
@@ -116,15 +116,15 @@ must_haves:
     - from: "src/installer/gitignore.mjs"
       to: ".gitignore"
       via: "fs.readFile + delimiter-marker write"
-      pattern: ">>> AI-Devkit"
+      pattern: ">>> Devkit-AI"
 ---
 
 <objective>
-Ship an `npx @pau-vega/ai-devkit` installer that copies the three plugins (`typescript-rules`, `jsdoc-standards`, `workflow-toolkit`) from this repo into a user's chosen editor (Claude Code, Cursor, OpenCode) at a chosen scope (project, project-local, user-global), with `@clack/prompts` UX, per-file conflict handling, dry-run mode, and a CI publish workflow targeting GitHub Packages.
+Ship an `npx @pau-vega/Devkit-AI` installer that copies the three plugins (`typescript-rules`, `jsdoc-standards`, `workflow-toolkit`) from this repo into a user's chosen editor (Claude Code, Cursor, OpenCode) at a chosen scope (project, project-local, user-global), with `@clack/prompts` UX, per-file conflict handling, dry-run mode, and a CI publish workflow targeting GitHub Packages.
 
 Purpose: Make these plugins one-command installable across the three editors the project supports, without forcing users to clone the repo or learn each editor's plugin layout. Enables the Phase 4 "Marketplace UI and Install Docs" outcome via a quick task slice.
 
-Output: A runnable installer (`npx @pau-vega/ai-devkit` and `npx github:pau-vega/ai-devkit`), a publish workflow, and README docs. No edits to the existing plugin sources.
+Output: A runnable installer (`npx @pau-vega/Devkit-AI` and `npx github:pau-vega/Devkit-AI`), a publish workflow, and README docs. No edits to the existing plugin sources.
 </objective>
 
 <execution_context>
@@ -148,7 +148,7 @@ Output: A runnable installer (`npx @pau-vega/ai-devkit` and `npx github:pau-vega
 `.claude-plugin/marketplace.json` shape (relevant fields):
 ```json
 {
-  "name": "AI-Devkit",
+  "name": "Devkit-AI",
   "plugins": [
     { "name": "typescript-rules", "source": "./typescript-rules", "version": "1.0.0", ... },
     { "name": "jsdoc-standards",  "source": "./jsdoc-standards",  "version": "0.1.0", ... },
@@ -222,11 +222,11 @@ type ConflictState  = { remembered: ConflictAction | null };
 
 `.gitignore` block delimiters (per RESEARCH.md P8):
 ```
-# >>> AI-Devkit
+# >>> Devkit-AI
 .claude/skills/typescript-conventions/SKILL.md
 .claude/commands/ts-review.md
 ...
-# <<< AI-Devkit
+# <<< Devkit-AI
 ```
 Idempotent: re-running the installer replaces the block in place; never appends duplicates.
 
@@ -240,18 +240,18 @@ Node engine floor: `>=20.11.0` — installer prints a friendly upgrade message a
   <name>Task 1: Scaffold package + publish workflow + .npmrc.example</name>
   <files>package.json, .npmrc.example, .github/workflows/publish.yml, .gitignore</files>
   <action>
-Create the npm package shell that makes `npx @pau-vega/ai-devkit` and `npx github:pau-vega/ai-devkit` both work.
+Create the npm package shell that makes `npx @pau-vega/Devkit-AI` and `npx github:pau-vega/Devkit-AI` both work.
 
 1. Write `package.json` at repo root with exactly these fields (per RESEARCH.md §1, §5):
-   - `"name": "@pau-vega/ai-devkit"` (scoped — required for GitHub Packages)
+   - `"name": "@pau-vega/Devkit-AI"` (scoped — required for GitHub Packages)
    - `"version": "1.0.0"`
-   - `"description": "Install the AI-Devkit plugins (typescript-rules, jsdoc-standards, workflow-toolkit) into Claude Code, Cursor, or OpenCode."`
+   - `"description": "Install the Devkit-AI plugins (typescript-rules, jsdoc-standards, workflow-toolkit) into Claude Code, Cursor, or OpenCode."`
    - `"type": "module"`
-   - `"bin": { "AI-Devkit": "bin/install.mjs" }`
+   - `"bin": { "Devkit-AI": "bin/install.mjs" }`
    - `"engines": { "node": ">=20.11.0" }`
    - `"files": ["bin/", "src/", "typescript-rules/", "jsdoc-standards/", "workflow-toolkit/", ".claude-plugin/marketplace.json", "README.md", "LICENSE"]`
    - `"publishConfig": { "registry": "https://npm.pkg.github.com", "access": "public" }`
-   - `"repository": { "type": "git", "url": "git+https://github.com/pau-vega/ai-devkit.git" }`
+   - `"repository": { "type": "git", "url": "git+https://github.com/pau-vega/Devkit-AI.git" }`
    - `"dependencies": { "@clack/prompts": "^0.10.0" }` (no other runtime deps)
    - `"scripts": { "pack:dry": "npm pack --dry-run" }` (sanity tool only — do not add a `prepublishOnly`)
    - `"author": "Pau Velasco Garrofe"`
@@ -281,13 +281,13 @@ Create the npm package shell that makes `npx @pau-vega/ai-devkit` and `npx githu
 
 Reasoning on choices (locked decisions from CONTEXT.md, do not revisit):
 - GitHub Packages registry per CONTEXT.md "Distribution + invocation form".
-- Scoped name `@pau-vega/ai-devkit` per CONTEXT.md.
+- Scoped name `@pau-vega/Devkit-AI` per CONTEXT.md.
 - `@clack/prompts` per CONTEXT.md "CLI UX".
 - `>=20.11.0` per RESEARCH.md §1 + P4 (May 2026, Node 18 EOL).
   </action>
   <verify>
     <automated>
-      node -e "const p=require('./package.json');if(p.name!=='@pau-vega/ai-devkit')process.exit(1);if(!p.bin||!p.bin['AI-Devkit'])process.exit(1);if(!p.publishConfig||p.publishConfig.registry!=='https://npm.pkg.github.com')process.exit(1);if(!p.engines||!p.engines.node.startsWith('>=20'))process.exit(1);if(!p.dependencies||!p.dependencies['@clack/prompts'])process.exit(1);if(!Array.isArray(p.files)||!p.files.includes('bin/')||!p.files.includes('typescript-rules/'))process.exit(1);console.log('OK')" && \
+      node -e "const p=require('./package.json');if(p.name!=='@pau-vega/Devkit-AI')process.exit(1);if(!p.bin||!p.bin['Devkit-AI'])process.exit(1);if(!p.publishConfig||p.publishConfig.registry!=='https://npm.pkg.github.com')process.exit(1);if(!p.engines||!p.engines.node.startsWith('>=20'))process.exit(1);if(!p.dependencies||!p.dependencies['@clack/prompts'])process.exit(1);if(!Array.isArray(p.files)||!p.files.includes('bin/')||!p.files.includes('typescript-rules/'))process.exit(1);console.log('OK')" && \
       grep -q "registry-url: 'https://npm.pkg.github.com'" .github/workflows/publish.yml && \
       grep -q "NODE_AUTH_TOKEN" .github/workflows/publish.yml && \
       grep -q "@pau-vega:registry=https://npm.pkg.github.com" .npmrc.example && \
@@ -339,11 +339,11 @@ Build the installer. ESM, no TypeScript, no bundler. One file per concern; `bin/
    - Catch per-file errors (EACCES etc.) and push to `errors` with a friendly message; do not let one bad file abort the whole run unless it's `EACCES` on the target root itself (then surface "permission denied; try a different scope or sudo").
 
 6. **`src/installer/gitignore.mjs`** — idempotent block manager. Export:
-   - `upsertGitignoreBlock({ cwd, entries })` where `entries` is `string[]` of repo-relative paths. Read `<cwd>/.gitignore` (create if missing). If a block delimited by `# >>> AI-Devkit` and `# <<< AI-Devkit` exists, replace its contents; else append. Trailing newline preserved. No duplicate entries within the block.
+   - `upsertGitignoreBlock({ cwd, entries })` where `entries` is `string[]` of repo-relative paths. Read `<cwd>/.gitignore` (create if missing). If a block delimited by `# >>> Devkit-AI` and `# <<< Devkit-AI` exists, replace its contents; else append. Trailing newline preserved. No duplicate entries within the block.
 
 7. **`src/installer/prompts.mjs`** — the `@clack/prompts` flow. Export:
    - `runPromptFlow({ packageRoot, dryRun })` -> `{ editor, scope, plugins }` or `process.exit(0)` on cancel.
-   - Order: `intro("AI-Devkit installer")` -> `select` editor -> `select` scope -> `multiselect` plugins (initialValues = all 3 names from `listPlugins`, `required: true`) -> after each, `if (isCancel(v)) { cancel("Cancelled."); process.exit(0); }`.
+   - Order: `intro("Devkit-AI installer")` -> `select` editor -> `select` scope -> `multiselect` plugins (initialValues = all 3 names from `listPlugins`, `required: true`) -> after each, `if (isCancel(v)) { cancel("Cancelled."); process.exit(0); }`.
    - On empty plugin selection (post-required), show `cancel("No plugins selected. Nothing to install.")` and exit 0.
    - Print a confirmation `note` listing the resolved target root (call into `targets.mjs`) and the plugin count, then a `confirm` "Proceed?" -> if not confirmed, exit 0.
    - Do NOT do any filesystem writes here.
@@ -390,8 +390,8 @@ Do NOT:
       grep -E "overwrite|skip|abort" src/installer/conflicts.mjs > /dev/null && \
       grep -q "isCancel" src/installer/conflicts.mjs && \
       # 6) gitignore delimiter present
-      grep -q ">>> AI-Devkit" src/installer/gitignore.mjs && \
-      grep -q "<<< AI-Devkit" src/installer/gitignore.mjs && \
+      grep -q ">>> Devkit-AI" src/installer/gitignore.mjs && \
+      grep -q "<<< Devkit-AI" src/installer/gitignore.mjs && \
       # 7) targets.mjs has all three editors and three scopes referenced
       grep -q "claude" src/installer/targets.mjs && \
       grep -q "cursor" src/installer/targets.mjs && \
@@ -427,13 +427,13 @@ Update (or create, if absent) `README.md` at repo root with an installer section
 
 Sections to include (add at top of README, above any existing plugin docs; preserve existing content below):
 
-1. **Install (one-liner with auth)** — explains the `~/.npmrc` setup with classic PAT (`read:packages` scope only) and then `npx @pau-vega/ai-devkit`. Quote the two-line `.npmrc` block exactly:
+1. **Install (one-liner with auth)** — explains the `~/.npmrc` setup with classic PAT (`read:packages` scope only) and then `npx @pau-vega/Devkit-AI`. Quote the two-line `.npmrc` block exactly:
    ```
    @pau-vega:registry=https://npm.pkg.github.com
    //npm.pkg.github.com/:_authToken=<your-classic-pat>
    ```
 
-2. **Install (zero-auth fallback)** — `npx github:pau-vega/ai-devkit`. State the trade-off: clones HEAD, no version pinning, slightly slower first run.
+2. **Install (zero-auth fallback)** — `npx github:pau-vega/Devkit-AI`. State the trade-off: clones HEAD, no version pinning, slightly slower first run.
 
 3. **What gets prompted** — one paragraph each on editor (3 options), scope (3 options), plugins (multi-select default-all), conflicts (per-file overwrite/skip/abort with remember toggle).
 
@@ -458,8 +458,8 @@ Constraints:
   <verify>
     <automated>
       test -f README.md && \
-      grep -q "npx @pau-vega/ai-devkit" README.md && \
-      grep -q "npx github:pau-vega/ai-devkit" README.md && \
+      grep -q "npx @pau-vega/Devkit-AI" README.md && \
+      grep -q "npx github:pau-vega/Devkit-AI" README.md && \
       grep -q "@pau-vega:registry=https://npm.pkg.github.com" README.md && \
       grep -q "read:packages" README.md && \
       grep -qi "dry-run" README.md && \
@@ -488,7 +488,7 @@ Constraints:
 2. Dry-run against a temp project directory (no writes should happen):
    ```
    mkdir -p /tmp/mm-smoke && cd /tmp/mm-smoke && \
-   node ~/Documents/AI-Devkit/bin/install.mjs --dry-run
+   node ~/Documents/Devkit-AI/bin/install.mjs --dry-run
    ```
    Expected:
    - Prompted for editor, scope, plugins.
@@ -498,7 +498,7 @@ Constraints:
 
 3. Real run, project scope:
    ```
-   cd /tmp/mm-smoke && node ~/Documents/AI-Devkit/bin/install.mjs
+   cd /tmp/mm-smoke && node ~/Documents/Devkit-AI/bin/install.mjs
    ```
    - Pick Claude Code -> project -> all three plugins.
    - Verify `/tmp/mm-smoke/.claude/skills/typescript-conventions/SKILL.md` exists.
@@ -506,7 +506,7 @@ Constraints:
 
 4. Re-run for conflict path (same directory):
    ```
-   node ~/Documents/AI-Devkit/bin/install.mjs
+   node ~/Documents/Devkit-AI/bin/install.mjs
    ```
    - Same answers. Confirm per-file conflict prompt appears.
    - Pick `skip` + remember-for-this-run. Confirm subsequent files skip without prompting.
@@ -519,10 +519,10 @@ Constraints:
    ```
    rm -rf /tmp/mm-smoke && mkdir -p /tmp/mm-smoke && cd /tmp/mm-smoke && \
    git init -q && touch .gitignore && \
-   node ~/Documents/AI-Devkit/bin/install.mjs
+   node ~/Documents/Devkit-AI/bin/install.mjs
    ```
    - Pick Claude Code -> project-local -> all three plugins.
-   - Verify `/tmp/mm-smoke/.gitignore` has a `# >>> AI-Devkit` ... `# <<< AI-Devkit` block listing every installed file.
+   - Verify `/tmp/mm-smoke/.gitignore` has a `# >>> Devkit-AI` ... `# <<< Devkit-AI` block listing every installed file.
    - Re-run; verify the block is REPLACED (not duplicated).
 
 7. Skip-rule visibility:
@@ -531,7 +531,7 @@ Constraints:
 
 8. Confirm publish workflow at least parses:
    ```
-   cd ~/Documents/AI-Devkit && \
+   cd ~/Documents/Devkit-AI && \
    npm pack --dry-run | tee /tmp/pack-output.txt | tail -50
    ```
    - Output should list all files from `package.json#files`. Verify `typescript-rules/skills/typescript-conventions/SKILL.md` and similar appear.
@@ -581,7 +581,7 @@ No automated test runner — verification is structural (grep/grep-c, module-loa
 
 <success_criteria>
 - `node bin/install.mjs --help` and `--version` work without `npm install` of project-internal deps (only `@clack/prompts` needed).
-- `npx github:pau-vega/ai-devkit` (after pushing) runs the installer for a user with no auth setup. (Verified manually post-merge — not in this plan's verify chain since it requires a push.)
+- `npx github:pau-vega/Devkit-AI` (after pushing) runs the installer for a user with no auth setup. (Verified manually post-merge — not in this plan's verify chain since it requires a push.)
 - `npm pack --dry-run` lists `bin/`, `src/`, all three plugin dirs, `.claude-plugin/marketplace.json`, `README.md` — and does NOT list `.planning/`, `node_modules/`, `.cursor/`, or `.claude/`.
 - A user running the installer cold reaches the editor prompt within ~5 seconds.
 - Project-local scope re-run is idempotent (gitignore block replaced, not duplicated).

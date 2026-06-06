@@ -8,10 +8,10 @@ re_verification:
   previous_status: none
   notes: "Initial verification after REVIEW.md fixes (commit 5db484d) were applied"
 human_verification:
-  - test: "Run `npx @pau-vega/ai-devkit` after configuring ~/.npmrc with a read:packages PAT"
+  - test: "Run `npx @pau-vega/Devkit-AI` after configuring ~/.npmrc with a read:packages PAT"
     expected: "Reaches the interactive prompt flow (editor → scope → plugins → confirm) without auth errors"
     why_human: "Requires publishing the package to GitHub Packages (Task 4 in plan), creating a PAT, and a real TTY for clack/prompts. The plan explicitly defers this checkpoint to the user."
-  - test: "Run `npx github:pau-vega/ai-devkit` with no ~/.npmrc auth configured"
+  - test: "Run `npx github:pau-vega/Devkit-AI` with no ~/.npmrc auth configured"
     expected: "Clones the repo HEAD over git, runs the installer, reaches the same interactive prompts"
     why_human: "Requires the branch/tag to exist on the public GitHub repo. The plan's Task 4 marks this for human smoke-testing."
   - test: "Smoke-test the full prompt flow against /tmp/mm-smoke per Plan Task 4 steps 2-7"
@@ -36,8 +36,8 @@ human_verification:
 
 | #  | Truth                                                                                                            | Status         | Evidence                                                                                                                                                                                                                                              |
 | -- | ---------------------------------------------------------------------------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1  | User can run `npx @pau-vega/ai-devkit` (after .npmrc auth) and reach an interactive prompt                  | ? UNCERTAIN    | `package.json` has correct name, `bin` entry, `publishConfig.registry`. `bin/install.mjs --help`/`--version` exit cleanly. But package is not yet published — verifying the full npx invocation requires a release. Routed to human verification.    |
-| 2  | User can run `npx github:pau-vega/ai-devkit` with zero auth and reach the same prompt                       | ? UNCERTAIN    | Code path (entry + prompts) works locally via `node bin/install.mjs`. The github: form requires the public branch to exist with the package.json at root, which it does on `main`. Real fetch over `npx github:` requires human smoke test.            |
+| 1  | User can run `npx @pau-vega/Devkit-AI` (after .npmrc auth) and reach an interactive prompt                  | ? UNCERTAIN    | `package.json` has correct name, `bin` entry, `publishConfig.registry`. `bin/install.mjs --help`/`--version` exit cleanly. But package is not yet published — verifying the full npx invocation requires a release. Routed to human verification.    |
+| 2  | User can run `npx github:pau-vega/Devkit-AI` with zero auth and reach the same prompt                       | ? UNCERTAIN    | Code path (entry + prompts) works locally via `node bin/install.mjs`. The github: form requires the public branch to exist with the package.json at root, which it does on `main`. Real fetch over `npx github:` requires human smoke test.            |
 | 3  | User can pick editor (Claude Code \| Cursor \| OpenCode) and scope (project \| project-local \| user)            | ✓ VERIFIED     | `src/installer/prompts.mjs:45-69` defines both `select` prompts with all three options each. `targets.mjs:39-72` resolves all 9 editor×scope combos and throws on unknown editor.                                                                       |
 | 4  | User can multi-select plugins with all three pre-checked; empty selection aborts cleanly                         | ✓ VERIFIED     | `prompts.mjs:71-92`: `multiselect` with `initialValues = allPlugins.map(p=>p.name)` (3 plugins from manifest), `required: true`, plus a length-zero guard that calls `cancel()` and `process.exit(0)`.                                                  |
 | 5  | Installer reads `.claude-plugin/marketplace.json` to enumerate plugins (no hard-coded plugin list)               | ✓ VERIFIED     | `marketplace.mjs:12,21-43,54-67` reads `MANIFEST_REL` and maps `manifest.plugins`. `listPlugins(cwd)` returns `count=3, names=typescript-rules,jsdoc-standards,workflow-toolkit`. Source grep finds those names only in doc comments referencing the existing `.cursor/skills/` symlink precedent — no hard-coded array. |
@@ -54,7 +54,7 @@ human_verification:
 
 | Artifact                          | Expected                                                                  | Status      | Details                                                                                                                                                                                                                                            |
 | --------------------------------- | ------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `package.json`                    | bin entry, files allowlist, publishConfig.registry, engines.node>=20.11.0 | ✓ VERIFIED  | Name `@pau-vega/ai-devkit`, `type: module`, `bin: { AI-Devkit: bin/install.mjs }`, `engines.node: >=20.11.0`, `files: [bin/, src/, typescript-rules/, jsdoc-standards/, workflow-toolkit/, .claude-plugin/marketplace.json, README.md, LICENSE]`, `publishConfig.registry: https://npm.pkg.github.com`, single dep `@clack/prompts`. |
+| `package.json`                    | bin entry, files allowlist, publishConfig.registry, engines.node>=20.11.0 | ✓ VERIFIED  | Name `@pau-vega/Devkit-AI`, `type: module`, `bin: { Devkit-AI: bin/install.mjs }`, `engines.node: >=20.11.0`, `files: [bin/, src/, typescript-rules/, jsdoc-standards/, workflow-toolkit/, .claude-plugin/marketplace.json, README.md, LICENSE]`, `publishConfig.registry: https://npm.pkg.github.com`, single dep `@clack/prompts`. |
 | `bin/install.mjs`                 | Installer entry point with shebang, ≥40 lines                             | ✓ VERIFIED  | 146 lines, `#!/usr/bin/env node` on line 1, `0o755` permissions, ESM with `node:fs`/`node:path`/`node:url` imports.                                                                                                                                |
 | `src/installer/marketplace.mjs`   | Reads marketplace.json, exports readMarketplace + listPlugins             | ✓ VERIFIED  | Both exports present and functional. `listPlugins(cwd)` returns 3 plugins live.                                                                                                                                                                    |
 | `src/installer/targets.mjs`       | Per-editor + per-scope target-path resolution + source mapping            | ✓ VERIFIED  | Exports `resolveTargetRoot` and `mapPluginFiles`. Includes Cursor agents skip (line 159-161) and OpenCode hooks skip (line 162-169). Includes the `.cursor/skills/<plugin>` collapse-vs-preserve precedent.                                          |
@@ -65,7 +65,7 @@ human_verification:
 | `src/installer/summary.mjs`       | Final summary printer (written/skipped/errors/next steps)                 | ✓ VERIFIED  | Exports `printSummary`. Includes editor-specific next steps for all three editors. Outro switches to "(dry-run — no files written)" when `dryRun: true`.                                                                                            |
 | `.github/workflows/publish.yml`   | Tagged-release publish workflow                                           | ✓ VERIFIED  | `on: release: types: [published]`, `permissions: contents: read, packages: write`, setup-node with `registry-url: 'https://npm.pkg.github.com'`, `npm publish` with `NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}`.                                  |
 | `.npmrc.example`                  | Consumer scoped registry config                                           | ✓ VERIFIED  | Contains `@pau-vega:registry=https://npm.pkg.github.com` and the auth-token line with `${GITHUB_TOKEN}` placeholder, plus a comment line documenting how to use it.                                                                                |
-| `README.md`                       | Both install paths + scope matrix + limitations + flags + maintainer note | ✓ VERIFIED  | Both `npx @pau-vega/ai-devkit` and `npx github:pau-vega/ai-devkit` documented. Scope matrix table at lines 56-60. Three limitations bulleted. Flags table. Releasing section. 169 lines. No emoji.                                       |
+| `README.md`                       | Both install paths + scope matrix + limitations + flags + maintainer note | ✓ VERIFIED  | Both `npx @pau-vega/Devkit-AI` and `npx github:pau-vega/Devkit-AI` documented. Scope matrix table at lines 56-60. Three limitations bulleted. Flags table. Releasing section. 169 lines. No emoji.                                       |
 
 ### Key Link Verification
 
@@ -77,7 +77,7 @@ human_verification:
 | `src/installer/copy.mjs`      | `src/installer/conflicts.mjs`            | `import { resolveConflict }`                                 | ✓ WIRED  | Line 15 import; line 104 invocation.                                                                   |
 | `src/installer/copy.mjs`      | `src/installer/targets.mjs`              | `import { mapPluginFiles }`                                  | ✓ WIRED  | Line 16 import; line 57 invocation.                                                                    |
 | `.github/workflows/publish.yml` | `package.json`                         | `npm publish` using `publishConfig.registry`                  | ✓ WIRED  | `publishConfig.registry` set to GitHub Packages URL; workflow runs `npm publish` with NODE_AUTH_TOKEN. |
-| `package.json`                | `bin/install.mjs`                        | `bin` field                                                  | ✓ WIRED  | `"bin": { "AI-Devkit": "bin/install.mjs" }`.                                                      |
+| `package.json`                | `bin/install.mjs`                        | `bin` field                                                  | ✓ WIRED  | `"bin": { "Devkit-AI": "bin/install.mjs" }`.                                                      |
 | `src/installer/gitignore.mjs` | `.gitignore`                             | `fs.readFile` + delimiter-marker write                       | ✓ WIRED  | `BEGIN`/`END` constants, anchored regex test, fall-through append, `fs.writeFileSync`.                 |
 
 ### Data-Flow Trace (Level 4)
@@ -124,12 +124,12 @@ The remaining REVIEW.md items (WR-03 through WR-07, IN-01 through IN-06) are del
 Four items need human testing — see frontmatter `human_verification` for the structured list:
 
 #### 1. Auth-path npx invocation
-**Test:** Configure `~/.npmrc` per the README, then `npx @pau-vega/ai-devkit`.
+**Test:** Configure `~/.npmrc` per the README, then `npx @pau-vega/Devkit-AI`.
 **Expected:** Package downloads from GitHub Packages, installer reaches the editor prompt.
 **Why human:** The package must be published first (Plan Task 4 + maintainer release step).
 
 #### 2. Zero-auth npx invocation
-**Test:** From an environment with no `~/.npmrc` configured, `npx github:pau-vega/ai-devkit`.
+**Test:** From an environment with no `~/.npmrc` configured, `npx github:pau-vega/Devkit-AI`.
 **Expected:** npm clones the public repo and runs the installer.
 **Why human:** Requires real network fetch + TTY.
 

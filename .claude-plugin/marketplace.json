@@ -1,5 +1,5 @@
 {
-  "name": "AI-Devkit",
+  "name": "Devkit-AI",
   "description": "Reusable skills, agents, and hooks for TypeScript development, installable into Claude Code, Cursor, or OpenCode.",
   "owner": {
     "name": "Pau Velasco Garrofe"
@@ -20,12 +20,7 @@
       "author": {
         "name": "Pau Velasco Garrofe"
       },
-      "tags": [
-        "typescript",
-        "conventions",
-        "code-review",
-        "linting"
-      ]
+      "tags": ["typescript", "conventions", "code-review", "linting"]
     },
     {
       "name": "jsdoc-standards",
@@ -41,12 +36,7 @@
       "author": {
         "name": "Pau Velasco Garrofe"
       },
-      "tags": [
-        "jsdoc",
-        "documentation",
-        "typescript",
-        "code-quality"
-      ]
+      "tags": ["jsdoc", "documentation", "typescript", "code-quality"]
     }
   ]
 }

@@ -14,19 +14,10 @@
 
 import os from "node:os";
 
-import {
-  cancel,
-  confirm,
-  intro,
-  isCancel,
-  log,
-  multiselect,
-  note,
-  select,
-} from "@clack/prompts";
+import {cancel, confirm, intro, isCancel, log, multiselect, note, select} from "@clack/prompts";
 
-import { listPlugins } from "./marketplace.mjs";
-import { resolveTargetRoot } from "./targets.mjs";
+import {listPlugins} from "./marketplace.mjs";
+import {resolveTargetRoot} from "./targets.mjs";
 
 /**
  * Run the full prompt flow.
@@ -39,15 +30,15 @@ import { resolveTargetRoot } from "./targets.mjs";
  *   targetRoot: string,
  * }>}
  */
-export async function runPromptFlow({ packageRoot, dryRun }) {
-  intro(dryRun ? "AI-Devkit installer (dry-run)" : "AI-Devkit installer");
+export async function runPromptFlow({packageRoot, dryRun}) {
+  intro(dryRun ? "Devkit-AI installer (dry-run)" : "Devkit-AI installer");
 
   const editor = await select({
     message: "Which editor are you installing for?",
     options: [
-      { value: "claude-code", label: "Claude Code" },
-      { value: "opencode", label: "OpenCode" },
-      { value: "cursor", label: "Cursor" },
+      {value: "claude-code", label: "Claude Code"},
+      {value: "opencode", label: "OpenCode"},
+      {value: "cursor", label: "Cursor"},
     ],
   });
   if (isCancel(editor)) {
@@ -58,9 +49,9 @@ export async function runPromptFlow({ packageRoot, dryRun }) {
   const scope = await select({
     message: "Install scope?",
     options: [
-      { value: "project", label: "Project (committed to repo, shared with team)" },
-      { value: "project-local", label: "Project-local (gitignored, just for me)" },
-      { value: "user", label: "User-global (every project)" },
+      {value: "project", label: "Project (committed to repo, shared with team)"},
+      {value: "project-local", label: "Project-local (gitignored, just for me)"},
+      {value: "user", label: "User-global (every project)"},
     ],
   });
   if (isCancel(scope)) {
@@ -93,7 +84,7 @@ export async function runPromptFlow({ packageRoot, dryRun }) {
 
   const plugins = allPlugins.filter((p) => selected.includes(p.name));
 
-  const { root: targetRoot, warnings } = resolveTargetRoot({
+  const {root: targetRoot, warnings} = resolveTargetRoot({
     editor: /** @type {import("./targets.mjs").Editor} */ (editor),
     scope: /** @type {import("./targets.mjs").Scope} */ (scope),
     cwd: process.cwd(),

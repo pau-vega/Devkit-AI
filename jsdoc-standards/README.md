@@ -43,8 +43,8 @@ npx devkit-ai
 The installer prompts for editor (Claude Code / OpenCode / Cursor), scope (project / project-local / user), and which plugins to install. To install jsdoc-standards into Claude Code without the installer:
 
 ```bash
-git clone https://github.com/pau-vega/ai-devkit.git
-claude --plugin-dir ./ai-devkit/jsdoc-standards
+git clone https://github.com/pau-vega/Devkit-AI.git
+claude --plugin-dir ./Devkit-AI/jsdoc-standards
 ```
 
 ## License
