@@ -1,1 +1,0 @@
-../../../plugins/jsdoc-standards/skills/jsdoc-conventions/SKILL.md
