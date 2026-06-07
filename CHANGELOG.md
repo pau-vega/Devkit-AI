@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.2...devkit-ai-v0.1.3) (2026-06-07)
+
+
+### Bug Fixes
+
+* **translator:** drop color field from agents for OpenCode ([a1395c3](https://github.com/pau-vega/Devkit-AI/commit/a1395c3f3b15bb2d99b5096f38b6ef04c78c89a0))
+* **translator:** drop color field from agents for OpenCode ([8e29e64](https://github.com/pau-vega/Devkit-AI/commit/8e29e6433c2d22ed5fd279e579e0a92372fc592f))
+
 ## [0.1.2](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.1...devkit-ai-v0.1.2) (2026-06-07)
 
 
