@@ -1233,6 +1233,60 @@ const PLUGINS = [
           "body": "\n# JSDoc Review\n\nDispatch the `jsdoc-reviewer` agent to audit TypeScript files for JSDoc compliance.\n\nArguments: $ARGUMENTS\n\n## Argument Parsing\n\nParse the arguments to extract the enforcement level and optional path:\n\n- **No arguments** — use `standard` level, review changed files\n- **Level only** (e.g., `strict`) — use that level, review changed files\n- **Level and path** (e.g., `standard src/utils`) — use that level, review files at path\n- **Path only** (e.g., `src/utils`) — use `standard` level, review files at path\n\nValid levels: `minimal`, `standard`, `strict`.\n\n## Execution\n\n1. Load the jsdoc-conventions skill from `${CLAUDE_PLUGIN_ROOT}/skills/jsdoc-conventions/SKILL.md` to get the full rule set\n2. Determine the enforcement level from arguments (default: `standard`)\n3. Discover target `.ts` and `.tsx` files:\n   - If a path was provided, glob for files at that path\n   - If no path, run `git diff --name-only HEAD` to find changed files\n   - If no uncommitted changes, run `git diff --name-only HEAD~1` for the last commit\n   - Filter for `.ts` and `.tsx` files only\n4. Read each file and check against the rules for the selected level\n5. Report findings grouped by file, using severity levels:\n   - **Error** — Required JSDoc is completely missing\n   - **Warning** — JSDoc is present but incomplete or malformed for the level\n   - **Suggestion** — Opportunity to improve documentation quality\n6. End with a summary: total files reviewed, errors, warnings, suggestions, and the level used"
         }
       ]
+    },
+    {
+      "id": "commit-commands",
+      "name": "Commit Commands",
+      "version": "1.0.0",
+      "description": "Streamline your git workflow with commands for committing, pushing, and creating pull requests. Automates common git operations with AI-powered commit message generation that matches your repository's existing style.",
+      "category": "productivity",
+      "icon": "Git",
+      "accent": "#4CAF50",
+      "source": "./plugins/commit-commands",
+      "skills": [
+        {
+          "name": "git-conventions",
+          "version": "0.0.1",
+          "description": "Git workflow conventions for committing, branching, and PRs. Covers commit message style, branch naming, and PR structure. Consult when creating commits or pull requests in any project.",
+          "command": "/commit-commands:git-conventions",
+          "body": "\n# Git Conventions\n\n## Commit Messages\n\nFollow conventional commits format when appropriate:\n\n```\n<type>: <short summary>\n\n<optional body>\n```\n\n### Types\n\n| Type     | Usage                                      |\n|----------|--------------------------------------------|\n| `feat`   | A new feature                              |\n| `fix`    | A bug fix                                  |\n| `refactor` | A code change that neither fixes nor adds |\n| `chore`  | Maintenance, config, deps                  |\n| `docs`   | Documentation only                         |\n| `style`  | Formatting, missing semicolons, etc.       |\n| `test`   | Adding or correcting tests                 |\n\n### Guidelines\n\n- Use imperative mood in the subject line (\"Add feature\" not \"Added feature\")\n- Keep the subject line under 72 characters\n- Capitalize the subject line\n- Do not end the subject line with a period\n- Use the body to explain what and why, not how\n\n## Branch Naming\n\nUse descriptive branch names with a type prefix:\n\n```\n<type>/<short-description>\n```\n\nExamples: `feat/add-user-auth`, `fix/login-error`, `refactor/api-client`.\n\n## PR Descriptions\n\nInclude in every PR description:\n\n- **Summary** — 1-3 bullet points of what changed\n- **Test plan** — checklist of what was verified\n\n## Secrets Protection\n\nNever stage or commit files that contain secrets:\n- `.env` files\n- `credentials.json`\n- `*.pem` private keys\n- Any file with API keys, tokens, or passwords\n\nAlways check `.gitignore` before staging files."
+        }
+      ],
+      "agents": [
+        {
+          "name": "clean-gone-agent",
+          "description": "Cleans up local branches that have been deleted from the remote repository (marked as [gone]). Removes associated worktrees before deleting branches.",
+          "body": "\nYou are a git cleanup agent. Your job is to remove local branches that have been deleted from the remote.\n\n## Process\n\n1. **Fetch latest remote state:**\n   - Run `git fetch --prune` to update remote tracking references\n\n2. **Identify stale branches:**\n   - Run `git branch -v` to list all branches\n   - Look for branches marked with `[gone]` in the tracking status\n   - Branches with a `+` prefix have associated worktrees\n\n3. **Handle worktrees:**\n   - Run `git worktree list` to find worktrees\n   - For each [gone] branch that has a worktree, remove the worktree first with `git worktree remove --force <path>`\n\n4. **Delete branches:**\n   - Delete each [gone] branch with `git branch -D <branch-name>`\n\n5. **Report result:**\n   - List which branches and worktrees were removed\n   - If no cleanup was needed, report that\n\n## Important Notes\n\n- Always run `git fetch --prune` first to ensure accurate tracking\n- Remove worktrees before deleting branches that have them\n- This only removes branches already deleted from remote — it's safe to run\n- You can call multiple tools in a single message\n- Do NOT use any tools besides Read, Glob, Grep, and Bash"
+        },
+        {
+          "name": "commit-agent",
+          "description": "Creates a git commit with an automatically generated commit message based on staged and unstaged changes. Reviews diff, examines recent commit history to match repo style, stages files, and creates the commit.",
+          "body": "\nYou are a git commit agent. Your job is to create a single commit with an appropriate message.\n\n## Process\n\n1. **Load conventions:** Read `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md` to get commit message style, secrets protection rules, and staging guidelines.\n\n2. **Check current state:**\n   - Run `git status` to see staged and unstaged changes\n   - Run `git diff HEAD` to review the full diff of changes\n   - Run `git branch --show-current` to know the current branch\n   - Run `git log --oneline -10` to examine recent commit messages and match the repo's style\n\n3. **Review changes carefully:**\n   - Identify what files were changed, added, or deleted\n   - Understand the purpose of each change\n   - Check for sensitive files (.env, credentials.json, etc.) — do NOT stage these\n\n4. **Stage files:**\n   - Stage all relevant changes with `git add <file>`\n   - Avoid staging secrets or build artifacts\n\n5. **Create the commit:**\n   - Draft a commit message that matches the repository's existing style\n   - Follow conventional commit practices (e.g., `feat:`, `fix:`, `refactor:`, `chore:`)\n   - Use the imperative mood in the subject line\n   - Add a detailed body if the change is non-trivial\n\n6. **Report result:**\n   - Confirm the commit was created successfully\n   - Show the commit hash and message\n\n## Important Notes\n\n- You can call multiple tools in a single message — stage and commit in one go\n- Do NOT use any tools besides Read, Glob, Grep, and Bash\n- Do NOT create commits with empty messages\n- If there are no changes to commit, report that and stop"
+        },
+        {
+          "name": "commit-push-pr-agent",
+          "description": "Complete workflow agent that commits changes, pushes to a remote branch, and creates a pull request. Handles branch creation, commit message generation, and PR description with summary and test plan.",
+          "body": "\nYou are a git workflow agent. Your job is to commit, push, and create a pull request in a single workflow.\n\n## Process\n\n1. **Load conventions:** Read `${CLAUDE_PLUGIN_ROOT}/skills/git-conventions/SKILL.md` to get commit message style, branch naming, PR structure, and secrets protection rules.\n\n2. **Check current state:**\n   - Run `git status` to see changes\n   - Run `git diff HEAD` to review the full diff\n   - Run `git branch --show-current` to know the current branch\n\n3. **Create a new branch if on main:**\n   - If currently on `main` (or `master`), create a descriptive feature branch\n   - Use a branch name based on the changes (e.g., `feat/add-user-auth`, `fix/login-error`)\n   - Checkout the new branch with `git checkout -b <branch-name>`\n\n4. **Stage and commit:**\n   - Stage relevant files (avoid secrets like .env, credentials.json)\n   - Create a commit with an appropriate message matching the repo's style\n   - Run `git log --oneline -10` to examine recent commit style if needed\n\n5. **Push to origin:**\n   - Run `git push -u origin <branch-name>`\n   - If the push fails (remote divergence), handle gracefully\n\n6. **Create a pull request:**\n   - Run `gh pr create` with a well-structured PR body\n   - The PR body should include:\n     - A brief summary of changes (1-3 bullet points)\n     - A test plan checklist\n   - Capture the PR URL from the output\n\n7. **Report result:**\n   - Confirm the commit was created\n   - Show the branch name\n   - Provide the PR URL\n\n## Important Notes\n\n- GitHub CLI (`gh`) must be available and authenticated\n- The repository must have a remote named `origin`\n- You can call multiple tools in a single message\n- Do NOT use any tools besides Read, Glob, Grep, and Bash"
+        }
+      ],
+      "hooks": [],
+      "commands": [
+        {
+          "name": "/commit-commands:clean-gone",
+          "description": "Clean up local branches that have been deleted from the remote repository",
+          "body": "\nDispatch the `clean-gone-agent` to remove local branches marked as [gone] and their associated worktrees."
+        },
+        {
+          "name": "/commit-commands:commit-push-pr",
+          "description": "Complete workflow — commit, push, and create a pull request in one step",
+          "body": "\nDispatch the `commit-push-pr-agent` to commit changes, push to a new branch, and open a PR."
+        },
+        {
+          "name": "/commit-commands:commit",
+          "description": "Create a git commit with an automatically generated message based on staged and unstaged changes",
+          "body": "\nDispatch the `commit-agent` to stage changes and create a commit with an appropriate message."
+        }
+      ]
     }
 ];
 
