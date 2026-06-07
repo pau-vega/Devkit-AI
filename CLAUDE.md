@@ -11,8 +11,7 @@ A multi-runtime plugin marketplace containing two plugins: `typescript-rules`
 and `jsdoc-standards`. The marketplace ships an `npx devkit-ai` installer
 that copies both plugins into Claude Code, Cursor, or OpenCode at any of
 three scopes (project, project-local, user). The marketplace is being
-extended (per `.planning/STATE.md`, Phase 1 done, Phase 2 in progress) so
-all three runtimes get the same skill / command / hook surface.
+extended so all three runtimes get the same skill / command / hook surface.
 
 The repo is mostly markdown, JSON configs, shell scripts, and a static HTML
 landing page — but there is also a Node-based installer
@@ -185,24 +184,3 @@ Three words: **reliable, precise, unassuming**
    roles, reduced motion, and sufficient contrast are not optional.
 5. **Warm, not sterile.** Prefer warm neutrals over cool grays. The
    palette should feel hand-picked, not auto-generated.
-
-## GSD Workflow
-
-This project uses the Get Shit Done (GSD) planning workflow.
-
-**Planning artifacts:** `.planning/`
-- `PROJECT.md` — project context and requirements
-- `REQUIREMENTS.md` — scoped v1 requirements with REQ-IDs
-- `ROADMAP.md` — 4-phase execution plan
-- `STATE.md` — current phase and status
-- `research/` — OpenCode compatibility research
-
-**Current state:** Phase 1 (Skills Compatibility, OpenCode + Cursor)
-complete; Phase 2 (Commands and Agents Port) pending. Run
-`/gsd-plan-phase 2` to begin.
-
-**Workflow commands:**
-- `/gsd-plan-phase N` — plan a phase before executing
-- `/gsd-execute-phase N` — execute a planned phase
-- `/gsd-progress` — check current status
-- `/gsd-discuss-phase N` — discuss approach before planning
