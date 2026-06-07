@@ -4,7 +4,7 @@
   "owner": {
     "name": "Pau Velasco Garrofe"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "plugins": [
     {
       "name": "typescript-rules",
@@ -12,7 +12,7 @@
       "source": "./plugins/typescript-rules",
       "description": "TypeScript coding conventions with automatic validation, review command, and reviewer agent",
       "longDescription": "TypeScript coding conventions with automatic validation, review command, and reviewer agent. Enforces interface extends over &, discriminated unions, no enums, no any, no default exports, and import type usage.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "category": "typescript",
       "icon": "TS",
       "iconClass": "typescript",
@@ -20,7 +20,12 @@
       "author": {
         "name": "Pau Velasco Garrofe"
       },
-      "tags": ["typescript", "conventions", "code-review", "linting"]
+      "tags": [
+        "typescript",
+        "conventions",
+        "code-review",
+        "linting"
+      ]
     },
     {
       "name": "jsdoc-standards",
@@ -28,7 +33,7 @@
       "source": "./plugins/jsdoc-standards",
       "description": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings, and on-demand review",
       "longDescription": "JSDoc documentation standards with three enforcement levels (Minimal, Standard, Strict), automatic warnings on missing docs, and on-demand review command.",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "category": "documentation",
       "icon": "/**",
       "iconClass": "documentation",
@@ -36,7 +41,12 @@
       "author": {
         "name": "Pau Velasco Garrofe"
       },
-      "tags": ["jsdoc", "documentation", "typescript", "code-quality"]
+      "tags": [
+        "jsdoc",
+        "documentation",
+        "typescript",
+        "code-quality"
+      ]
     },
     {
       "name": "commit-commands",
@@ -44,7 +54,7 @@
       "source": "./plugins/commit-commands",
       "description": "Streamline git workflow with /commit, /commit-push-pr, and /clean-gone commands",
       "longDescription": "Streamline your git workflow with commands for committing, pushing, and creating pull requests. Automates common git operations with AI-powered commit message generation that matches your repository's existing style.",
-      "version": "1.0.0",
+      "version": "0.1.2",
       "category": "productivity",
       "icon": "Git",
       "iconClass": "git",
@@ -52,7 +62,13 @@
       "author": {
         "name": "Anthropic"
       },
-      "tags": ["git", "commit", "pull-request", "workflow", "productivity"]
+      "tags": [
+        "git",
+        "commit",
+        "pull-request",
+        "workflow",
+        "productivity"
+      ]
     }
   ]
 }
