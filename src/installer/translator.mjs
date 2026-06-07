@@ -18,6 +18,11 @@
  *                                        IDs; omitting inherits the user's
  *                                        `opencode.json` default — any
  *                                        provider, Anthropic included)
+ *     - drop `color: <value>`           (OpenCode validates the color field
+ *                                        against hex codes and theme names;
+ *                                        Claude Code color names like `cyan`
+ *                                        or `green` are not recognized and
+ *                                        would crash the server on startup)
  *     - add `mode: subagent`            (if not already set; OpenCode's
  *                                        equivalent of Claude Code's
  *                                        `allowed-tools: [Agent]`)
@@ -105,6 +110,13 @@ function translateAgentToOpenCode(source) {
       // Drop the model line — OpenCode's `model` field requires a
       // provider-qualified ID, and omitting it inherits the user's
       // `opencode.json` model (any provider).
+      continue;
+    }
+    if (/^color\s*:/.test(line)) {
+      // Drop the color line — OpenCode validates colors against hex codes
+      // (^#[0-9a-fA-F]{6}$) or theme names (primary, secondary, accent,
+      // success, warning, error, info). Claude Code names like `cyan` or
+      // `green` crash the server.
       continue;
     }
     if (/^mode\s*:/.test(line)) {
