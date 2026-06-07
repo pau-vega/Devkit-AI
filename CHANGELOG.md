@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.1...devkit-ai-v0.1.2) (2026-06-07)
+
+
+### Features
+
+* add commit-commands plugin with agents, skills, and commands ([98bff1d](https://github.com/pau-vega/Devkit-AI/commit/98bff1dca709ef8b579ed7601cac80306e45782b))
+* Add commit-commands plugin with git workflow commands ([66bd740](https://github.com/pau-vega/Devkit-AI/commit/66bd7404f32583d7c5af9a8f117fa3b31d988c6a))
+* Add commit-commands plugin with git workflow commands ([fa40f1e](https://github.com/pau-vega/Devkit-AI/commit/fa40f1e1018691250e715dc2139dfcb1c61514a7))
+
 ## [0.1.1](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.0...devkit-ai-v0.1.1) (2026-06-04)
 
 
