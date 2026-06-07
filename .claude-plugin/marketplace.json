@@ -37,6 +37,22 @@
         "name": "Pau Velasco Garrofe"
       },
       "tags": ["jsdoc", "documentation", "typescript", "code-quality"]
+    },
+    {
+      "name": "commit-commands",
+      "displayName": "Commit Commands",
+      "source": "./plugins/commit-commands",
+      "description": "Streamline git workflow with /commit, /commit-push-pr, and /clean-gone commands",
+      "longDescription": "Streamline your git workflow with commands for committing, pushing, and creating pull requests. Automates common git operations with AI-powered commit message generation that matches your repository's existing style.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "icon": "Git",
+      "iconClass": "git",
+      "accentColor": "#4CAF50",
+      "author": {
+        "name": "Anthropic"
+      },
+      "tags": ["git", "commit", "pull-request", "workflow", "productivity"]
     }
   ]
 }

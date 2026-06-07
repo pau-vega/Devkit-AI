@@ -298,6 +298,7 @@ generate_cursor_symlinks() {
   # Create .cursor/skills/ directory
   mkdir -p "$repo_root/.cursor/skills/typescript-rules"
   mkdir -p "$repo_root/.cursor/skills/jsdoc-standards"
+  mkdir -p "$repo_root/.cursor/skills/commit-commands"
 
   # typescript-rules: symlink from .cursor/skills/typescript-rules/ to skills/typescript-conventions/
   # Use relative path so symlinks work regardless of clone location
@@ -308,7 +309,11 @@ generate_cursor_symlinks() {
   (cd "$repo_root/.cursor/skills/jsdoc-standards" && \
    ln -sf ../../../plugins/jsdoc-standards/skills/jsdoc-conventions/SKILL.md SKILL.md)
 
-  echo "Created .cursor/skills/ symlinks for typescript-rules and jsdoc-standards" >&2
+  # commit-commands: symlink from .cursor/skills/commit-commands/ to skills/git-conventions/
+  (cd "$repo_root/.cursor/skills/commit-commands" && \
+   ln -sf ../../../plugins/commit-commands/skills/git-conventions/SKILL.md SKILL.md)
+
+  echo "Created .cursor/skills/ symlinks for typescript-rules, jsdoc-standards, and commit-commands" >&2
 }
 
 # ── Main ─────────────────────────────────────────────────────────────
