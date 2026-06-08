@@ -1,0 +1,149 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate marketplace.json
+        run: |
+          jq '.' .claude-plugin/marketplace.json > /dev/null \
+            || { echo "✗ marketplace.json is invalid JSON"; exit 1; }
+
+          jq -e '.name and .version and (.plugins | type == "array")' \
+            .claude-plugin/marketplace.json > /dev/null \
+            || { echo "✗ Missing required fields (name, version, plugins)"; exit 1; }
+
+          PLUGIN_COUNT=$(jq '.plugins | length' .claude-plugin/marketplace.json)
+          for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
+            NAME=$(jq -r ".plugins[$i].name" .claude-plugin/marketplace.json)
+            SOURCE=$(jq -r ".plugins[$i].source" .claude-plugin/marketplace.json)
+            PLUGIN_ROOT="${SOURCE#./}"
+
+            echo "Checking plugin: $NAME"
+
+            jq -e ".plugins[$i].displayName and .plugins[$i].version and .plugins[$i].source" \
+              .claude-plugin/marketplace.json > /dev/null \
+              || { echo "  ✗ Missing required fields"; exit 1; }
+
+            [ -d "$PLUGIN_ROOT" ] \
+              || { echo "  ✗ Source directory not found: $PLUGIN_ROOT"; exit 1; }
+
+            [ -f "$PLUGIN_ROOT/.claude-plugin/plugin.json" ] \
+              || { echo "  ✗ Missing .claude-plugin/plugin.json"; exit 1; }
+
+            # Must have at least one component type
+            COMPONENTS=0
+            [ -d "$PLUGIN_ROOT/skills" ] && COMPONENTS=$((COMPONENTS + 1))
+            [ -d "$PLUGIN_ROOT/agents" ] && COMPONENTS=$((COMPONENTS + 1))
+            [ -d "$PLUGIN_ROOT/commands" ] && COMPONENTS=$((COMPONENTS + 1))
+            [ -f "$PLUGIN_ROOT/hooks/hooks.json" ] && COMPONENTS=$((COMPONENTS + 1))
+            [ "$COMPONENTS" -eq 0 ] \
+              && { echo "  ✗ Plugin has no skills, agents, commands, or hooks"; exit 1; }
+
+            echo "  ✓ Valid"
+          done
+
+      - name: Validate hooks.json files
+        run: |
+          for hooks_file in plugins/*/hooks/hooks.json; do
+            [ -f "$hooks_file" ] || continue
+            echo "Checking $hooks_file"
+
+            jq '.' "$hooks_file" > /dev/null \
+              || { echo "  ✗ Invalid JSON"; exit 1; }
+
+            PLUGIN_ROOT=$(dirname "$(dirname "$hooks_file")")
+
+            jq -r '.hooks | to_entries[] | .value[].hooks[] | select(.type=="command") | .command' \
+              "$hooks_file" 2>/dev/null | while read -r cmd; do
+              SCRIPT_PATH="${cmd#bash \$\{CLAUDE_PLUGIN_ROOT\}/}"
+              [ -f "$PLUGIN_ROOT/$SCRIPT_PATH" ] \
+                || { echo "  ✗ Hook script not found: $SCRIPT_PATH"; exit 1; }
+            done
+
+            echo "  ✓ Valid"
+          done
+
+      - name: Validate all JSON files
+        run: |
+          find . -name '*.json' \
+            -not -path './node_modules/*' \
+            -not -path './.git/*' \
+            -not -name 'package-lock.json' | while read f; do
+            jq '.' "$f" > /dev/null || { echo "✗ Invalid JSON: $f"; exit 1; }
+          done
+          echo "✓ All JSON files valid"
+
+      - name: Validate YAML frontmatter
+        run: |
+          for f in plugins/*/skills/*/SKILL.md plugins/*/agents/*.md plugins/*/commands/*.md; do
+            [ -f "$f" ] || continue
+
+            FIRST_LINE=$(head -1 "$f")
+            [ "$FIRST_LINE" = "---" ] \
+              || { echo "✗ Missing frontmatter: $f"; exit 1; }
+
+            # Find closing --- (must be on line 2+)
+            TAIL_LEN=$(wc -l < "$f")
+            CLOSING_LINE=$(tail -n "$((TAIL_LEN - 1))" "$f" | grep -n '^---$' | head -1 | cut -d: -f1)
+            [ -n "$CLOSING_LINE" ] \
+              || { echo "✗ Unclosed frontmatter: $f"; exit 1; }
+
+            # Check for required 'name' field
+            FRONTMATTER=$(sed -n "2,$((CLOSING_LINE))p" "$f" | sed '$d')
+            echo "$FRONTMATTER" | grep -q '^name:' \
+              || { echo "✗ Missing 'name' in frontmatter: $f"; exit 1; }
+
+            echo "  ✓ $f"
+          done
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run build script
+        run: bash scripts/build-marketplace.sh
+
+      - name: Verify build output
+        run: |
+          grep -q 'const PLUGINS = \[' marketplace.html \
+            || { echo "✗ PLUGINS array not found in marketplace.html"; exit 1; }
+
+          for plugin in typescript-rules jsdoc-standards commit-commands; do
+            [ -L ".cursor/skills/$plugin/SKILL.md" ] \
+              || { echo "✗ Missing symlink: .cursor/skills/$plugin/SKILL.md"; exit 1; }
+          done
+
+          echo "✓ Build output valid"
+
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+      - run: npm install
+      - run: npm pack --dry-run
+
+  test-installer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+      - run: npm install
+      - run: node bin/install.mjs --version
+      - run: node bin/install.mjs --help
