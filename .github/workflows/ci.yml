@@ -132,7 +132,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: npm
       - run: npm install
       - run: npm pack --dry-run
 
@@ -143,7 +142,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: npm
       - run: npm install
       - run: node bin/install.mjs --version
       - run: node bin/install.mjs --help
