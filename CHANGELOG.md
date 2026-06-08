@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.3...devkit-ai-v0.1.4) (2026-06-08)
+
+
+### Bug Fixes
+
+* **ci:** remove npm cache since package-lock.json is gitignored ([651b23c](https://github.com/pau-vega/Devkit-AI/commit/651b23cc6786abd2a2931fcd711989f5b8e7020a))
+
 ## [0.1.3](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.2...devkit-ai-v0.1.3) (2026-06-07)
 
 
