@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.4...devkit-ai-v0.1.5) (2026-06-11)
+
+
+### Features
+
+* **hooks:** add per-project settings file support ([19c0223](https://github.com/pau-vega/Devkit-AI/commit/19c02237dec7dd9e7d3629121a198919e8a32aa6))
+* **hooks:** add per-project settings file support ([c06006f](https://github.com/pau-vega/Devkit-AI/commit/c06006f7be22eb85296330d536fe891335efcd40))
+
 ## [0.1.4](https://github.com/pau-vega/Devkit-AI/compare/devkit-ai-v0.1.3...devkit-ai-v0.1.4) (2026-06-08)
 
 
