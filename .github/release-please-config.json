@@ -19,6 +19,21 @@
           "type": "json",
           "path": ".claude-plugin/marketplace.json",
           "jsonpath": "$.plugins[*].version"
+        },
+        {
+          "type": "json",
+          "path": "plugins/typescript-rules/.claude-plugin/plugin.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "plugins/jsdoc-standards/.claude-plugin/plugin.json",
+          "jsonpath": "$.version"
+        },
+        {
+          "type": "json",
+          "path": "plugins/commit-commands/.claude-plugin/plugin.json",
+          "jsonpath": "$.version"
         }
       ]
     }

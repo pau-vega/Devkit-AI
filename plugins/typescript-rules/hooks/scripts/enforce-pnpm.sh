@@ -1,5 +1,9 @@
 #!/bin/bash
 INPUT=$(cat)
+
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/settings-lib.sh"
+settings_rule_enabled "typescript-rules" "enforce_pnpm" || exit 0
+
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command' || true)
 
 # Split chained commands (&&, ||, ;) into separate lines and check if any
