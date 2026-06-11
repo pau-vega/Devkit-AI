@@ -7,7 +7,6 @@ description: >
   "improve documentation", "set JSDoc level", "which JSDoc level", or when
   applying JSDoc conventions to TypeScript code. Provides rules for tag usage,
   format, and level selection across any TypeScript project.
-paths: ["*.ts", "*.tsx", "*.js", "*.jsx"]
 ---
 
 # JSDoc Conventions for TypeScript

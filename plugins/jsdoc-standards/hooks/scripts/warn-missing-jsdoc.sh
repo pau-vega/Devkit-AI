@@ -3,6 +3,9 @@ set -euo pipefail
 
 input=$(cat)
 
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/settings-lib.sh"
+settings_rule_enabled "jsdoc-standards" "warn_missing_jsdoc" || exit 0
+
 # Extract file path based on tool type
 tool_name=$(echo "$input" | jq -r '.tool_name // empty')
 file_path=$(echo "$input" | jq -r '.tool_input.file_path // empty')

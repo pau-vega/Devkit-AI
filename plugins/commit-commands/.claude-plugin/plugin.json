@@ -1,6 +1,6 @@
 {
   "name": "commit-commands",
-  "version": "1.0.0",
+  "version": "0.1.4",
   "description": "Streamline git workflow with /commit, /commit-push-pr, and /clean-gone commands",
   "author": {
     "name": "Anthropic"

@@ -34,6 +34,27 @@ Autonomous reviewer that triggers when you ask about JSDoc quality (e.g., "revie
 
 PreToolUse hook on Write/Edit that **warns** (never blocks) when exported TypeScript constructs are missing JSDoc comments. Claude Code only — OpenCode does not consume `hooks.json`, and Cursor's hook schema differs.
 
+## Configuration
+
+The warning hook can be disabled per project without uninstalling the plugin. Create `.claude/jsdoc-standards.local.md` in the project root:
+
+```markdown
+---
+enabled: false
+---
+
+The markdown body is ignored by the hooks — use it for notes.
+```
+
+Available keys (every key defaults to `true` when the file or key is absent; only an explicit `false` disables):
+
+| Key | Hook |
+|-----|------|
+| `enabled` | Master switch for the plugin's hooks |
+| `warn_missing_jsdoc` | The missing-JSDoc warning on Write/Edit |
+
+The settings file is read on every hook invocation, so changes take effect immediately — no restart needed. Settings are per-developer — add `.claude/*.local.md` to your `.gitignore`.
+
 ## Installation
 
 ```bash
@@ -44,7 +65,7 @@ The installer prompts for editor (Claude Code / OpenCode / Cursor), scope (proje
 
 ```bash
 git clone https://github.com/pau-vega/Devkit-AI.git
-claude --plugin-dir ./Devkit-AI/jsdoc-standards
+claude --plugin-dir ./Devkit-AI/plugins/jsdoc-standards
 ```
 
 ## License

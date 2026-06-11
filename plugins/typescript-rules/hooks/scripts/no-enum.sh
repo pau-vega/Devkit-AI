@@ -1,5 +1,9 @@
 #!/bin/bash
 INPUT=$(cat)
+
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/settings-lib.sh"
+settings_rule_enabled "typescript-rules" "no_enum" || exit 0
+
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path')
 
 # Only check .ts/.tsx files

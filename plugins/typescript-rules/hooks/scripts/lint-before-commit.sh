@@ -1,5 +1,9 @@
 #!/bin/bash
 INPUT=$(cat)
+
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/settings-lib.sh"
+settings_rule_enabled "typescript-rules" "lint_before_commit" || exit 0
+
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command' || true)
 
 # Only intercept git commit commands
